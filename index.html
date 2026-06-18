@@ -3,13 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AD BELÉM - BARUERI</title>
-
+<title>Agenda — Igreja</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
-
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-
 :root{
   --bg:#0a0a0f;
   --surface:#13131a;
@@ -22,162 +19,121 @@
   --muted:#6b6b8a;
   --radius:16px;
 }
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden}
 
-body{
-  background:var(--bg);
-  color:var(--text);
-  font-family:'Inter',sans-serif;
-}
+/* HEADER */
+.header{padding:28px 20px 0;max-width:680px;margin:0 auto}
+.header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.church-name{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;letter-spacing:-.5px;background:linear-gradient(135deg,#fff 40%,var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.admin-btn{background:none;border:1px solid var(--border);color:var(--muted);font-size:11px;padding:6px 12px;border-radius:30px;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s}
+.admin-btn:hover{border-color:var(--accent);color:var(--accent)}
+.header-sub{font-size:13px;color:var(--muted);font-weight:300}
 
-.header{
-  padding:28px 20px 0;
-  max-width:680px;
-  margin:auto;
-}
+/* PRÓXIMO */
+.next-section{max-width:680px;margin:28px auto 0;padding:0 20px}
+.next-card{background:linear-gradient(135deg,var(--accent) 0%,#5b4ed4 100%);border-radius:var(--radius);padding:22px;position:relative;overflow:hidden}
+.next-card::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;background:rgba(255,255,255,.06);border-radius:50%}
+.next-card::after{content:'';position:absolute;bottom:-30px;right:30px;width:90px;height:90px;background:rgba(255,255,255,.04);border-radius:50%}
+.next-label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;opacity:.75;font-weight:600;margin-bottom:8px}
+.next-title{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;line-height:1.15;margin-bottom:12px}
+.next-meta{display:flex;gap:14px;flex-wrap:wrap}
+.next-meta span{font-size:12px;opacity:.85;display:flex;align-items:center;gap:5px}
+.next-countdown{margin-top:16px;display:flex;gap:10px}
+.cd-block{background:rgba(0,0,0,.25);border-radius:10px;padding:8px 12px;text-align:center;min-width:52px}
+.cd-num{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;line-height:1}
+.cd-lbl{font-size:9px;opacity:.6;text-transform:uppercase;letter-spacing:.1em;margin-top:2px}
 
-.header-top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
+/* FILTROS */
+.filters{max-width:680px;margin:24px auto 0;padding:0 20px;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
+.filters::-webkit-scrollbar{display:none}
+.filter-btn{background:var(--surface);border:1px solid var(--border);color:var(--muted);font-size:12px;padding:7px 16px;border-radius:30px;cursor:pointer;white-space:nowrap;font-family:'Inter',sans-serif;transition:all .2s;font-weight:500}
+.filter-btn:hover,.filter-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
 
-.church-name{
-  font-family:'Syne',sans-serif;
-  font-size:22px;
-  font-weight:800;
-  background:linear-gradient(135deg,#fff 40%,var(--accent));
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-}
+/* LISTA */
+.events-list{max-width:680px;margin:18px auto 40px;padding:0 20px;display:flex;flex-direction:column;gap:12px}
+.section-title{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:8px 0 4px}
 
-.admin-btn,.filter-btn,.btn{
-  background:var(--surface);
-  border:1px solid var(--border);
-  color:var(--muted);
-  padding:8px 14px;
-  border-radius:30px;
-  cursor:pointer;
-}
+.event-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;display:flex;gap:16px;align-items:flex-start;position:relative;overflow:hidden;transition:border-color .2s,transform .15s}
+.event-card:hover{border-color:var(--accent);transform:translateY(-1px)}
+.event-card.special{border-color:rgba(247,130,106,.3);background:linear-gradient(135deg,var(--surface) 80%,rgba(247,130,106,.05))}
+.event-card.special .ev-dot{background:var(--accent2)}
 
-.filters{
-  max-width:680px;
-  margin:18px auto;
-  padding:0 20px;
-  display:flex;
-  gap:8px;
-}
+.ev-date-col{display:flex;flex-direction:column;align-items:center;min-width:44px}
+.ev-day-num{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--text);line-height:1}
+.ev-day-name{font-size:9px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted);font-weight:600;margin-top:1px}
+.ev-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);margin-top:8px}
 
-.filter-btn.active{
-  background:var(--accent);
-  color:#fff;
-}
+.ev-divider{width:1px;background:var(--border);align-self:stretch;margin:0 2px}
 
-.section{
-  max-width:680px;
-  margin:auto;
-  padding:0 20px 40px;
-}
+.ev-info{flex:1}
+.ev-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:rgba(124,106,247,.15);color:var(--accent);padding:3px 10px;border-radius:20px;margin-bottom:8px}
+.ev-badge.special-badge{background:rgba(247,130,106,.15);color:var(--accent2)}
+.ev-badge.ordinary-badge{background:rgba(74,222,128,.1);color:var(--green)}
+.ev-name{font-size:16px;font-weight:600;color:var(--text);margin-bottom:6px;line-height:1.3}
+.ev-desc{font-size:12px;color:var(--muted);font-weight:300;line-height:1.6;margin-bottom:8px}
+.ev-meta-row{display:flex;gap:12px;flex-wrap:wrap}
+.ev-meta-item{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:4px}
 
-.card{
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  padding:18px;
-  margin-bottom:12px;
-}
+.ev-actions{display:flex;flex-direction:column;gap:6px;opacity:0;pointer-events:none;transition:opacity .2s}
+.admin-mode .ev-actions{opacity:1;pointer-events:all}
+.ev-edit,.ev-del{background:none;border:1px solid var(--border);border-radius:8px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;transition:all .2s}
+.ev-edit:hover{border-color:var(--accent);background:rgba(124,106,247,.1)}
+.ev-del:hover{border-color:#f87171;background:rgba(248,113,113,.1)}
 
-.card-title{
-  font-size:17px;
-  font-weight:600;
-  margin-bottom:8px;
-}
+/* EMPTY */
+.empty{text-align:center;padding:48px 20px;color:var(--muted)}
+.empty-icon{font-size:36px;margin-bottom:12px}
+.empty p{font-size:14px}
 
-.card-sub{
-  font-size:13px;
-  color:var(--muted);
-  margin-bottom:8px;
-}
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .25s;backdrop-filter:blur(4px)}
+.overlay.open{opacity:1;pointer-events:all}
+.modal{background:var(--surface2);border:1px solid var(--border);border-radius:20px;width:100%;max-width:480px;padding:28px;transform:translateY(20px);transition:transform .25s;max-height:90vh;overflow-y:auto}
+.overlay.open .modal{transform:translateY(0)}
+.modal-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center}
+.modal-close{background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;line-height:1}
+.modal-close:hover{color:var(--text)}
 
-.card-meta{
-  display:flex;
-  gap:12px;
-  flex-wrap:wrap;
-  font-size:12px;
-  color:var(--muted);
-}
+.form-group{margin-bottom:16px}
+.form-label{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;display:block}
+.form-input,.form-select,.form-textarea{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'Inter',sans-serif;font-size:14px;padding:10px 14px;outline:none;transition:border-color .2s}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--accent)}
+.form-select option{background:var(--surface2)}
+.form-textarea{resize:vertical;min-height:80px;line-height:1.5}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-check{display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--muted)}
+.form-check input{accent-color:var(--accent2);width:16px;height:16px}
+.form-check span{color:var(--accent2);font-weight:500}
 
-.admin-actions{
-  margin-top:14px;
-  display:flex;
-  gap:8px;
-  opacity:0;
-}
+.btn-primary{width:100%;background:var(--accent);border:none;color:#fff;font-family:'Syne',sans-serif;font-size:15px;font-weight:700;padding:13px;border-radius:12px;cursor:pointer;margin-top:8px;transition:opacity .2s;letter-spacing:.02em}
+.btn-primary:hover{opacity:.85}
+.btn-row{display:flex;gap:10px}
+.btn-secondary{flex:1;background:var(--surface);border:1px solid var(--border);color:var(--muted);font-family:'Inter',sans-serif;font-size:14px;padding:11px;border-radius:12px;cursor:pointer;transition:all .2s}
+.btn-secondary:hover{border-color:var(--accent);color:var(--accent)}
 
-.admin-mode .admin-actions{
-  opacity:1;
-}
+/* ADMIN BAR */
+.admin-bar{position:fixed;bottom:0;left:0;right:0;background:linear-gradient(135deg,var(--accent),#5b4ed4);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;z-index:50;transform:translateY(100%);transition:transform .3s}
+.admin-bar.open{transform:translateY(0)}
+.admin-bar-label{font-size:12px;font-weight:600;display:flex;align-items:center;gap:6px}
+.add-event-btn{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);color:#fff;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;padding:8px 18px;border-radius:30px;cursor:pointer;transition:background .2s}
+.add-event-btn:hover{background:rgba(255,255,255,.3)}
+.exit-admin-btn{background:none;border:none;color:rgba(255,255,255,.6);font-size:11px;cursor:pointer;font-family:'Inter',sans-serif}
+.exit-admin-btn:hover{color:#fff}
 
-.fab{
-  position:fixed;
-  bottom:24px;
-  right:20px;
-  width:52px;
-  height:52px;
-  border-radius:50%;
-  background:var(--accent);
-  border:none;
-  color:#fff;
-  font-size:24px;
-  display:none;
-  cursor:pointer;
-}
+/* PIN */
+.pin-inputs{display:flex;gap:8px;justify-content:center;margin:16px 0}
+.pin-input{width:48px;height:56px;background:var(--surface);border:2px solid var(--border);border-radius:12px;color:var(--text);font-size:22px;font-weight:700;text-align:center;font-family:'Syne',sans-serif;outline:none;transition:border-color .2s}
+.pin-input:focus{border-color:var(--accent)}
+.pin-error{color:#f87171;font-size:12px;text-align:center;min-height:18px}
 
-.admin-mode .fab{
-  display:block;
-}
+/* FAB */
+.fab{position:fixed;bottom:24px;right:20px;width:52px;height:52px;border-radius:50%;background:var(--accent);border:none;color:#fff;font-size:24px;cursor:pointer;box-shadow:0 8px 24px rgba(124,106,247,.4);display:none;align-items:center;justify-content:center;transition:transform .2s,box-shadow .2s;z-index:50}
+.fab:hover{transform:scale(1.08);box-shadow:0 12px 30px rgba(124,106,247,.5)}
+.admin-mode .fab{display:flex}
 
-.overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.7);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  opacity:0;
-  pointer-events:none;
-}
-
-.overlay.open{
-  opacity:1;
-  pointer-events:all;
-}
-
-.modal{
-  width:90%;
-  max-width:480px;
-  background:var(--surface2);
-  border-radius:20px;
-  padding:24px;
-}
-
-.input{
-  width:100%;
-  margin-bottom:12px;
-  padding:12px;
-  border-radius:10px;
-  border:1px solid var(--border);
-  background:var(--surface);
-  color:var(--text);
-}
-
-.btn-primary{
-  width:100%;
-  background:var(--accent);
-  border:none;
-  color:#fff;
-  padding:12px;
-  border-radius:10px;
-  cursor:pointer;
+@media(max-width:480px){
+  .next-title{font-size:21px}
+  .form-row{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -185,257 +141,374 @@ body{
 
 <div class="header">
   <div class="header-top">
-    <div class="church-name">Igreja Batista Central</div>
+    <div class="church-name">AD BELÉM - BARUERI</div>
     <button class="admin-btn" onclick="openPin()">⚙ Admin</button>
   </div>
+  <div class="header-sub" id="date-label"></div>
 </div>
+
+<div class="next-section" id="next-section"></div>
 
 <div class="filters">
-  <button class="filter-btn active" onclick="switchPage('agenda',this)">Agenda</button>
-  <button class="filter-btn" onclick="switchPage('churches',this)">Igrejas</button>
+  <button class="filter-btn active" onclick="filterEvents('all',this)">Todos</button>
+  <button class="filter-btn" onclick="filterEvents('ordinary',this)">Ordinários</button>
+  <button class="filter-btn" onclick="filterEvents('special',this)">Especiais</button>
+  <button class="filter-btn" onclick="filterEvents('week',this)">Esta semana</button>
 </div>
 
-<div class="section" id="agenda-page"></div>
-<div class="section" id="churches-page" style="display:none"></div>
+<div class="events-list" id="events-list"></div>
 
-<button class="fab" onclick="openAdd()">+</button>
+<!-- FAB -->
+<button class="fab" onclick="openAddModal()" title="Adicionar evento">+</button>
 
-<div class="overlay" id="overlay">
+<!-- ADMIN BAR -->
+<div class="admin-bar" id="admin-bar">
+  <div class="admin-bar-label">🔐 Modo Admin</div>
+  <div style="display:flex;gap:10px;align-items:center">
+    <button class="add-event-btn" onclick="openAddModal()">+ Novo Evento</button>
+    <button class="exit-admin-btn" onclick="exitAdmin()">Sair</button>
+  </div>
+</div>
 
+<!-- OVERLAY GERAL -->
+<div class="overlay" id="overlay" onclick="closeOverlay(event)">
+
+  <!-- MODAL PIN -->
   <div class="modal" id="pin-modal">
-    <h2>Área Admin</h2>
-    <input class="input" type="password" id="pin-input" placeholder="PIN">
-    <button class="btn-primary" onclick="checkPin()">Entrar</button>
+    <div class="modal-title">Área Admin <button class="modal-close" onclick="closeAllModals()">✕</button></div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:4px">Digite o PIN de 4 dígitos:</p>
+    <div class="pin-inputs">
+      <input class="pin-input" maxlength="1" type="password" inputmode="numeric" id="p0" oninput="pinNext(0)">
+      <input class="pin-input" maxlength="1" type="password" inputmode="numeric" id="p1" oninput="pinNext(1)">
+      <input class="pin-input" maxlength="1" type="password" inputmode="numeric" id="p2" oninput="pinNext(2)">
+      <input class="pin-input" maxlength="1" type="password" inputmode="numeric" id="p3" oninput="pinNext(3)">
+    </div>
+    <div class="pin-error" id="pin-error"></div>
+    <p style="font-size:11px;color:var(--muted);text-align:center;margin-top:8px">PIN padrão: <b style="color:var(--accent)">1234</b></p>
   </div>
 
+  <!-- MODAL EVENTO -->
   <div class="modal" id="event-modal" style="display:none">
-    <h2 id="event-title">Novo Evento</h2>
-    <input class="input" id="e-name" placeholder="Nome">
-    <input class="input" id="e-date" type="date">
-    <input class="input" id="e-time" type="time">
-    <input class="input" id="e-local" placeholder="Local">
-    <input class="input" id="e-desc" placeholder="Descrição">
-    <button class="btn-primary" onclick="saveEvent()">Salvar</button>
-  </div>
-
-  <div class="modal" id="church-modal" style="display:none">
-    <h2 id="church-title">Nova Igreja</h2>
-    <input class="input" id="c-name" placeholder="Nome da igreja">
-    <input class="input" id="c-pastor" placeholder="Pastor responsável">
-    <input class="input" id="c-address" placeholder="Endereço">
-    <input class="input" id="c-service" placeholder="Horários">
-    <button class="btn-primary" onclick="saveChurch()">Salvar</button>
+    <div class="modal-title"><span id="modal-title-text">Novo Evento</span><button class="modal-close" onclick="closeAllModals()">✕</button></div>
+    <div class="form-group">
+      <label class="form-label">Nome do Culto / Evento</label>
+      <input class="form-input" id="f-name" placeholder="ex: Culto de Ensino">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Data</label>
+        <input class="form-input" id="f-date" type="date">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Horário</label>
+        <input class="form-input" id="f-time" type="time">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Local</label>
+      <input class="form-input" id="f-local" placeholder="ex: Templo Principal">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Descrição / Tema</label>
+      <textarea class="form-textarea" id="f-desc" placeholder="Uma breve descrição do evento..."></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-check">
+        <input type="checkbox" id="f-special">
+        <span>⭐ Evento Especial</span>
+        <span style="font-size:11px;color:var(--muted);margin-left:4px">(destaca na lista)</span>
+      </label>
+    </div>
+    <div class="btn-row">
+      <button class="btn-secondary" onclick="closeAllModals()">Cancelar</button>
+      <button class="btn-primary" style="flex:2" onclick="saveEvent()">Salvar Evento</button>
+    </div>
   </div>
 
 </div>
 
 <script>
 const PIN = '1234';
-
 let adminMode = false;
-let currentPage = 'agenda';
-let editingEvent = null;
-let editingChurch = null;
+let editingId = null;
+let currentFilter = 'all';
 
-let events = JSON.parse(localStorage.getItem('events')) || [
-  {id:1,name:'Culto de Ensino',date:'2026-06-20',time:'19:30',local:'Templo Principal',desc:'Estudo da Palavra'}
+// ── DADOS GENÉRICOS ──
+const defaultEvents = [
+  {id:1, name:'Culto das Irmãs', date:'2025-06-17', time:'15:00', local:'Sala Auxiliar', desc:'Momento de adoração e comunhão entre as mulheres da igreja. Todas são bem-vindas.', special:false},
+  {id:2, name:'Culto de Ensino', date:'2025-06-18', time:'19:30', local:'Templo Principal', desc:'Estudo aprofundado da Palavra. Esta semana: Série "Frutos do Espírito" — Ep. 3.', special:false},
+  {id:3, name:'Tarde da Bênção', date:'2025-06-19', time:'15:00', local:'Templo Principal', desc:'Culto de adoração e intercessão. Venha buscar a presença de Deus.', special:false},
+  {id:4, name:'Culto do Propósito', date:'2025-06-20', time:'19:30', local:'Templo Principal', desc:'Para quem busca direção e clareza. Palavra ministrada pelo Pr. Carlos Silva.', special:false},
+  {id:5, name:'Vigília de Oração', date:'2025-06-21', time:'22:00', local:'Templo Principal', desc:'Uma noite inteira diante do Senhor. Traga seu coração, Ele tem uma palavra para você.', special:true},
+  {id:6, name:'EBD — Escola Bíblica', date:'2025-06-22', time:'09:00', local:'Salas de Ensino', desc:'Aulas para todas as faixas etárias. Tema do trimestre: "Raízes da Fé".', special:false},
+  {id:7, name:'Culto Matinal', date:'2025-06-22', time:'10:30', local:'Templo Principal', desc:'O culto principal da semana. Pregação com o Pastor Titular.', special:false},
+  {id:8, name:'Culto à Noite', date:'2025-06-22', time:'18:00', local:'Templo Principal', desc:'Adoração, Palavra e Santa Ceia. Um encontro especial para encerrar o domingo.', special:false},
+  {id:9, name:'Conferência Jovem', date:'2025-06-28', time:'18:00', local:'Templo Principal', desc:'Evento anual da juventude: "Geração de Propósito". Convidados especiais confirmados!', special:true},
+  {id:10, name:'Culto de Ensino', date:'2025-06-25', time:'19:30', local:'Templo Principal', desc:'Continuação da série "Frutos do Espírito" — Ep. 4: Paciência.', special:false},
 ];
 
-let churches = JSON.parse(localStorage.getItem('churches')) || [
-  {id:1,name:'Ministério Vida Nova',pastor:'Pr. João Almeida',address:'Rua das Oliveiras, 245',service:'Domingo 18:00'},
-  {id:2,name:'Igreja Batista Esperança',pastor:'Pra. Ana Costa',address:'Av. Central, 890',service:'Quarta 19:30'}
-];
+function loadEvents(){
+  try{
+    const s = localStorage.getItem('church_events');
+    if(s) return JSON.parse(s);
+  }catch(e){}
+  return JSON.parse(JSON.stringify(defaultEvents));
+}
+function saveEvents(evs){
+  try{ localStorage.setItem('church_events', JSON.stringify(evs)); }catch(e){}
+}
+let events = loadEvents();
 
-function saveData(){
-  localStorage.setItem('events', JSON.stringify(events));
-  localStorage.setItem('churches', JSON.stringify(churches));
+// Ajusta datas para semana atual
+(function(){
+  const today = new Date();
+  const saved = localStorage.getItem('church_events');
+  if(!saved){
+    // Ajusta eventos para a semana atual
+    const base = new Date('2025-06-17');
+    const diff = Math.round((today - base)/(7*86400000)) * 7;
+    events = events.map(ev => {
+      const d = new Date(ev.date + 'T12:00:00');
+      d.setDate(d.getDate() + diff);
+      return {...ev, date: d.toISOString().slice(0,10)};
+    });
+    saveEvents(events);
+    events = loadEvents();
+  }
+})();
+
+// ── DATA LABEL ──
+const months = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+const days = ['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'];
+const daysShort = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+function fmtDate(d){
+  const [y,m,day] = d.split('-').map(Number);
+  return {dayNum:day, dayName:daysShort[new Date(y,m-1,day).getDay()], full:`${day} de ${months[m-1]}`};
+}
+function fmtTime(t){ const [h,m]=t.split(':'); return `${h}h${m!=='00'?m:''}`; }
+
+const today = new Date();
+today.setHours(0,0,0,0);
+document.getElementById('date-label').textContent =
+  days[today.getDay()] + ', ' + today.getDate() + ' de ' + months[today.getMonth()] + ' de ' + today.getFullYear();
+
+// ── PRÓXIMO EVENTO ──
+function renderNext(){
+  const now = new Date();
+  const upcoming = events
+    .filter(ev => new Date(ev.date+'T'+ev.time) > now)
+    .sort((a,b)=> new Date(a.date+'T'+a.time)-new Date(b.date+'T'+b.time));
+  const sec = document.getElementById('next-section');
+  if(!upcoming.length){ sec.innerHTML=''; return; }
+  const ev = upcoming[0];
+  const target = new Date(ev.date+'T'+ev.time);
+  const fd = fmtDate(ev.date);
+  sec.innerHTML = `
+    <div class="next-card">
+      <div class="next-label">Próximo evento</div>
+      <div class="next-title">${ev.name}</div>
+      <div class="next-meta">
+        <span>📅 ${fd.dayName}, ${fd.full}</span>
+        <span>🕐 ${fmtTime(ev.time)}</span>
+        <span>📍 ${ev.local}</span>
+      </div>
+      <div class="next-countdown" id="countdown"></div>
+    </div>`;
+  updateCountdown(target);
+}
+function updateCountdown(target){
+  const el = document.getElementById('countdown');
+  if(!el) return;
+  const diff = target - new Date();
+  if(diff<=0){ el.innerHTML='<div style="font-size:13px;opacity:.8">🔴 Acontecendo agora!</div>'; return; }
+  const d = Math.floor(diff/86400000);
+  const h = Math.floor((diff%86400000)/3600000);
+  const m = Math.floor((diff%3600000)/60000);
+  const s = Math.floor((diff%60000)/1000);
+  el.innerHTML = [
+    d>0?`<div class="cd-block"><div class="cd-num">${d}</div><div class="cd-lbl">dias</div></div>`:'',
+    `<div class="cd-block"><div class="cd-num">${String(h).padStart(2,'0')}</div><div class="cd-lbl">horas</div></div>`,
+    `<div class="cd-block"><div class="cd-num">${String(m).padStart(2,'0')}</div><div class="cd-lbl">min</div></div>`,
+    d===0?`<div class="cd-block"><div class="cd-num">${String(s).padStart(2,'0')}</div><div class="cd-lbl">seg</div></div>`:''
+  ].join('');
+}
+setInterval(()=>{
+  const now = new Date();
+  const upcoming = events.filter(ev=>new Date(ev.date+'T'+ev.time)>now).sort((a,b)=>new Date(a.date+'T'+a.time)-new Date(b.date+'T'+b.time));
+  if(upcoming.length) updateCountdown(new Date(upcoming[0].date+'T'+upcoming[0].time));
+}, 1000);
+
+// ── RENDER LISTA ──
+function renderList(){
+  const el = document.getElementById('events-list');
+  let evs = [...events].sort((a,b)=>new Date(a.date+'T'+a.time)-new Date(b.date+'T'+b.time));
+  const now = new Date();
+  const weekEnd = new Date(now); weekEnd.setDate(now.getDate()+7);
+
+  if(currentFilter==='ordinary') evs = evs.filter(e=>!e.special);
+  else if(currentFilter==='special') evs = evs.filter(e=>e.special);
+  else if(currentFilter==='week') evs = evs.filter(e=>{const d=new Date(e.date+'T12:00:00');return d>=now&&d<=weekEnd;});
+
+  if(!evs.length){ el.innerHTML=`<div class="empty"><div class="empty-icon">📭</div><p>Nenhum evento encontrado.</p></div>`; return; }
+
+  // Agrupa por semana
+  let html='';
+  let lastWeek='';
+  evs.forEach(ev=>{
+    const d = new Date(ev.date+'T12:00:00');
+    const wk = getWeekLabel(d);
+    if(wk!==lastWeek){ html+=`<div class="section-title">${wk}</div>`; lastWeek=wk; }
+    const fd = fmtDate(ev.date);
+    const isPast = new Date(ev.date+'T'+ev.time) < now;
+    html+=`
+    <div class="event-card${ev.special?' special':''}" id="card-${ev.id}" style="${isPast?'opacity:.45':''}">
+      <div class="ev-date-col">
+        <div class="ev-day-num">${fd.dayNum}</div>
+        <div class="ev-day-name">${fd.dayName}</div>
+        <div class="ev-dot"></div>
+      </div>
+      <div class="ev-divider"></div>
+      <div class="ev-info">
+        <div class="ev-badge ${ev.special?'special-badge':'ordinary-badge'}">${ev.special?'⭐ Especial':'● Ordinário'}</div>
+        <div class="ev-name">${ev.name}</div>
+        ${ev.desc?`<div class="ev-desc">${ev.desc}</div>`:''}
+        <div class="ev-meta-row">
+          <span class="ev-meta-item">🕐 ${fmtTime(ev.time)}</span>
+          <span class="ev-meta-item">📍 ${ev.local}</span>
+        </div>
+      </div>
+      <div class="ev-actions">
+        <button class="ev-edit" onclick="editEvent(${ev.id})" title="Editar">✏️</button>
+        <button class="ev-del" onclick="deleteEvent(${ev.id})" title="Excluir">🗑</button>
+      </div>
+    </div>`;
+  });
+  el.innerHTML=html;
 }
 
-function switchPage(page, btn){
-  currentPage = page;
+function getWeekLabel(d){
+  const now = new Date(); now.setHours(0,0,0,0);
+  const diff = Math.floor((d-now)/86400000);
+  if(diff<0) return 'Eventos passados';
+  if(diff<7) return 'Esta semana';
+  if(diff<14) return 'Próxima semana';
+  return months[d.getMonth()]+' '+d.getFullYear();
+}
 
+function filterEvents(f, btn){
+  currentFilter=f;
   document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-
-  document.getElementById('agenda-page').style.display = page==='agenda' ? '' : 'none';
-  document.getElementById('churches-page').style.display = page==='churches' ? '' : 'none';
-
-  render();
+  renderList();
 }
 
-function render(){
-  renderEvents();
-  renderChurches();
-}
-
-function renderEvents(){
-  let html='';
-
-  events.forEach(ev=>{
-    html+=`
-      <div class="card">
-        <div class="card-title">${ev.name}</div>
-        <div class="card-sub">${ev.desc}</div>
-        <div class="card-meta">
-          <span>📅 ${ev.date}</span>
-          <span>🕐 ${ev.time}</span>
-          <span>📍 ${ev.local}</span>
-        </div>
-
-        <div class="admin-actions">
-          <button class="btn" onclick="editEvent(${ev.id})">Editar</button>
-          <button class="btn" onclick="deleteEvent(${ev.id})">Excluir</button>
-        </div>
-      </div>
-    `;
-  });
-
-  document.getElementById('agenda-page').innerHTML = html;
-}
-
-function renderChurches(){
-  let html='';
-
-  churches.forEach(ch=>{
-    html+=`
-      <div class="card">
-        <div class="card-title">${ch.name}</div>
-        <div class="card-sub">Pastor: ${ch.pastor}</div>
-        <div class="card-meta">
-          <span>📍 ${ch.address}</span>
-          <span>🕐 ${ch.service}</span>
-        </div>
-
-        <div class="admin-actions">
-          <button class="btn" onclick="editChurch(${ch.id})">Editar</button>
-          <button class="btn" onclick="deleteChurch(${ch.id})">Excluir</button>
-        </div>
-      </div>
-    `;
-  });
-
-  document.getElementById('churches-page').innerHTML = html;
-}
-
+// ── ADMIN ──
 function openPin(){
-  openModal('pin-modal');
+  document.querySelectorAll('.pin-input').forEach(i=>i.value='');
+  document.getElementById('pin-error').textContent='';
+  document.getElementById('pin-modal').style.display='';
+  document.getElementById('event-modal').style.display='none';
+  document.getElementById('overlay').classList.add('open');
+  setTimeout(()=>document.getElementById('p0').focus(),200);
+}
+
+function pinNext(idx){
+  const v = document.getElementById('p'+idx).value;
+  if(!/\d/.test(v)){ document.getElementById('p'+idx).value=''; return; }
+  if(idx<3) document.getElementById('p'+(idx+1)).focus();
+  if(idx===3) checkPin();
 }
 
 function checkPin(){
-  const pin = document.getElementById('pin-input').value;
-
-  if(pin===PIN){
-    adminMode=true;
-    document.body.classList.add('admin-mode');
-    closeModal();
+  const pin = [0,1,2,3].map(i=>document.getElementById('p'+i).value).join('');
+  if(pin===PIN){ closeAllModals(); enterAdmin(); }
+  else{
+    document.getElementById('pin-error').textContent='PIN incorreto. Tente novamente.';
+    document.querySelectorAll('.pin-input').forEach(i=>i.value='');
+    document.getElementById('p0').focus();
   }
 }
 
-function openAdd(){
-  if(currentPage==='agenda'){
-    editingEvent = null;
-    openModal('event-modal');
-  } else {
-    editingChurch = null;
-    openModal('church-modal');
-  }
+function enterAdmin(){
+  adminMode=true;
+  document.body.classList.add('admin-mode');
+  document.getElementById('admin-bar').classList.add('open');
+}
+function exitAdmin(){
+  adminMode=false;
+  document.body.classList.remove('admin-mode');
+  document.getElementById('admin-bar').classList.remove('open');
 }
 
-function saveEvent(){
-  const data = {
-    id: editingEvent || Date.now(),
-    name:e-name.value,
-    date:e-date.value,
-    time:e-time.value,
-    local:e-local.value,
-    desc:e-desc.value
-  };
-
-  if(editingEvent){
-    events = events.map(e=>e.id===editingEvent?data:e);
-  } else {
-    events.push(data);
-  }
-
-  saveData();
-  render();
-  closeModal();
-}
-
-function saveChurch(){
-  const data = {
-    id: editingChurch || Date.now(),
-    name:c-name.value,
-    pastor:c-pastor.value,
-    address:c-address.value,
-    service:c-service.value
-  };
-
-  if(editingChurch){
-    churches = churches.map(c=>c.id===editingChurch?data:c);
-  } else {
-    churches.push(data);
-  }
-
-  saveData();
-  render();
-  closeModal();
+// ── MODAL EVENTO ──
+function openAddModal(){
+  editingId=null;
+  document.getElementById('modal-title-text').textContent='Novo Evento';
+  document.getElementById('f-name').value='';
+  document.getElementById('f-date').value=new Date().toISOString().slice(0,10);
+  document.getElementById('f-time').value='19:30';
+  document.getElementById('f-local').value='Templo Principal';
+  document.getElementById('f-desc').value='';
+  document.getElementById('f-special').checked=false;
+  document.getElementById('pin-modal').style.display='none';
+  document.getElementById('event-modal').style.display='';
+  document.getElementById('overlay').classList.add('open');
 }
 
 function editEvent(id){
   const ev = events.find(e=>e.id===id);
-  editingEvent=id;
-
-  e-name.value=ev.name;
-  e-date.value=ev.date;
-  e-time.value=ev.time;
-  e-local.value=ev.local;
-  e-desc.value=ev.desc;
-
-  openModal('event-modal');
+  if(!ev) return;
+  editingId=id;
+  document.getElementById('modal-title-text').textContent='Editar Evento';
+  document.getElementById('f-name').value=ev.name;
+  document.getElementById('f-date').value=ev.date;
+  document.getElementById('f-time').value=ev.time;
+  document.getElementById('f-local').value=ev.local;
+  document.getElementById('f-desc').value=ev.desc||'';
+  document.getElementById('f-special').checked=ev.special;
+  document.getElementById('pin-modal').style.display='none';
+  document.getElementById('event-modal').style.display='';
+  document.getElementById('overlay').classList.add('open');
 }
 
-function editChurch(id){
-  const ch = churches.find(c=>c.id===id);
-  editingChurch=id;
-
-  c-name.value=ch.name;
-  c-pastor.value=ch.pastor;
-  c-address.value=ch.address;
-  c-service.value=ch.service;
-
-  openModal('church-modal');
+function saveEvent(){
+  const name = document.getElementById('f-name').value.trim();
+  const date = document.getElementById('f-date').value;
+  const time = document.getElementById('f-time').value;
+  const local = document.getElementById('f-local').value.trim();
+  const desc = document.getElementById('f-desc').value.trim();
+  const special = document.getElementById('f-special').checked;
+  if(!name||!date||!time){ alert('Preencha ao menos nome, data e horário.'); return; }
+  if(editingId){
+    events = events.map(e=>e.id===editingId?{...e,name,date,time,local,desc,special}:e);
+  } else {
+    const newId = Date.now();
+    events.push({id:newId,name,date,time,local,desc,special});
+  }
+  saveEvents(events);
+  closeAllModals();
+  renderNext();
+  renderList();
 }
 
 function deleteEvent(id){
+  if(!confirm('Excluir este evento?')) return;
   events = events.filter(e=>e.id!==id);
-  saveData();
-  render();
+  saveEvents(events);
+  renderNext();
+  renderList();
 }
 
-function deleteChurch(id){
-  churches = churches.filter(c=>c.id!==id);
-  saveData();
-  render();
-}
-
-function openModal(id){
-  document.getElementById('overlay').classList.add('open');
-
-  document.querySelectorAll('.modal').forEach(m=>m.style.display='none');
-  document.getElementById(id).style.display='block';
-}
-
-function closeModal(){
+function closeAllModals(){
   document.getElementById('overlay').classList.remove('open');
 }
-
-document.getElementById('overlay').onclick = function(e){
-  if(e.target===this) closeModal();
+function closeOverlay(e){
+  if(e.target===document.getElementById('overlay')) closeAllModals();
 }
 
-render();
+// INIT
+renderNext();
+renderList();
 </script>
-
 </body>
 </html>
