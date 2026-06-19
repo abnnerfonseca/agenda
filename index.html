@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ASSEMBLEIA DE DEUS - BARUERI</title>
+<title>Igreja Batista Central</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -58,7 +58,7 @@ a{color:inherit;text-decoration:none}
 .sec-divider{width:40px;height:2px;background:var(--accent);margin:18px auto 0}
 
 /* ===== CAROUSEL (HOME) ===== */
-.carousel{position:relative;margin:40px 0;overflow:hidden;border-radius:4px;background:var(--ink)}
+.carousel{position:relative;margin:40px 0;overflow:hidden;border-radius:4px;background:var(--ink);min-height:380px}
 .carousel-track{display:flex;transition:transform .5s cubic-bezier(.4,0,.2,1)}
 .car-slide{min-width:100%;position:relative;height:380px;display:flex;align-items:flex-end}
 .car-slide img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55}
@@ -72,6 +72,7 @@ a{color:inherit;text-decoration:none}
 .car-dots{position:absolute;bottom:16px;right:24px;z-index:3;display:flex;gap:7px}
 .car-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.4);cursor:pointer;transition:background .2s}
 .car-dot.active{background:#fff}
+.car-loading{color:rgba(255,255,255,.5);font-size:13px;padding:40px;text-align:center;width:100%}
 @media(max-width:600px){.car-slide{height:320px}.car-content{padding:24px}}
 
 /* ===== AVISOS ===== */
@@ -91,14 +92,14 @@ a{color:inherit;text-decoration:none}
 .social-btn:hover{background:#fff;color:var(--ink)}
 
 /* ===== NEXT EVENT STRIP ===== */
-.next-strip{background:var(--accent-soft);border:1px solid var(--line);padding:26px 32px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;margin:40px 0}
+.next-strip{background:var(--accent-soft);border:1px solid var(--line);padding:26px 32px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;margin:40px 0;min-height:30px}
 .next-strip-left{display:flex;align-items:center;gap:20px}
 .next-strip-date{font-family:var(--serif);font-size:38px;font-weight:700;color:var(--accent);line-height:1;text-align:center}
 .next-strip-date span{display:block;font-family:var(--sans);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;margin-top:4px}
 .next-strip-info .nse{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:4px}
 .next-strip-info .nsn{font-family:var(--serif);font-size:22px;font-weight:600}
 .next-strip-info .nsm{font-size:13px;color:var(--ink-soft);margin-top:4px}
-.next-strip-btn{background:var(--accent);color:#fff;padding:11px 26px;font-size:13px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;border-radius:2px;white-space:nowrap}
+.next-strip-btn{background:var(--accent);color:#fff;padding:11px 26px;font-size:13px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;border-radius:2px;white-space:nowrap;cursor:pointer}
 
 /* ===== AGENDA PAGE ===== */
 .filters{display:flex;gap:10px;justify-content:center;margin:0 0 36px;flex-wrap:wrap}
@@ -121,7 +122,7 @@ a{color:inherit;text-decoration:none}
 /* ===== IGREJAS ===== */
 .church-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin:32px 0}
 .church-card{background:var(--paper);border:1px solid var(--line)}
-.church-img{height:180px;background:linear-gradient(135deg,#ddd,#ccc);position:relative;overflow:hidden}
+.church-img{height:180px;background:#e8e4da;position:relative;overflow:hidden}
 .church-img img{width:100%;height:100%;object-fit:cover}
 .church-img-placeholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#999;font-size:12px;background:#e8e4da}
 .church-body{padding:22px}
@@ -153,7 +154,6 @@ a{color:inherit;text-decoration:none}
 .tl-item::before{content:'';position:absolute;left:33px;top:30px;bottom:0;width:1px;background:var(--line)}
 .tl-item:last-child::before{display:none}
 .tl-year{min-width:66px;font-family:var(--serif);font-size:20px;font-weight:700;color:var(--accent)}
-.tl-dot-line{display:flex;flex-direction:column;align-items:center}
 .tl-content{padding-bottom:4px}
 .tl-content h4{font-family:var(--serif);font-size:17px;font-weight:600;margin-bottom:4px}
 .tl-content p{font-size:13px;color:var(--ink-soft);font-weight:300;line-height:1.7}
@@ -162,7 +162,7 @@ a{color:inherit;text-decoration:none}
 .progress-wrap{max-width:680px;margin:0 auto 50px}
 .progress-label{display:flex;justify-content:space-between;font-size:13px;margin-bottom:10px;font-weight:500}
 .progress-bar{height:8px;background:var(--line);border-radius:10px;overflow:hidden}
-.progress-fill{height:100%;background:var(--accent);border-radius:10px;transition:width 1s ease}
+.progress-fill{height:100%;background:var(--accent);border-radius:10px;transition:width 1s ease;width:0%}
 .update-list{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:0}
 .update-item{border-left:2px solid var(--line);padding:4px 0 28px 24px;position:relative}
 .update-item::before{content:'';position:absolute;left:-6px;top:4px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
@@ -175,6 +175,7 @@ a{color:inherit;text-decoration:none}
 .footer p{font-size:12px;color:var(--ink-soft)}
 
 .empty-state{text-align:center;padding:50px 20px;color:var(--ink-soft);font-size:14px}
+.error-state{text-align:center;padding:50px 20px;color:#a14b4b;font-size:13px;background:#fbf2f0;border:1px solid #f0d8d3}
 
 @media(max-width:600px){
   .next-strip{flex-direction:column;align-items:flex-start}
@@ -186,7 +187,7 @@ a{color:inherit;text-decoration:none}
 
 <nav class="nav">
   <div class="nav-inner">
-    <div class="brand">AD BELÉM <span>BARUERI</span></div>
+    <div class="brand">Igreja Batista <span>Central</span></div>
     <button class="nav-toggle" onclick="toggleMenu()">☰</button>
     <ul class="nav-links" id="navLinks">
       <li><a onclick="goTo('home')" data-page="home">Início</a></li>
@@ -205,13 +206,13 @@ a{color:inherit;text-decoration:none}
     <div class="wrap">
       <div class="hero-eyebrow">Bem-vindo</div>
       <h1 class="hero-title">A casa está aberta.<br>Venha como você é.</h1>
-      <p class="hero-sub">Uma igreja reunida para adorar, aprender e servir juntos.</p>
+      <p class="hero-sub">Uma comunidade de fé reunida para adorar, aprender e servir juntos.</p>
     </div>
   </div>
 
   <div class="wrap">
     <div class="carousel" id="carousel">
-      <div class="carousel-track" id="carTrack"></div>
+      <div class="carousel-track" id="carTrack"><div class="car-loading">Carregando destaques…</div></div>
       <button class="car-nav car-prev" onclick="carMove(-1)">‹</button>
       <button class="car-nav car-next" onclick="carMove(1)">›</button>
       <div class="car-dots" id="carDots"></div>
@@ -224,7 +225,7 @@ a{color:inherit;text-decoration:none}
       <h2 class="sec-title">Avisos</h2>
       <div class="sec-divider"></div>
     </div>
-    <div class="notice-list" id="noticeList"></div>
+    <div class="notice-list" id="noticeList"><div class="empty-state">Carregando avisos…</div></div>
   </div>
 
   <div class="social-band">
@@ -252,10 +253,10 @@ a{color:inherit;text-decoration:none}
     </div>
     <div class="filters">
       <button class="filter-btn active" onclick="filterAgenda('all',this)">Todos</button>
-      <button class="filter-btn" onclick="filterAgenda('ordinary',this)">Cultos Ordinários</button>
-      <button class="filter-btn" onclick="filterAgenda('special',this)">Eventos Especiais</button>
+      <button class="filter-btn" onclick="filterAgenda('programacao semanal',this)">Programação Semanal</button>
+      <button class="filter-btn" onclick="filterAgenda('especial',this)">Eventos Especiais</button>
     </div>
-    <div id="agendaList"></div>
+    <div id="agendaList"><div class="empty-state">Carregando agenda…</div></div>
   </div>
 </div>
 
@@ -267,7 +268,7 @@ a{color:inherit;text-decoration:none}
       <h2 class="sec-title">Nossas Igrejas</h2>
       <div class="sec-divider"></div>
     </div>
-    <div class="church-grid" id="churchGrid"></div>
+    <div class="church-grid" id="churchGrid"><div class="empty-state">Carregando igrejas…</div></div>
   </div>
 </div>
 
@@ -282,7 +283,7 @@ a{color:inherit;text-decoration:none}
     <div class="sermon-search">
       <input type="text" placeholder="Buscar por título, pregador ou tema..." oninput="filterSermons(this.value)">
     </div>
-    <div class="sermon-list" id="sermonList"></div>
+    <div class="sermon-list" id="sermonList"><div class="empty-state">Carregando sermões…</div></div>
   </div>
 </div>
 
@@ -295,11 +296,10 @@ a{color:inherit;text-decoration:none}
       <div class="sec-divider"></div>
     </div>
     <div class="about-text">
-      <p>A AD BELÉM BARUERI nasceu do desejo de um pequeno grupo de famílias que se reunia em uma sala de estar, buscando um espaço de fé genuína, ensino bíblico sólido e comunhão verdadeira.</p>
-      <p>Ao longo dos anos, o que começou pequeno se tornou uma comunidade viva, formada por pessoas de diferentes histórias, unidas por um mesmo propósito: conhecer a Deus e dar a conhecê-Lo. Hoje, somos uma igreja em constante crescimento, mas que preserva os valores que sempre nos guiaram — a Palavra como fundamento, a oração como prática diária e o amor ao próximo como missão.</p>
-      <p>Cremos em uma fé que se vive em comunidade, que transforma vidas e que se estende para além dos muros do templo, alcançando famílias, bairros e cidades.</p>
+      <p>A Igreja Batista Central nasceu do desejo de um pequeno grupo de famílias que se reunia em uma sala de estar, buscando um espaço de fé genuína, ensino bíblico sólido e comunhão verdadeira.</p>
+      <p>Ao longo dos anos, o que começou pequeno se tornou uma comunidade viva, formada por pessoas de diferentes histórias, unidas por um mesmo propósito: conhecer a Deus e dar a conhecê-Lo.</p>
     </div>
-    <div class="timeline" id="timelineList"></div>
+    <div class="timeline" id="timelineList"><div class="empty-state">Carregando história…</div></div>
   </div>
 </div>
 
@@ -315,85 +315,70 @@ a{color:inherit;text-decoration:none}
       <p>Estamos construindo um novo espaço para receber ainda mais famílias e expandir nosso alcance na cidade. Acompanhe abaixo o progresso da obra e as últimas atualizações do projeto.</p>
     </div>
     <div class="progress-wrap">
-      <div class="progress-label"><span>Progresso da construção</span><span id="progressPct">0%</span></div>
-      <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+      <div class="progress-label"><span>Progresso da construção</span><span id="progressPct">—</span></div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
     </div>
     <div class="sec-head">
       <div class="sec-eyebrow">Linha do tempo</div>
       <h2 class="sec-title">Atualizações da Obra</h2>
       <div class="sec-divider"></div>
     </div>
-    <div class="update-list" id="updateList"></div>
+    <div class="update-list" id="updateList"><div class="empty-state">Carregando atualizações…</div></div>
   </div>
 </div>
 
 <div class="footer">
   <div class="wrap">
-    <p>ASSEMBLEIA DE DEUS - BARUERI — Dados de exemplo para demonstração do site</p>
+    <p>Igreja Batista Central</p>
   </div>
 </div>
 
 <script>
 /* =========================================================
-   DADOS GENÉRICOS — estrutura pensada para virar planilha
-   Cada array abaixo = uma futura "aba" do Google Sheets
+   FONTES DE DADOS — Google Sheets publicado em TSV
 ========================================================= */
+const SHEET_URLS = {
+  eventos: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRyhTenbfftqs8iUdYuhP_6XSjAWeRJIHouHTtpTtWgqLRDEDssg8zex00DDDHDu5s_GsmVnQFWQdNy/pub?gid=0&single=true&output=tsv',
+  avisos: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRyhTenbfftqs8iUdYuhP_6XSjAWeRJIHouHTtpTtWgqLRDEDssg8zex00DDDHDu5s_GsmVnQFWQdNy/pub?gid=1303663228&single=true&output=tsv',
+  igrejas: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRyhTenbfftqs8iUdYuhP_6XSjAWeRJIHouHTtpTtWgqLRDEDssg8zex00DDDHDu5s_GsmVnQFWQdNy/pub?gid=1066186067&single=true&output=tsv',
+  sermoes: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRyhTenbfftqs8iUdYuhP_6XSjAWeRJIHouHTtpTtWgqLRDEDssg8zex00DDDHDu5s_GsmVnQFWQdNy/pub?gid=1489946744&single=true&output=tsv',
+  sobre: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRyhTenbfftqs8iUdYuhP_6XSjAWeRJIHouHTtpTtWgqLRDEDssg8zex00DDDHDu5s_GsmVnQFWQdNy/pub?gid=1303487044&single=true&output=tsv',
+  casa: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRyhTenbfftqs8iUdYuhP_6XSjAWeRJIHouHTtpTtWgqLRDEDssg8zex00DDDHDu5s_GsmVnQFWQdNy/pub?gid=2095369827&single=true&output=tsv',
+  casaAtualizacoes: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRyhTenbfftqs8iUdYuhP_6XSjAWeRJIHouHTtpTtWgqLRDEDssg8zex00DDDHDu5s_GsmVnQFWQdNy/pub?gid=812893903&single=true&output=tsv',
+};
 
-const EVENTS = [
-  {id:1, nome:'Culto das Irmãs', data:'2025-06-17', hora:'15:00', local:'Sala Auxiliar', desc:'Momento de adoração e comunhão entre as mulheres da igreja.', tipo:'ordinario'},
-  {id:2, nome:'Culto de Ensino', data:'2025-06-18', hora:'19:30', local:'Templo Principal', desc:'Estudo aprofundado da Palavra. Série "Frutos do Espírito" — Ep. 3.', tipo:'ordinario'},
-  {id:3, nome:'Tarde da Bênção', data:'2025-06-19', hora:'15:00', local:'Templo Principal', desc:'Culto de adoração e intercessão.', tipo:'ordinario'},
-  {id:4, nome:'Culto do Propósito', data:'2025-06-20', hora:'19:30', local:'Templo Principal', desc:'Palavra ministrada pelo Pr. Carlos Silva.', tipo:'ordinario'},
-  {id:5, nome:'Vigília de Oração', data:'2025-06-21', hora:'22:00', local:'Templo Principal', desc:'Uma noite inteira diante do Senhor.', tipo:'especial'},
-  {id:6, nome:'EBD — Escola Bíblica', data:'2025-06-22', hora:'09:00', local:'Salas de Ensino', desc:'Tema do trimestre: "Raízes da Fé".', tipo:'ordinario'},
-  {id:7, nome:'Culto Matinal', data:'2025-06-22', hora:'10:30', local:'Templo Principal', desc:'Pregação com o Pastor Titular.', tipo:'ordinario'},
-  {id:8, nome:'Culto à Noite', data:'2025-06-22', hora:'18:00', local:'Templo Principal', desc:'Adoração, Palavra e Santa Ceia.', tipo:'ordinario'},
-  {id:9, nome:'Conferência Jovem 2026', data:'2025-06-28', hora:'18:00', local:'Templo Principal', desc:'Evento anual da juventude: "Geração de Propósito".', tipo:'especial'},
-];
+/* ============ PARSER TSV ============ */
+// Parser simples e robusto: divide por linha e por tab, lida com \r e linhas vazias.
+function parseTSV(text){
+  if(!text) return [];
+  const lines = text.replace(/\r/g,'').split('\n').filter(l=>l.trim().length>0);
+  if(lines.length<2) return [];
+  const headers = lines[0].split('\t').map(h=>h.trim().toLowerCase());
+  const rows=[];
+  for(let i=1;i<lines.length;i++){
+    const cells = lines[i].split('\t');
+    const obj={};
+    headers.forEach((h,idx)=>{ obj[h] = (cells[idx]!==undefined ? cells[idx] : '').trim(); });
+    // ignora linha totalmente vazia
+    if(Object.values(obj).some(v=>v!=='')) rows.push(obj);
+  }
+  return rows;
+}
 
-const NOTICES = [
-  {id:1, titulo:'Inscrições abertas — Conferência Jovem', corpo:'As inscrições para a Conferência Jovem 2026 já estão abertas na secretaria. Vagas limitadas.', data:'15 Jun'},
-  {id:2, titulo:'Mudança de horário — Culto de Quarta', corpo:'A partir da próxima semana, o Culto de Ensino passa a acontecer às 19h30 (antes 20h).', data:'12 Jun'},
-];
+async function fetchSheet(url){
+  try{
+    const res = await fetch(url, {cache:'no-store'});
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const text = await res.text();
+    return parseTSV(text);
+  }catch(err){
+    console.error('Erro ao buscar planilha:', url, err);
+    return null; // null = erro distinto de [] (vazio)
+  }
+}
 
-const CHURCHES = [
-  {id:1, nome:'Igreja Batista Central — Sede', endereco:'Av. Paulista, 1200 — São Paulo, SP', pastor:'Pr. Carlos Silva', foto:''},
-  {id:2, nome:'Igreja Batista Central — Zona Leste', endereco:'Rua das Acácias, 340 — São Paulo, SP', pastor:'Pr. Marcos Andrade', foto:''},
-  {id:3, nome:'Igreja Batista Central — Zona Sul', endereco:'Av. Interlagos, 850 — São Paulo, SP', pastor:'Pra. Renata Oliveira', foto:''},
-];
-
-const SERMONS = [
-  {id:1, titulo:'O Fruto que Permanece', pregador:'Pr. Carlos Silva', data:'08 Jun 2025', tema:'Frutos do Espírito',
-    resumo:'Uma reflexão sobre o que significa viver uma vida frutífera diante de Deus.',
-    texto:`<p>Há um princípio simples nas Escrituras: árvores boas dão frutos bons. Não se trata de esforço, mas de raiz. Quando estamos verdadeiramente conectados à fonte, o fruto é consequência natural, não fabricação forçada.</p><p>Gálatas 5 nos apresenta uma lista que não é de regras a cumprir, mas de características que brotam quando o Espírito habita em nós: amor, alegria, paz, paciência, benignidade, bondade, fidelidade, mansidão e domínio próprio.</p><p>O convite de hoje não é para tentar produzir esses frutos com esforço próprio, mas para permanecer — permanecer na Palavra, na oração, na comunhão. É na permanência que o fruto aparece.</p>`},
-  {id:2, titulo:'Direção em Tempos de Incerteza', pregador:'Pr. Marcos Andrade', data:'01 Jun 2025', tema:'Propósito',
-    resumo:'Como buscar a vontade de Deus quando o caminho não está claro.',
-    texto:`<p>Vivemos tempos em que as certezas parecem cada vez mais raras. Diante disso, a pergunta que ecoa no coração de muitos é: como saber qual caminho seguir?</p><p>A Palavra nos ensina que a direção de Deus raramente vem como um mapa completo — vem passo a passo, como uma lâmpada para os nossos pés, não um holofote para todo o caminho.</p><p>Isso exige confiança. Confiança que não está baseada na clareza total da situação, mas no caráter Daquele que nos guia.</p>`},
-  {id:3, titulo:'A Casa Que Construímos Juntos', pregador:'Pra. Renata Oliveira', data:'25 Mai 2025', tema:'Comunidade',
-    resumo:'Sobre o significado de igreja como família e corpo, não apenas prédio.',
-    texto:`<p>Quando falamos em "casa de Deus", é fácil pensar primeiro em um endereço, um prédio, um templo físico. Mas as Escrituras apontam para algo mais profundo: nós somos a casa.</p><p>Pedro escreve que somos pedras vivas, edificados como casa espiritual. Isso muda tudo. Significa que a igreja não é um lugar que visitamos, mas algo que somos, juntos.</p><p>Convido você a pensar: que tipo de pedra você tem sido na construção dessa casa?</p>`},
-];
-
-const ABOUT_TIMELINE = [
-  {ano:'1998', titulo:'O Início', texto:'Um pequeno grupo de famílias começa a se reunir semanalmente em uma sala de estar.'},
-  {ano:'2004', titulo:'Primeira Sede', texto:'Inauguração do primeiro templo próprio, com capacidade para 150 pessoas.'},
-  {ano:'2015', titulo:'Expansão', texto:'Abertura da segunda congregação, na Zona Leste de São Paulo.'},
-  {ano:'2025', titulo:'Hoje', texto:'Três congregações ativas e o início do projeto da nova sede — Nossa Casa.'},
-];
-
-const CASA_PROGRESS = 12; // porcentagem
-
-const CASA_UPDATES = [
-  {data:'10 Jun 2025', titulo:'Fundação concluída', texto:'A etapa de fundação foi finalizada dentro do prazo previsto. Próxima fase: estrutura.'},
-  {data:'02 Mai 2025', titulo:'Início das obras', texto:'Após meses de planejamento, as obras da nova sede foram oficialmente iniciadas.'},
-  {data:'15 Mar 2025', titulo:'Projeto aprovado', texto:'A prefeitura aprovou o projeto arquitetônico. Início das obras previsto para maio.'},
-];
-
-const CAROUSEL_SLIDES = [
-  {tag:'Evento Especial', titulo:'Conferência Jovem 2026', desc:'Geração de Propósito — 28 de Junho, 18h', img:''},
-  {tag:'Aviso', titulo:'Inscrições Abertas', desc:'Garanta sua vaga na secretaria da igreja', img:''},
-  {tag:'Projeto', titulo:'Nossa Casa em Construção', desc:'Acompanhe o progresso da nossa nova sede', img:''},
-];
+/* ============ ESTADO GLOBAL ============ */
+let DATA = { eventos:[], avisos:[], igrejas:[], sermoes:[], sobre:[], casa:[], casaAtualizacoes:[] };
 
 /* ============ NAVEGAÇÃO ============ */
 function goTo(page){
@@ -409,106 +394,134 @@ function toggleMenu(){ document.getElementById('navLinks').classList.toggle('ope
 const MONTHS=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
 const MONTHS_FULL=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 const DAYS_SHORT=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
-function parseDate(d){ const [y,m,day]=d.split('-').map(Number); return new Date(y,m-1,day); }
-function fmtShort(d){ const dt=parseDate(d); return {num:dt.getDate(), mon:MONTHS[dt.getMonth()], wd:DAYS_SHORT[dt.getDay()]}; }
-function fmtTime(t){ const [h,m]=t.split(':'); return h+'h'+(m!=='00'?m:''); }
+function parseDate(d){
+  if(!d) return null;
+  const parts = d.split('-').map(Number);
+  if(parts.length!==3 || parts.some(isNaN)) return null;
+  const [y,m,day]=parts;
+  return new Date(y,m-1,day);
+}
+function fmtShort(d){ const dt=parseDate(d); if(!dt) return {num:'–',mon:'',wd:''}; return {num:dt.getDate(), mon:MONTHS[dt.getMonth()], wd:DAYS_SHORT[dt.getDay()]}; }
+function fmtTime(t){ if(!t) return ''; const [h,m]=t.split(':'); return h+'h'+(m&&m!=='00'?m:''); }
 
-/* ============ NORMALIZA DATAS PARA SEMANA ATUAL (apenas demo) ============ */
-(function adjustDemoDates(){
-  const base = new Date(2025,5,17); // 17 jun 2025 = referência original
-  const today = new Date();
-  const diffWeeks = Math.round((today-base)/(7*86400000));
-  const diffDays = diffWeeks*7;
-  EVENTS.forEach(ev=>{
-    const d = parseDate(ev.data);
-    d.setDate(d.getDate()+diffDays);
-    ev.data = d.toISOString().slice(0,10);
+/* ============ CARROSSEL (eventos especiais + avisos recentes) ============ */
+let carIdx=0, carSlides=[];
+function buildCarouselSlides(){
+  const slides=[];
+  const especiais = DATA.eventos.filter(e=>e.tipo==='especial').slice(0,4);
+  especiais.forEach(e=>{
+    const fd=fmtShort(e.data);
+    slides.push({tag:'Evento Especial', titulo:e.nome, desc:`${fd.wd?fd.wd+', ':''}${fd.num} de ${MONTHS_FULL[parseDate(e.data)?.getMonth()]||''} · ${fmtTime(e.hora)}`, img:''});
   });
-})();
-
-/* ============ CARROSSEL ============ */
-let carIdx=0;
+  DATA.avisos.slice(0,2).forEach(a=>{
+    slides.push({tag:'Aviso', titulo:a.titulo, desc:a.corpo, img:''});
+  });
+  return slides;
+}
 function renderCarousel(){
+  carSlides = buildCarouselSlides();
   const track=document.getElementById('carTrack');
   const dots=document.getElementById('carDots');
-  track.innerHTML = CAROUSEL_SLIDES.map(s=>`
+  if(!carSlides.length){
+    track.innerHTML='<div class="car-loading">Nenhum destaque no momento.</div>';
+    dots.innerHTML='';
+    return;
+  }
+  track.innerHTML = carSlides.map(s=>`
     <div class="car-slide">
       ${s.img?`<img src="${s.img}" alt="">`:`<div style="position:absolute;inset:0;background:linear-gradient(135deg,#3a3530,#22241f)"></div>`}
       <div class="car-content">
-        <div class="car-tag">${s.tag}</div>
-        <div class="car-title">${s.titulo}</div>
-        <div class="car-desc">${s.desc}</div>
+        <div class="car-tag">${escapeHtml(s.tag)}</div>
+        <div class="car-title">${escapeHtml(s.titulo)}</div>
+        <div class="car-desc">${escapeHtml(s.desc)}</div>
       </div>
     </div>`).join('');
-  dots.innerHTML = CAROUSEL_SLIDES.map((_,i)=>`<div class="car-dot${i===0?' active':''}" onclick="carGo(${i})"></div>`).join('');
+  dots.innerHTML = carSlides.map((_,i)=>`<div class="car-dot${i===0?' active':''}" onclick="carGo(${i})"></div>`).join('');
+  carIdx=0;
 }
 function carGo(i){ carIdx=i; updateCarousel(); }
-function carMove(dir){ carIdx=(carIdx+dir+CAROUSEL_SLIDES.length)%CAROUSEL_SLIDES.length; updateCarousel(); }
+function carMove(dir){ if(!carSlides.length) return; carIdx=(carIdx+dir+carSlides.length)%carSlides.length; updateCarousel(); }
 function updateCarousel(){
   document.getElementById('carTrack').style.transform=`translateX(-${carIdx*100}%)`;
   document.querySelectorAll('.car-dot').forEach((d,i)=>d.classList.toggle('active',i===carIdx));
 }
 setInterval(()=>carMove(1), 6000);
 
+function escapeHtml(str){
+  if(str===undefined||str===null) return '';
+  return String(str).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
 /* ============ AVISOS ============ */
 function renderNotices(){
-  document.getElementById('noticeList').innerHTML = NOTICES.map(n=>`
+  const el=document.getElementById('noticeList');
+  if(DATA.avisos===null){ el.innerHTML='<div class="error-state">Não foi possível carregar os avisos.</div>'; return; }
+  if(!DATA.avisos.length){ el.innerHTML='<div class="empty-state">Nenhum aviso no momento.</div>'; return; }
+  el.innerHTML = DATA.avisos.map(n=>`
     <div class="notice">
       <div class="notice-text">
-        <div class="notice-title">${n.titulo}</div>
-        <div class="notice-body">${n.corpo}</div>
+        <div class="notice-title">${escapeHtml(n.titulo)}</div>
+        <div class="notice-body">${escapeHtml(n.corpo)}</div>
       </div>
-      <div class="notice-date">${n.data}</div>
+      <div class="notice-date">${escapeHtml(n.data)}</div>
     </div>`).join('');
 }
 
 /* ============ PRÓXIMO EVENTO (strip na home) ============ */
 function renderNextStrip(){
-  const now=new Date();
-  const upcoming=[...EVENTS].filter(e=>new Date(e.data+'T'+e.hora)>now).sort((a,b)=>new Date(a.data+'T'+a.hora)-new Date(b.data+'T'+b.hora));
   const el=document.getElementById('nextStrip');
-  if(!upcoming.length){el.innerHTML='';return;}
+  if(!DATA.eventos || !DATA.eventos.length){ el.innerHTML=''; return; }
+  const now=new Date();
+  const upcoming=DATA.eventos
+    .map(e=>({...e, _dt: e.data && e.hora ? new Date(e.data+'T'+e.hora) : null}))
+    .filter(e=>e._dt && e._dt>now)
+    .sort((a,b)=>a._dt-b._dt);
+  if(!upcoming.length){ el.innerHTML=''; return; }
   const ev=upcoming[0]; const fd=fmtShort(ev.data);
   el.innerHTML=`
     <div class="next-strip-left">
       <div class="next-strip-date">${fd.num}<span>${fd.mon}</span></div>
       <div class="next-strip-info">
         <div class="nse">Próximo Encontro</div>
-        <div class="nsn">${ev.nome}</div>
-        <div class="nsm">${fd.wd} · ${fmtTime(ev.hora)} · ${ev.local}</div>
+        <div class="nsn">${escapeHtml(ev.nome)}</div>
+        <div class="nsm">${fd.wd} · ${fmtTime(ev.hora)} · ${escapeHtml(ev.local)}</div>
       </div>
     </div>
-    <a class="next-strip-btn" onclick="goTo('agenda')">Ver Agenda Completa</a>`;
+    <div class="next-strip-btn" onclick="goTo('agenda')">Ver Agenda Completa</div>`;
 }
 
 /* ============ AGENDA ============ */
 let agendaFilter='all';
 function renderAgenda(){
-  let evs=[...EVENTS].sort((a,b)=>new Date(a.data+'T'+a.hora)-new Date(b.data+'T'+b.hora));
-  if(agendaFilter==='ordinary') evs=evs.filter(e=>e.tipo==='ordinario');
-  if(agendaFilter==='special') evs=evs.filter(e=>e.tipo==='especial');
   const el=document.getElementById('agendaList');
+  if(DATA.eventos===null){ el.innerHTML='<div class="error-state">Não foi possível carregar a agenda. Verifique o link da planilha de Eventos.</div>'; return; }
+  let evs=[...DATA.eventos].filter(e=>e.data);
+  if(agendaFilter!=='all') evs=evs.filter(e=>(e.tipo||'').trim().toLowerCase()===agendaFilter);
+  evs.sort((a,b)=> new Date(a.data+'T'+(a.hora||'00:00')) - new Date(b.data+'T'+(b.hora||'00:00')) );
+
   if(!evs.length){ el.innerHTML='<div class="empty-state">Nenhum evento encontrado.</div>'; return; }
   let html=''; let lastGroup='';
   const now=new Date(); now.setHours(0,0,0,0);
   evs.forEach(ev=>{
     const d=parseDate(ev.data);
+    if(!d) return;
     const diffDays=Math.floor((d-now)/86400000);
     let group = diffDays<0 ? 'Eventos Passados' : diffDays<7 ? 'Esta Semana' : diffDays<14 ? 'Próxima Semana' : MONTHS_FULL[d.getMonth()]+' '+d.getFullYear();
     if(group!==lastGroup){ html+=`<div class="agenda-group-title">${group}</div>`; lastGroup=group; }
     const fd=fmtShort(ev.data);
+    const isEspecial = (ev.tipo||'').trim().toLowerCase()==='especial';
     html+=`
-    <div class="event-row${ev.tipo==='especial'?' special':''}">
+    <div class="event-row${isEspecial?' special':''}">
       <div class="ev-date"><b>${fd.num}</b><small>${fd.mon}</small></div>
       <div class="ev-body">
-        <div class="ev-tag">${ev.tipo==='especial'?'★ Especial':'Culto Ordinário'}</div>
-        <div class="ev-name">${ev.nome}</div>
-        <div class="ev-desc">${ev.desc}</div>
-        <div class="ev-meta"><span>🕐 ${fmtTime(ev.hora)}</span><span>📍 ${ev.local}</span></div>
+        <div class="ev-tag">${isEspecial?'★ Especial':'Programação Semanal'}</div>
+        <div class="ev-name">${escapeHtml(ev.nome)}</div>
+        ${ev.desc?`<div class="ev-desc">${escapeHtml(ev.desc)}</div>`:''}
+        <div class="ev-meta">${ev.hora?`<span>🕐 ${fmtTime(ev.hora)}</span>`:''}${ev.local?`<span>📍 ${escapeHtml(ev.local)}</span>`:''}</div>
       </div>
     </div>`;
   });
-  el.innerHTML=html;
+  el.innerHTML=html || '<div class="empty-state">Nenhum evento encontrado.</div>';
 }
 function filterAgenda(f,btn){
   agendaFilter=f;
@@ -519,39 +532,48 @@ function filterAgenda(f,btn){
 
 /* ============ IGREJAS ============ */
 function renderChurches(){
-  document.getElementById('churchGrid').innerHTML = CHURCHES.map(c=>`
+  const el=document.getElementById('churchGrid');
+  if(DATA.igrejas===null){ el.innerHTML='<div class="error-state">Não foi possível carregar as igrejas.</div>'; return; }
+  if(!DATA.igrejas.length){ el.innerHTML='<div class="empty-state">Nenhuma igreja cadastrada.</div>'; return; }
+  el.innerHTML = DATA.igrejas.map(c=>`
     <div class="church-card">
       <div class="church-img">
-        ${c.foto?`<img src="${c.foto}" alt="${c.nome}">`:`<div class="church-img-placeholder">Foto da igreja</div>`}
+        ${c.foto_url?`<img src="${c.foto_url}" alt="${escapeHtml(c.nome)}" onerror="this.parentElement.innerHTML='<div class=&quot;church-img-placeholder&quot;>Foto indisponível</div>'">`:`<div class="church-img-placeholder">Foto da igreja</div>`}
       </div>
       <div class="church-body">
-        <div class="church-name">${c.nome}</div>
-        <div class="church-detail"><b>Endereço</b><span>${c.endereco}</span></div>
-        <div class="church-detail"><b>Pastor</b><span>${c.pastor}</span></div>
+        <div class="church-name">${escapeHtml(c.nome)}</div>
+        ${c.endereco?`<div class="church-detail"><b>Endereço</b><span>${escapeHtml(c.endereco)}</span></div>`:''}
+        ${c.pastor?`<div class="church-detail"><b>Pastor</b><span>${escapeHtml(c.pastor)}</span></div>`:''}
       </div>
     </div>`).join('');
 }
 
 /* ============ SERMÕES ============ */
 function renderSermons(filter=''){
-  const f=filter.toLowerCase();
-  const list = SERMONS.filter(s =>
-    s.titulo.toLowerCase().includes(f) || s.pregador.toLowerCase().includes(f) || s.tema.toLowerCase().includes(f)
-  );
   const el=document.getElementById('sermonList');
+  if(DATA.sermoes===null){ el.innerHTML='<div class="error-state">Não foi possível carregar os sermões.</div>'; return; }
+  const f=filter.toLowerCase();
+  const list = DATA.sermoes.filter(s =>
+    (s.titulo||'').toLowerCase().includes(f) || (s.pregador||'').toLowerCase().includes(f) || (s.tema||'').toLowerCase().includes(f)
+  );
   if(!list.length){ el.innerHTML='<div class="empty-state">Nenhum sermão encontrado.</div>'; return; }
-  el.innerHTML = list.map(s=>`
-    <div class="sermon-item" onclick="toggleSermon(${s.id})">
+  el.innerHTML = list.map((s,i)=>{
+    const sid = 's'+i;
+    // texto pode ter \n simples vindo da planilha — transforma em parágrafos
+    const paragraphs = (s.texto||'').split(/\n+/).filter(p=>p.trim()).map(p=>`<p>${escapeHtml(p)}</p>`).join('');
+    return `
+    <div class="sermon-item" onclick="toggleSermon('${sid}')">
       <div class="sermon-top">
         <div>
-          <div class="sermon-title">${s.titulo}</div>
-          <div class="sermon-meta"><span>${s.pregador}</span><span>${s.data}</span><span>${s.tema}</span></div>
-          <div class="sermon-excerpt">${s.resumo}</div>
+          <div class="sermon-title">${escapeHtml(s.titulo)}</div>
+          <div class="sermon-meta">${s.pregador?`<span>${escapeHtml(s.pregador)}</span>`:''}${s.data?`<span>${escapeHtml(s.data)}</span>`:''}${s.tema?`<span>${escapeHtml(s.tema)}</span>`:''}</div>
+          ${s.resumo?`<div class="sermon-excerpt">${escapeHtml(s.resumo)}</div>`:''}
         </div>
-        <div class="sermon-expand" id="exp-${s.id}">Ler →</div>
+        <div class="sermon-expand" id="exp-${sid}">Ler →</div>
       </div>
-      <div class="sermon-full" id="full-${s.id}">${s.texto}</div>
-    </div>`).join('');
+      <div class="sermon-full" id="full-${sid}">${paragraphs}</div>
+    </div>`;
+  }).join('');
 }
 function toggleSermon(id){
   const full=document.getElementById('full-'+id);
@@ -563,34 +585,67 @@ function filterSermons(v){ renderSermons(v); }
 
 /* ============ SOBRE ============ */
 function renderTimeline(){
-  document.getElementById('timelineList').innerHTML = ABOUT_TIMELINE.map(t=>`
+  const el=document.getElementById('timelineList');
+  if(DATA.sobre===null){ el.innerHTML='<div class="error-state">Não foi possível carregar a história.</div>'; return; }
+  if(!DATA.sobre.length){ el.innerHTML=''; return; }
+  el.innerHTML = DATA.sobre.map(t=>`
     <div class="tl-item">
-      <div class="tl-year">${t.ano}</div>
-      <div class="tl-content"><h4>${t.titulo}</h4><p>${t.texto}</p></div>
+      <div class="tl-year">${escapeHtml(t.ano)}</div>
+      <div class="tl-content"><h4>${escapeHtml(t.titulo)}</h4><p>${escapeHtml(t.texto)}</p></div>
     </div>`).join('');
 }
 
 /* ============ NOSSA CASA ============ */
 function renderCasa(){
-  document.getElementById('progressFill').style.width = CASA_PROGRESS+'%';
-  document.getElementById('progressPct').textContent = CASA_PROGRESS+'%';
-  document.getElementById('updateList').innerHTML = CASA_UPDATES.map(u=>`
+  const fill=document.getElementById('progressFill');
+  const pct=document.getElementById('progressPct');
+  if(DATA.casa===null){
+    pct.textContent='—';
+  } else {
+    const val = DATA.casa[0] ? parseFloat(DATA.casa[0].progresso) : NaN;
+    if(!isNaN(val)){
+      fill.style.width = Math.max(0,Math.min(100,val))+'%';
+      pct.textContent = val+'%';
+    } else {
+      pct.textContent='—';
+    }
+  }
+
+  const el=document.getElementById('updateList');
+  if(DATA.casaAtualizacoes===null){ el.innerHTML='<div class="error-state">Não foi possível carregar as atualizações.</div>'; return; }
+  if(!DATA.casaAtualizacoes.length){ el.innerHTML='<div class="empty-state">Nenhuma atualização registrada ainda.</div>'; return; }
+  el.innerHTML = DATA.casaAtualizacoes.map(u=>`
     <div class="update-item">
-      <div class="update-date">${u.data}</div>
-      <div class="update-title">${u.titulo}</div>
-      <div class="update-body">${u.texto}</div>
+      <div class="update-date">${escapeHtml(u.data)}</div>
+      <div class="update-title">${escapeHtml(u.titulo)}</div>
+      <div class="update-body">${escapeHtml(u.texto)}</div>
     </div>`).join('');
 }
 
-/* ============ INIT ============ */
-renderCarousel();
-renderNotices();
-renderNextStrip();
-renderAgenda();
-renderChurches();
-renderSermons();
-renderTimeline();
-renderCasa();
+/* ============ CARREGAMENTO INICIAL ============ */
+async function loadAll(){
+  const [eventos, avisos, igrejas, sermoes, sobre, casa, casaAtualizacoes] = await Promise.all([
+    fetchSheet(SHEET_URLS.eventos),
+    fetchSheet(SHEET_URLS.avisos),
+    fetchSheet(SHEET_URLS.igrejas),
+    fetchSheet(SHEET_URLS.sermoes),
+    fetchSheet(SHEET_URLS.sobre),
+    fetchSheet(SHEET_URLS.casa),
+    fetchSheet(SHEET_URLS.casaAtualizacoes),
+  ]);
+  DATA = { eventos, avisos, igrejas, sermoes, sobre, casa, casaAtualizacoes };
+
+  renderCarousel();
+  renderNotices();
+  renderNextStrip();
+  renderAgenda();
+  renderChurches();
+  renderSermons();
+  renderTimeline();
+  renderCasa();
+}
+
+loadAll();
 </script>
 </body>
 </html>
