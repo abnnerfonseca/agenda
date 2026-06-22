@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ASSEMBLEIA DE DEUS - BARUERI</title>
+<title>Igreja Batista Central</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -25,161 +25,210 @@ img{max-width:100%;display:block}
 a{color:inherit;text-decoration:none}
 .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
 
-/* ===== NAV ===== */
-.nav{position:sticky;top:0;z-index:100;background:rgba(250,248,244,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+/* NAV */
+.nav{position:sticky;top:0;z-index:100;background:rgba(250,248,244,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 .nav-inner{max-width:1080px;margin:0 auto;padding:18px 24px;display:flex;align-items:center;justify-content:space-between}
-.brand{font-family:var(--serif);font-size:22px;font-weight:600;letter-spacing:.02em}
+.brand{font-family:var(--serif);font-size:22px;font-weight:700;letter-spacing:.02em}
 .brand span{color:var(--accent)}
-.nav-links{display:flex;gap:32px;list-style:none}
-.nav-links a{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);font-weight:500;padding-bottom:3px;border-bottom:1px solid transparent;transition:all .2s;cursor:pointer}
+.nav-links{display:flex;gap:28px;list-style:none}
+.nav-links a{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);font-weight:500;padding-bottom:3px;border-bottom:1px solid transparent;transition:all .2s;cursor:pointer}
 .nav-links a:hover,.nav-links a.active{color:var(--accent);border-color:var(--accent)}
+.nav-links a.bold-link{font-weight:700;color:var(--accent)}
 .nav-toggle{display:none;background:none;border:none;font-size:22px;cursor:pointer;color:var(--ink)}
-@media(max-width:820px){
-  .nav-links{position:fixed;top:62px;left:0;right:0;bottom:0;background:var(--paper);flex-direction:column;padding:32px 24px;gap:22px;transform:translateX(100%);transition:transform .3s;overflow-y:auto}
+@media(max-width:900px){
+  .nav-links{position:fixed;top:62px;left:0;right:0;bottom:0;background:var(--paper);flex-direction:column;padding:32px 24px;gap:22px;transform:translateX(100%);transition:transform .3s;overflow-y:auto;z-index:99}
   .nav-links.open{transform:translateX(0)}
   .nav-toggle{display:block}
 }
 
-/* ===== PAGES ===== */
+/* PAGES */
 .page{display:none;animation:fadeIn .4s ease}
 .page.active{display:block}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
-/* ===== HERO ===== */
+/* HERO */
 .hero{padding:70px 0 50px;text-align:center;border-bottom:1px solid var(--line)}
 .hero-eyebrow{font-size:12px;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);font-weight:500;margin-bottom:14px}
 .hero-title{font-family:var(--serif);font-size:clamp(36px,6vw,64px);font-weight:600;line-height:1.1;margin-bottom:16px}
 .hero-sub{font-size:16px;color:var(--ink-soft);max-width:480px;margin:0 auto;font-weight:300}
 
-/* ===== SECTION HEADER ===== */
+/* SECTION HEADER */
 .sec-head{text-align:center;margin:64px 0 36px}
 .sec-eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:10px}
 .sec-title{font-family:var(--serif);font-size:clamp(26px,4vw,38px);font-weight:600}
 .sec-divider{width:40px;height:2px;background:var(--accent);margin:18px auto 0}
 
-/* ===== CAROUSEL (HOME) ===== */
-.carousel{position:relative;margin:40px 0;overflow:hidden;border-radius:4px;background:var(--ink);min-height:380px}
+/* CAROUSEL */
+.carousel{position:relative;margin:40px 0;overflow:hidden;border-radius:4px;background:var(--ink);min-height:340px}
 .carousel-track{display:flex;transition:transform .5s cubic-bezier(.4,0,.2,1)}
-.car-slide{min-width:100%;position:relative;height:380px;display:flex;align-items:flex-end}
-.car-slide img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55}
-.car-content{position:relative;z-index:2;padding:36px 44px;color:#fff}
-.car-tag{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:10px}
-.car-title{font-family:var(--serif);font-size:clamp(24px,3.5vw,38px);font-weight:600;margin-bottom:8px;max-width:600px}
-.car-desc{font-size:14px;font-weight:300;opacity:.85;max-width:520px}
-.car-nav{position:absolute;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:16px;cursor:pointer;z-index:3;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.car-slide{min-width:100%;position:relative;height:340px;display:flex;align-items:flex-end;overflow:hidden}
+.car-slide img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.5}
+.car-bg{position:absolute;inset:0;background:linear-gradient(135deg,#3a3530,#22241f)}
+.car-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.6) 0%,transparent 60%)}
+.car-content{position:relative;z-index:2;padding:32px 40px;color:#fff}
+.car-tag{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:8px}
+.car-title{font-family:var(--serif);font-size:clamp(22px,3.5vw,36px);font-weight:600;margin-bottom:6px;max-width:580px}
+.car-desc{font-size:13px;font-weight:300;opacity:.85;max-width:500px}
+.car-nav{position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:16px;cursor:pointer;z-index:3;display:flex;align-items:center;justify-content:center;transition:background .2s}
 .car-nav:hover{background:rgba(255,255,255,.3)}
-.car-prev{left:16px}.car-next{right:16px}
-.car-dots{position:absolute;bottom:16px;right:24px;z-index:3;display:flex;gap:7px}
-.car-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.4);cursor:pointer;transition:background .2s}
+.car-prev{left:14px}.car-next{right:14px}
+.car-dots{position:absolute;bottom:14px;right:20px;z-index:3;display:flex;gap:6px}
+.car-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.4);cursor:pointer;transition:background .2s}
 .car-dot.active{background:#fff}
-.car-loading{color:rgba(255,255,255,.5);font-size:13px;padding:40px;text-align:center;width:100%}
-@media(max-width:600px){.car-slide{height:320px}.car-content{padding:24px}}
+@media(max-width:600px){.car-slide{height:280px}.car-content{padding:22px}}
 
-/* ===== AVISOS ===== */
-.notice-list{display:flex;flex-direction:column;gap:14px;margin:32px 0}
-.notice{background:var(--paper);border:1px solid var(--line);border-left:3px solid var(--accent);padding:18px 22px;display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap}
-.notice-text{flex:1;min-width:200px}
+/* PRÓXIMOS 2 ESPECIAIS NA HOME */
+.specials-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:0 0 48px}
+@media(max-width:600px){.specials-grid{grid-template-columns:1fr}}
+.special-card{background:var(--paper);border:1px solid var(--line);border-top:3px solid var(--gold);padding:22px}
+.special-card-tag{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:8px}
+.special-card-date{font-family:var(--serif);font-size:15px;color:var(--ink-soft);margin-bottom:4px}
+.special-card-name{font-family:var(--serif);font-size:20px;font-weight:600;margin-bottom:6px}
+.special-card-meta{font-size:12px;color:var(--ink-soft)}
+
+/* PROGRAMAÇÃO FIXA */
+.fixed-schedule{background:var(--paper);border:1px solid var(--line);padding:28px 32px;margin-bottom:56px}
+.fixed-schedule-title{font-family:var(--serif);font-size:22px;font-weight:600;margin-bottom:20px;color:var(--ink)}
+.fixed-rows{display:flex;flex-direction:column;gap:0}
+.fixed-row{display:flex;align-items:center;gap:20px;padding:13px 0;border-bottom:1px solid var(--line)}
+.fixed-row:last-child{border-bottom:none}
+.fixed-day{min-width:90px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--accent)}
+.fixed-name{font-size:15px;font-weight:500;flex:1}
+.fixed-meta{font-size:12px;color:var(--ink-soft);text-align:right;white-space:nowrap}
+
+/* AVISOS */
+.notice-list{display:flex;flex-direction:column;gap:12px;margin:0 0 56px}
+.notice{background:var(--paper);border:1px solid var(--line);border-left:3px solid var(--accent);overflow:hidden}
+.notice-img{width:100%;height:160px;object-fit:cover;display:block}
+.notice-body-wrap{padding:16px 20px;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
+.notice-text-block{flex:1;min-width:180px}
 .notice-title{font-weight:500;font-size:15px;margin-bottom:4px}
 .notice-body{font-size:13px;color:var(--ink-soft);font-weight:300;line-height:1.6}
 .notice-date{font-size:11px;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;padding-top:2px}
 
-/* ===== SOCIAL CTA ===== */
-.social-band{background:var(--ink);color:#fff;padding:48px 0;margin-top:60px;text-align:center}
+/* SOCIAL */
+.social-band{background:var(--ink);color:#fff;padding:48px 0;margin-top:20px;text-align:center}
 .social-band .sec-title{color:#fff}
-.social-sub{color:rgba(255,255,255,.6);font-size:14px;margin-top:10px;margin-bottom:28px}
-.social-links{display:flex;justify-content:center;gap:14px;flex-wrap:wrap}
-.social-btn{display:flex;align-items:center;gap:8px;padding:11px 22px;border:1px solid rgba(255,255,255,.25);border-radius:30px;font-size:13px;font-weight:500;transition:all .2s;background:rgba(255,255,255,.04)}
+.social-sub{color:rgba(255,255,255,.55);font-size:14px;margin-top:8px;margin-bottom:26px}
+.social-links{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.social-btn{display:flex;align-items:center;gap:7px;padding:10px 20px;border:1px solid rgba(255,255,255,.22);border-radius:30px;font-size:13px;font-weight:500;transition:all .2s;background:rgba(255,255,255,.04)}
 .social-btn:hover{background:#fff;color:var(--ink)}
 
-/* ===== NEXT EVENT STRIP ===== */
-.next-strip{background:var(--accent-soft);border:1px solid var(--line);padding:26px 32px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;margin:40px 0;min-height:30px}
-.next-strip-left{display:flex;align-items:center;gap:20px}
-.next-strip-date{font-family:var(--serif);font-size:38px;font-weight:700;color:var(--accent);line-height:1;text-align:center}
-.next-strip-date span{display:block;font-family:var(--sans);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;margin-top:4px}
-.next-strip-info .nse{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:4px}
-.next-strip-info .nsn{font-family:var(--serif);font-size:22px;font-weight:600}
-.next-strip-info .nsm{font-size:13px;color:var(--ink-soft);margin-top:4px}
-.next-strip-btn{background:var(--accent);color:#fff;padding:11px 26px;font-size:13px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;border-radius:2px;white-space:nowrap;cursor:pointer}
-
-/* ===== AGENDA PAGE ===== */
-.filters{display:flex;gap:10px;justify-content:center;margin:0 0 36px;flex-wrap:wrap}
-.filter-btn{background:var(--paper);border:1px solid var(--line);color:var(--ink-soft);font-size:12px;letter-spacing:.04em;text-transform:uppercase;padding:8px 18px;cursor:pointer;font-family:var(--sans);font-weight:500;transition:all .2s}
-.filter-btn:hover,.filter-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
-.agenda-group-title{font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);font-weight:600;margin:30px 0 14px}
+/* AGENDA (só especiais) */
+.agenda-group-title{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);font-weight:600;margin:28px 0 12px}
 .agenda-group-title:first-child{margin-top:0}
-.event-row{background:var(--paper);border:1px solid var(--line);padding:20px 24px;display:flex;gap:22px;align-items:flex-start;margin-bottom:10px;transition:border-color .2s}
+.event-row{background:var(--paper);border:1px solid var(--line);border-left:3px solid var(--gold);margin-bottom:10px;transition:border-color .2s;overflow:hidden}
 .event-row:hover{border-color:var(--accent)}
-.event-row.special{border-left:3px solid var(--gold)}
-.ev-date{min-width:54px;text-align:center}
-.ev-date b{font-family:var(--serif);font-size:28px;font-weight:700;display:block;line-height:1}
-.ev-date small{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-soft)}
+.event-row-img{width:100%;height:180px;object-fit:cover;display:block}
+.event-row-body{padding:18px 22px;display:flex;gap:20px;align-items:flex-start}
+.ev-date{min-width:50px;text-align:center}
+.ev-date b{font-family:var(--serif);font-size:27px;font-weight:700;display:block;line-height:1}
+.ev-date small{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft)}
 .ev-body{flex:1}
-.ev-tag{display:inline-block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:6px}
-.ev-name{font-family:var(--serif);font-size:19px;font-weight:600;margin-bottom:5px}
-.ev-desc{font-size:13px;color:var(--ink-soft);font-weight:300;margin-bottom:8px;line-height:1.6}
-.ev-meta{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--ink-soft)}
+.ev-tag{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:5px}
+.ev-name{font-family:var(--serif);font-size:19px;font-weight:600;margin-bottom:4px}
+.ev-desc{font-size:13px;color:var(--ink-soft);font-weight:300;margin-bottom:7px;line-height:1.6}
+.ev-meta{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--ink-soft)}
 
-/* ===== IGREJAS ===== */
-.church-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin:32px 0}
-.church-card{background:var(--paper);border:1px solid var(--line)}
-.church-img{height:180px;background:#e8e4da;position:relative;overflow:hidden}
+/* IGREJAS */
+.church-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin:0 0 60px}
+.church-card{background:var(--paper);border:1px solid var(--line);cursor:pointer;transition:border-color .2s,transform .15s}
+.church-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.church-img{height:180px;background:#e8e4da;overflow:hidden;position:relative}
 .church-img img{width:100%;height:100%;object-fit:cover}
-.church-img-placeholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#999;font-size:12px;background:#e8e4da}
-.church-body{padding:22px}
-.church-name{font-family:var(--serif);font-size:21px;font-weight:600;margin-bottom:10px}
-.church-detail{font-size:13px;color:var(--ink-soft);margin-bottom:6px;display:flex;gap:8px}
-.church-detail b{color:var(--ink);font-weight:500;min-width:60px}
+.church-img-ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#bbb;font-size:12px}
+.church-body{padding:20px}
+.church-name{font-family:var(--serif);font-size:20px;font-weight:600;margin-bottom:10px}
+.church-detail{font-size:13px;color:var(--ink-soft);margin-bottom:5px;display:flex;gap:8px;line-height:1.5}
+.church-detail b{color:var(--ink);font-weight:500;min-width:58px}
+.church-maps{display:inline-flex;align-items:center;gap:6px;margin-top:12px;font-size:12px;color:var(--accent);font-weight:500;letter-spacing:.04em;text-transform:uppercase;border-bottom:1px solid var(--accent-soft)}
 
-/* ===== SERMÕES ===== */
-.sermon-search{max-width:420px;margin:0 auto 36px}
-.sermon-search input{width:100%;padding:13px 18px;border:1px solid var(--line);background:var(--paper);font-family:var(--sans);font-size:14px;outline:none}
+/* SERMÕES */
+.sermon-search{max-width:420px;margin:0 auto 32px}
+.sermon-search input{width:100%;padding:12px 18px;border:1px solid var(--line);background:var(--paper);font-family:var(--sans);font-size:14px;outline:none}
 .sermon-search input:focus{border-color:var(--accent)}
-.sermon-list{display:flex;flex-direction:column;gap:0}
-.sermon-item{border-bottom:1px solid var(--line);padding:22px 4px;cursor:pointer}
+.sermon-item{border-bottom:1px solid var(--line);overflow:hidden}
 .sermon-item:first-child{border-top:1px solid var(--line)}
-.sermon-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.sermon-img{width:100%;height:180px;object-fit:cover;display:block}
+.sermon-inner{padding:20px 4px;cursor:pointer}
+.sermon-top{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}
 .sermon-title{font-family:var(--serif);font-size:21px;font-weight:600;margin-bottom:4px}
-.sermon-meta{font-size:12px;color:var(--ink-soft);display:flex;gap:14px;flex-wrap:wrap}
-.sermon-excerpt{font-size:13px;color:var(--ink-soft);font-weight:300;margin-top:8px;line-height:1.6;max-width:680px}
+.sermon-meta{font-size:12px;color:var(--ink-soft);display:flex;gap:12px;flex-wrap:wrap}
+.sermon-excerpt{font-size:13px;color:var(--ink-soft);font-weight:300;margin-top:7px;line-height:1.6;max-width:680px}
 .sermon-expand{font-size:11px;color:var(--gold);text-transform:uppercase;letter-spacing:.08em;white-space:nowrap;font-weight:600}
-.sermon-full{display:none;margin-top:16px;font-size:14px;line-height:1.85;color:var(--ink);font-weight:300;border-top:1px solid var(--line);padding-top:16px}
+.sermon-full{display:none;margin-top:14px;font-size:14px;line-height:1.9;color:var(--ink);font-weight:300;border-top:1px solid var(--line);padding-top:14px}
 .sermon-full.open{display:block}
 .sermon-full p{margin-bottom:14px}
 
-/* ===== SOBRE ===== */
+/* SOBRE */
 .about-text{max-width:680px;margin:0 auto;font-size:15px;line-height:1.9;color:var(--ink-soft);font-weight:300}
 .about-text p{margin-bottom:18px}
-.timeline{max-width:680px;margin:50px auto 0;display:flex;flex-direction:column;gap:0}
-.tl-item{display:flex;gap:24px;padding-bottom:32px;position:relative}
-.tl-item::before{content:'';position:absolute;left:33px;top:30px;bottom:0;width:1px;background:var(--line)}
+.tl-item{display:flex;gap:24px;padding-bottom:30px;position:relative;max-width:680px;margin:0 auto}
+.tl-item::before{content:'';position:absolute;left:33px;top:28px;bottom:0;width:1px;background:var(--line)}
 .tl-item:last-child::before{display:none}
 .tl-year{min-width:66px;font-family:var(--serif);font-size:20px;font-weight:700;color:var(--accent)}
-.tl-content{padding-bottom:4px}
 .tl-content h4{font-family:var(--serif);font-size:17px;font-weight:600;margin-bottom:4px}
 .tl-content p{font-size:13px;color:var(--ink-soft);font-weight:300;line-height:1.7}
 
-/* ===== NOSSA CASA ===== */
-.progress-wrap{max-width:680px;margin:0 auto 50px}
-.progress-label{display:flex;justify-content:space-between;font-size:13px;margin-bottom:10px;font-weight:500}
-.progress-bar{height:8px;background:var(--line);border-radius:10px;overflow:hidden}
-.progress-fill{height:100%;background:var(--accent);border-radius:10px;transition:width 1s ease;width:0%}
-.update-list{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:0}
-.update-item{border-left:2px solid var(--line);padding:4px 0 28px 24px;position:relative}
+/* NOSSA CASA */
+.casa-progress-wrap{max-width:680px;margin:0 auto 44px}
+.casa-pct-row{display:flex;justify-content:space-between;font-size:13px;margin-bottom:10px;font-weight:500}
+.casa-bar{height:8px;background:var(--line);border-radius:10px;overflow:hidden}
+.casa-fill{height:100%;background:var(--accent);border-radius:10px;transition:width 1.2s ease;width:0%}
+.casa-pix-block{max-width:680px;margin:0 auto 52px;background:var(--accent-soft);border:1px solid #e8d5cb;padding:28px 32px;display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.casa-pix-icon{font-size:36px;flex-shrink:0}
+.casa-pix-info{flex:1;min-width:180px}
+.casa-pix-label{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:6px}
+.casa-pix-title{font-family:var(--serif);font-size:20px;font-weight:600;margin-bottom:4px}
+.casa-pix-sub{font-size:13px;color:var(--ink-soft);font-weight:300}
+.casa-pix-btn{background:var(--accent);color:#fff;padding:11px 24px;font-size:13px;font-weight:500;border-radius:2px;white-space:nowrap;cursor:pointer;text-decoration:none;display:inline-block;margin-top:4px}
+.casa-pix-btn:hover{opacity:.85}
+.update-list{max-width:680px;margin:0 auto}
+.update-item{border-left:2px solid var(--line);padding:4px 0 26px 22px;position:relative}
 .update-item::before{content:'';position:absolute;left:-6px;top:4px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
-.update-date{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:6px}
-.update-title{font-family:var(--serif);font-size:18px;font-weight:600;margin-bottom:6px}
+.update-item-img{width:100%;max-height:220px;object-fit:cover;margin-bottom:12px;border-radius:2px}
+.update-date{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:5px}
+.update-title{font-family:var(--serif);font-size:18px;font-weight:600;margin-bottom:5px}
 .update-body{font-size:13px;color:var(--ink-soft);font-weight:300;line-height:1.7}
 
-/* ===== FOOTER ===== */
-.footer{border-top:1px solid var(--line);padding:36px 0;text-align:center;margin-top:70px}
+/* CONTRIBUA */
+.contrib-hero{background:var(--ink);color:#fff;padding:64px 0 48px;text-align:center;margin-bottom:0}
+.contrib-hero .sec-eyebrow{color:var(--gold)}
+.contrib-hero .sec-title{color:#fff}
+.contrib-hero p{color:rgba(255,255,255,.6);font-size:15px;max-width:520px;margin:16px auto 0;font-weight:300;line-height:1.8}
+.contrib-section{padding:56px 0;border-bottom:1px solid var(--line)}
+.contrib-section:last-of-type{border-bottom:none}
+.contrib-inner{max-width:680px;margin:0 auto}
+.contrib-head{font-family:var(--serif);font-size:30px;font-weight:600;margin-bottom:12px}
+.contrib-sub{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:16px}
+.contrib-text{font-size:15px;color:var(--ink-soft);font-weight:300;line-height:1.9;margin-bottom:18px}
+.contrib-verse{border-left:3px solid var(--gold);padding:14px 20px;background:var(--accent-soft);font-family:var(--serif);font-size:17px;font-style:italic;color:var(--ink);line-height:1.7;margin:24px 0}
+.contrib-verse cite{display:block;font-size:12px;font-style:normal;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin-top:8px}
+.contrib-causes{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-top:28px}
+.contrib-cause{border:1px solid var(--line);background:var(--paper);padding:20px}
+.contrib-cause-icon{font-size:24px;margin-bottom:10px}
+.contrib-cause-title{font-family:var(--serif);font-size:17px;font-weight:600;margin-bottom:6px}
+.contrib-cause-desc{font-size:12px;color:var(--ink-soft);font-weight:300;line-height:1.6}
+.pix-block{background:var(--accent-soft);border:1px solid #e8d5cb;padding:30px 32px;margin-top:32px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.pix-key-group{}
+.pix-key-label{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:8px}
+.pix-key{font-family:var(--serif);font-size:22px;font-weight:600;margin-bottom:4px}
+.pix-key-note{font-size:12px;color:var(--ink-soft);font-weight:300}
+.pix-copy-btn{background:var(--accent);color:#fff;border:none;padding:12px 26px;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--sans);letter-spacing:.04em;border-radius:2px;transition:opacity .2s;white-space:nowrap}
+.pix-copy-btn:hover{opacity:.85}
+.pix-copy-btn.copied{background:#4a7a4a}
+
+/* ESTADOS */
+.empty-state{text-align:center;padding:40px 20px;color:var(--ink-soft);font-size:14px}
+.error-state{text-align:center;padding:30px 20px;color:#a14b4b;font-size:13px;background:#fbf2f0;border:1px solid #f0d8d3}
+
+/* FOOTER */
+.footer{border-top:1px solid var(--line);padding:32px 0;text-align:center;margin-top:0}
 .footer p{font-size:12px;color:var(--ink-soft)}
 
-.empty-state{text-align:center;padding:50px 20px;color:var(--ink-soft);font-size:14px}
-.error-state{text-align:center;padding:50px 20px;color:#a14b4b;font-size:13px;background:#fbf2f0;border:1px solid #f0d8d3}
-
 @media(max-width:600px){
-  .next-strip{flex-direction:column;align-items:flex-start}
-  .next-strip-btn{width:100%;text-align:center}
+  .pix-block{flex-direction:column;align-items:flex-start}
+  .casa-pix-block{flex-direction:column}
 }
 </style>
 </head>
@@ -187,7 +236,7 @@ a{color:inherit;text-decoration:none}
 
 <nav class="nav">
   <div class="nav-inner">
-    <div class="brand">AD BELÉM <span>BARUERI</span></div>
+    <div class="brand">Igreja Batista <span>Central</span></div>
     <button class="nav-toggle" onclick="toggleMenu()">☰</button>
     <ul class="nav-links" id="navLinks">
       <li><a onclick="goTo('home')" data-page="home">Início</a></li>
@@ -195,31 +244,49 @@ a{color:inherit;text-decoration:none}
       <li><a onclick="goTo('igrejas')" data-page="igrejas">Igrejas</a></li>
       <li><a onclick="goTo('sermoes')" data-page="sermoes">Sermões</a></li>
       <li><a onclick="goTo('sobre')" data-page="sobre">Sobre Nós</a></li>
-      <li><a onclick="goTo('casa')" data-page="casa">Nossa Casa</a></li>
+      <li><a onclick="goTo('casa')" data-page="casa" style="font-weight:700;color:var(--accent)">Nossa Casa</a></li>
+      <li><a onclick="goTo('contribua')" data-page="contribua" style="font-weight:700;color:var(--accent)">Contribua</a></li>
     </ul>
   </div>
 </nav>
 
-<!-- ============ HOME ============ -->
+<!-- HOME -->
 <div class="page active" id="page-home">
   <div class="hero">
     <div class="wrap">
       <div class="hero-eyebrow">Bem-vindo</div>
       <h1 class="hero-title">A casa está aberta.<br>Venha como você é.</h1>
-      <p class="hero-sub">Uma família reunida para adorar, aprender e servir juntos.</p>
+      <p class="hero-sub">Uma comunidade de fé reunida para adorar, aprender e servir juntos.</p>
     </div>
   </div>
-
   <div class="wrap">
+    <!-- Carrossel: eventos especiais da planilha -->
     <div class="carousel" id="carousel">
-      <div class="carousel-track" id="carTrack"><div class="car-loading">Carregando destaques…</div></div>
+      <div class="carousel-track" id="carTrack"><div style="color:rgba(255,255,255,.4);padding:40px;font-size:13px;width:100%;text-align:center">Carregando…</div></div>
       <button class="car-nav car-prev" onclick="carMove(-1)">‹</button>
       <button class="car-nav car-next" onclick="carMove(1)">›</button>
       <div class="car-dots" id="carDots"></div>
     </div>
 
-    <div class="next-strip" id="nextStrip"></div>
+    <!-- Programação fixa -->
+    <div class="sec-head">
+      <div class="sec-eyebrow">Toda semana</div>
+      <h2 class="sec-title">Programação Regular</h2>
+      <div class="sec-divider"></div>
+    </div>
+    <div class="fixed-schedule">
+      <div class="fixed-rows" id="fixedSchedule"><div class="empty-state">Carregando…</div></div>
+    </div>
 
+    <!-- Próximos 2 especiais -->
+    <div class="sec-head">
+      <div class="sec-eyebrow">Não perca</div>
+      <h2 class="sec-title">Próximos Eventos Especiais</h2>
+      <div class="sec-divider"></div>
+    </div>
+    <div class="specials-grid" id="specialsGrid"><div class="empty-state" style="grid-column:1/-1">Carregando…</div></div>
+
+    <!-- Avisos -->
     <div class="sec-head">
       <div class="sec-eyebrow">Fique por dentro</div>
       <h2 class="sec-title">Avisos</h2>
@@ -230,37 +297,33 @@ a{color:inherit;text-decoration:none}
 
   <div class="social-band">
     <div class="wrap">
-      <div class="sec-eyebrow" style="color:var(--gold)">Nos companhe</div>
-      <h2 class="sec-title">Através das redes sociais</h2>
+      <div class="sec-eyebrow" style="color:var(--gold)">Acompanhe</div>
+      <h2 class="sec-title">Nas Redes Sociais</h2>
       <p class="social-sub">Cultos ao vivo, mensagens e bastidores da nossa igreja</p>
       <div class="social-links">
-        <a class="social-btn" href="https://www.youtube.com/@adbelembarueri" target="_blank">▶ YouTube</a>
-        <a class="social-btn" href="https://www.instagram.com/adbelembarueri/" target="_blank">📷 Instagram</a>
-        <a class="social-btn" href="https://www.facebook.com/adbelembarueri/?locale=pt_BR" target="_blank">📘 Facebook</a>
-        <a class="social-btn" href="https://creators.spotify.com/pod/profile/pastordavifonseca/" target="_blank">🎙️ Podcast</a>
+        <a class="social-btn" href="#" target="_blank">▶ YouTube</a>
+        <a class="social-btn" href="#" target="_blank">📷 Instagram</a>
+        <a class="social-btn" href="#" target="_blank">📘 Facebook</a>
+        <a class="social-btn" href="#" target="_blank">💬 WhatsApp</a>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ============ AGENDA ============ -->
+<!-- AGENDA (só especiais) -->
 <div class="page" id="page-agenda">
   <div class="wrap">
     <div class="sec-head" style="margin-top:50px">
-      <div class="sec-eyebrow">Programação</div>
-      <h2 class="sec-title">Agenda de Cultos e Eventos</h2>
+      <div class="sec-eyebrow">Eventos</div>
+      <h2 class="sec-title">Agenda de Eventos Especiais</h2>
       <div class="sec-divider"></div>
+      <p style="font-size:14px;color:var(--ink-soft);margin-top:16px;font-weight:300">Santa Ceia, conferências, vigílias e outros eventos extraordinários.</p>
     </div>
-    <div class="filters">
-      <button class="filter-btn active" onclick="filterAgenda('all',this)">Todos</button>
-      <button class="filter-btn" onclick="filterAgenda('programacao semanal',this)">Programação Semanal</button>
-      <button class="filter-btn" onclick="filterAgenda('especial',this)">Eventos Especiais</button>
-    </div>
-    <div id="agendaList"><div class="empty-state">Carregando agenda…</div></div>
+    <div id="agendaList"><div class="empty-state">Carregando…</div></div>
   </div>
 </div>
 
-<!-- ============ IGREJAS ============ -->
+<!-- IGREJAS -->
 <div class="page" id="page-igrejas">
   <div class="wrap">
     <div class="sec-head" style="margin-top:50px">
@@ -268,11 +331,11 @@ a{color:inherit;text-decoration:none}
       <h2 class="sec-title">Nossas Igrejas</h2>
       <div class="sec-divider"></div>
     </div>
-    <div class="church-grid" id="churchGrid"><div class="empty-state">Carregando igrejas…</div></div>
+    <div class="church-grid" id="churchGrid"><div class="empty-state">Carregando…</div></div>
   </div>
 </div>
 
-<!-- ============ SERMÕES ============ -->
+<!-- SERMÕES -->
 <div class="page" id="page-sermoes">
   <div class="wrap">
     <div class="sec-head" style="margin-top:50px">
@@ -280,14 +343,12 @@ a{color:inherit;text-decoration:none}
       <h2 class="sec-title">Sermões</h2>
       <div class="sec-divider"></div>
     </div>
-    <div class="sermon-search">
-      <input type="text" placeholder="Buscar por título, pregador ou tema..." oninput="filterSermons(this.value)">
-    </div>
-    <div class="sermon-list" id="sermonList"><div class="empty-state">Carregando sermões…</div></div>
+    <div class="sermon-search"><input type="text" placeholder="Buscar por título, pregador ou tema…" oninput="filterSermons(this.value)"></div>
+    <div id="sermonList"><div class="empty-state">Carregando…</div></div>
   </div>
 </div>
 
-<!-- ============ SOBRE NÓS ============ -->
+<!-- SOBRE NÓS -->
 <div class="page" id="page-sobre">
   <div class="wrap">
     <div class="sec-head" style="margin-top:50px">
@@ -296,147 +357,215 @@ a{color:inherit;text-decoration:none}
       <div class="sec-divider"></div>
     </div>
     <div class="about-text">
-      <p>A AD BELÉM BARUERI nasceu do desejo de um pequeno grupo de famílias que se reunia em uma sala de estar, buscando um espaço de fé genuína, ensino bíblico sólido e comunhão verdadeira.</p>
+      <p>A Igreja Batista Central nasceu do desejo de um pequeno grupo de famílias que se reunia em uma sala de estar, buscando um espaço de fé genuína, ensino bíblico sólido e comunhão verdadeira.</p>
       <p>Ao longo dos anos, o que começou pequeno se tornou uma comunidade viva, formada por pessoas de diferentes histórias, unidas por um mesmo propósito: conhecer a Deus e dar a conhecê-Lo.</p>
     </div>
-    <div class="timeline" id="timelineList"><div class="empty-state">Carregando história…</div></div>
+    <div style="margin:50px 0 0" id="timelineList"><div class="empty-state">Carregando história…</div></div>
   </div>
 </div>
 
-<!-- ============ NOSSA CASA ============ -->
+<!-- NOSSA CASA -->
 <div class="page" id="page-casa">
   <div class="wrap">
     <div class="sec-head" style="margin-top:50px">
       <div class="sec-eyebrow">Projeto</div>
-      <h2 class="sec-title">Nossa Casa</h2>
+      <h2 class="sec-title" style="font-weight:700">Nossa Casa</h2>
       <div class="sec-divider"></div>
+      <p style="font-size:14px;color:var(--ink-soft);margin-top:16px;font-weight:300;max-width:520px;margin-left:auto;margin-right:auto">Estamos construindo um novo espaço para receber mais famílias e expandir nosso alcance na cidade.</p>
     </div>
-    <div class="about-text" style="margin-bottom:40px">
-      <p>Estamos construindo um novo espaço para receber ainda mais famílias e expandir nosso alcance na cidade. Acompanhe abaixo o progresso da obra e as últimas atualizações do projeto.</p>
+
+    <!-- Progresso -->
+    <div class="casa-progress-wrap">
+      <div class="casa-pct-row"><span>Progresso da construção</span><span id="progressPct">—</span></div>
+      <div class="casa-bar"><div class="casa-fill" id="progressFill"></div></div>
     </div>
-    <div class="progress-wrap">
-      <div class="progress-label"><span>Progresso da construção</span><span id="progressPct">—</span></div>
-      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+    <!-- PIX Nossa Casa -->
+    <div class="casa-pix-block">
+      <div class="casa-pix-icon">🏛</div>
+      <div class="casa-pix-info">
+        <div class="casa-pix-label">Contribua com o projeto</div>
+        <div class="casa-pix-title">Doe para Nossa Casa</div>
+        <div class="casa-pix-sub">Sua oferta ajuda a construir o espaço que a nossa congregação merece.</div>
+      </div>
+      <a class="casa-pix-btn" onclick="goTo('contribua')">Como Contribuir →</a>
     </div>
+
+    <!-- Atualizações -->
     <div class="sec-head">
       <div class="sec-eyebrow">Linha do tempo</div>
       <h2 class="sec-title">Atualizações da Obra</h2>
       <div class="sec-divider"></div>
     </div>
-    <div class="update-list" id="updateList"><div class="empty-state">Carregando atualizações…</div></div>
+    <div class="update-list" id="updateList"><div class="empty-state">Carregando…</div></div>
+  </div>
+</div>
+
+<!-- CONTRIBUA -->
+<div class="page" id="page-contribua">
+  <div class="contrib-hero">
+    <div class="wrap">
+      <div class="sec-eyebrow">Generosidade</div>
+      <h2 class="sec-title">Contribua</h2>
+      <p>Quando você doa, você está investindo no Reino de Deus e na vida de pessoas. Cada oferta faz diferença.</p>
+    </div>
+  </div>
+
+  <!-- Dízimo -->
+  <div class="contrib-section">
+    <div class="wrap">
+      <div class="contrib-inner">
+        <div class="contrib-sub">Princípio bíblico</div>
+        <h3 class="contrib-head">Dízimo</h3>
+        <p class="contrib-text">Deus nos chama para devolvermos os primeiros 10% de nossa renda a Ele como ato de fé e confiança. O dízimo sustenta a obra local — o ministério, os cultos, o cuidado pastoral e tudo que acontece na nossa comunidade semana após semana.</p>
+        <div class="contrib-verse">
+          "Trazei todos os dízimos à casa do tesouro, para que haja mantimento na minha casa; e provai-me nisto, diz o Senhor dos Exércitos, se eu não vos abrir as janelas do céu e não derramar sobre vós uma bênção tal que não haja lugar bastante para a recolherdes."
+          <cite>Malaquias 3:10</cite>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ofertas -->
+  <div class="contrib-section" style="background:var(--bg)">
+    <div class="wrap">
+      <div class="contrib-inner">
+        <div class="contrib-sub">Além do dízimo</div>
+        <h3 class="contrib-head">Ofertas e Causas</h3>
+        <p class="contrib-text">É impossível superar Deus em generosidade. Além do dízimo, suas ofertas podem ir a causas específicas que ampliam o alcance da nossa missão.</p>
+        <div class="contrib-causes">
+          <div class="contrib-cause">
+            <div class="contrib-cause-icon">🏛</div>
+            <div class="contrib-cause-title">Nossa Casa</div>
+            <div class="contrib-cause-desc">Ajude a construir o novo templo — um espaço para as próximas gerações.</div>
+          </div>
+          <div class="contrib-cause">
+            <div class="contrib-cause-icon">🌍</div>
+            <div class="contrib-cause-title">Missões</div>
+            <div class="contrib-cause-desc">Leve esperança a comunidades locais e ao redor do mundo.</div>
+          </div>
+          <div class="contrib-cause">
+            <div class="contrib-cause-icon">📡</div>
+            <div class="contrib-cause-title">Alcance Digital</div>
+            <div class="contrib-cause-desc">Transmissões, redes sociais e conteúdo que alcança quem não pode estar presente.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Como contribuir / PIX -->
+  <div class="contrib-section">
+    <div class="wrap">
+      <div class="contrib-inner">
+        <div class="contrib-sub">Simples e seguro</div>
+        <h3 class="contrib-head">Como Contribuir</h3>
+        <p class="contrib-text">Você pode contribuir presencialmente durante os cultos ou pelo PIX a qualquer momento.</p>
+        <div class="pix-block">
+          <div class="pix-key-group">
+            <div class="pix-key-label">Chave PIX</div>
+            <div class="pix-key" id="pixKey">00.000.000/0001-00</div>
+            <div class="pix-key-note">CNPJ · Igreja Batista Central</div>
+          </div>
+          <button class="pix-copy-btn" onclick="copyPix()">Copiar chave</button>
+        </div>
+        <p style="font-size:12px;color:var(--ink-soft);margin-top:14px;font-weight:300">Ao fazer sua transferência, inclua no campo de mensagem se é dízimo, oferta ou uma causa específica.</p>
+      </div>
+    </div>
   </div>
 </div>
 
 <div class="footer">
-  <div class="wrap">
-    <p>ASSEMBLEIA DE DEUS - BARUERI</p>
-  </div>
+  <div class="wrap"><p>Igreja Batista Central</p></div>
 </div>
 
 <script>
-/* =========================================================
-   FONTES DE DADOS — Google Sheets publicado em TSV
-========================================================= */
+/* ===== CONFIGURAÇÕES — edite aqui ===== */
+const PIX_KEY = '00.000.000/0001-00'; // substitua pela chave real
+
 const SHEET_URLS = {
-  eventos: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRyhTenbfftqs8iUdYuhP_6XSjAWeRJIHouHTtpTtWgqLRDEDssg8zex00DDDHDu5s_GsmVnQFWQdNy/pub?gid=0&single=true&output=tsv',
-  avisos: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRyhTenbfftqs8iUdYuhP_6XSjAWeRJIHouHTtpTtWgqLRDEDssg8zex00DDDHDu5s_GsmVnQFWQdNy/pub?gid=1303663228&single=true&output=tsv',
-  igrejas: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRyhTenbfftqs8iUdYuhP_6XSjAWeRJIHouHTtpTtWgqLRDEDssg8zex00DDDHDu5s_GsmVnQFWQdNy/pub?gid=1066186067&single=true&output=tsv',
-  sermoes: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRyhTenbfftqs8iUdYuhP_6XSjAWeRJIHouHTtpTtWgqLRDEDssg8zex00DDDHDu5s_GsmVnQFWQdNy/pub?gid=1489946744&single=true&output=tsv',
-  sobre: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRyhTenbfftqs8iUdYuhP_6XSjAWeRJIHouHTtpTtWgqLRDEDssg8zex00DDDHDu5s_GsmVnQFWQdNy/pub?gid=1303487044&single=true&output=tsv',
-  casa: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRyhTenbfftqs8iUdYuhP_6XSjAWeRJIHouHTtpTtWgqLRDEDssg8zex00DDDHDu5s_GsmVnQFWQdNy/pub?gid=2095369827&single=true&output=tsv',
-  casaAtualizacoes: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRyhTenbfftqs8iUdYuhP_6XSjAWeRJIHouHTtpTtWgqLRDEDssg8zex00DDDHDu5s_GsmVnQFWQdNy/pub?gid=812893903&single=true&output=tsv',
+  eventos:'https://docs.google.com/spreadsheets/d/e/2PACX-1vRyhTenbfftqs8iUdYuhP_6XSjAWeRJIHouHTtpTtWgqLRDEDssg8zex00DDDHDu5s_GsmVnQFWQdNy/pub?gid=0&single=true&output=tsv',
+  avisos:'https://docs.google.com/spreadsheets/d/e/2PACX-1vRyhTenbfftqs8iUdYuhP_6XSjAWeRJIHouHTtpTtWgqLRDEDssg8zex00DDDHDu5s_GsmVnQFWQdNy/pub?gid=1303663228&single=true&output=tsv',
+  igrejas:'https://docs.google.com/spreadsheets/d/e/2PACX-1vRyhTenbfftqs8iUdYuhP_6XSjAWeRJIHouHTtpTtWgqLRDEDssg8zex00DDDHDu5s_GsmVnQFWQdNy/pub?gid=1066186067&single=true&output=tsv',
+  sermoes:'https://docs.google.com/spreadsheets/d/e/2PACX-1vRyhTenbfftqs8iUdYuhP_6XSjAWeRJIHouHTtpTtWgqLRDEDssg8zex00DDDHDu5s_GsmVnQFWQdNy/pub?gid=1489946744&single=true&output=tsv',
+  sobre:'https://docs.google.com/spreadsheets/d/e/2PACX-1vRyhTenbfftqs8iUdYuhP_6XSjAWeRJIHouHTtpTtWgqLRDEDssg8zex00DDDHDu5s_GsmVnQFWQdNy/pub?gid=1303487044&single=true&output=tsv',
+  casa:'https://docs.google.com/spreadsheets/d/e/2PACX-1vRyhTenbfftqs8iUdYuhP_6XSjAWeRJIHouHTtpTtWgqLRDEDssg8zex00DDDHDu5s_GsmVnQFWQdNy/pub?gid=2095369827&single=true&output=tsv',
+  casaAtualizacoes:'https://docs.google.com/spreadsheets/d/e/2PACX-1vRyhTenbfftqs8iUdYuhP_6XSjAWeRJIHouHTtpTtWgqLRDEDssg8zex00DDDHDu5s_GsmVnQFWQdNy/pub?gid=812893903&single=true&output=tsv',
 };
 
-/* ============ PARSER TSV ============ */
-// Parser simples e robusto: divide por linha e por tab, lida com \r e linhas vazias.
+/* ===== TSV PARSER ===== */
 function parseTSV(text){
   if(!text) return [];
-  const lines = text.replace(/\r/g,'').split('\n').filter(l=>l.trim().length>0);
+  const lines=text.replace(/\r/g,'').split('\n').filter(l=>l.trim());
   if(lines.length<2) return [];
-  const headers = lines[0].split('\t').map(h=>h.trim().toLowerCase());
+  const headers=lines[0].split('\t').map(h=>h.trim().toLowerCase());
   const rows=[];
   for(let i=1;i<lines.length;i++){
-    const cells = lines[i].split('\t');
+    const cells=lines[i].split('\t');
     const obj={};
-    headers.forEach((h,idx)=>{ obj[h] = (cells[idx]!==undefined ? cells[idx] : '').trim(); });
-    // ignora linha totalmente vazia
+    headers.forEach((h,j)=>{ obj[h]=(cells[j]!==undefined?cells[j]:'').trim(); });
     if(Object.values(obj).some(v=>v!=='')) rows.push(obj);
   }
   return rows;
 }
-
 async function fetchSheet(url){
   try{
-    const res = await fetch(url, {cache:'no-store'});
-    if(!res.ok) throw new Error('HTTP '+res.status);
-    const text = await res.text();
-    return parseTSV(text);
-  }catch(err){
-    console.error('Erro ao buscar planilha:', url, err);
-    return null; // null = erro distinto de [] (vazio)
-  }
+    const r=await fetch(url,{cache:'no-store'});
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    return parseTSV(await r.text());
+  }catch(e){ console.error(e); return null; }
 }
 
-/* ============ ESTADO GLOBAL ============ */
-let DATA = { eventos:[], avisos:[], igrejas:[], sermoes:[], sobre:[], casa:[], casaAtualizacoes:[] };
+/* ===== HELPERS ===== */
+const MONTHS=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+const MONTHS_FULL=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+const DAYS=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+const DAYS_FULL=['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'];
+function parseDate(d){ if(!d) return null; const p=d.split('-').map(Number); if(p.length!==3||p.some(isNaN)) return null; return new Date(p[0],p[1]-1,p[2]); }
+function fmtShort(d){ const dt=parseDate(d); if(!dt) return {num:'–',mon:'',wd:''}; return {num:dt.getDate(),mon:MONTHS[dt.getMonth()],wd:DAYS[dt.getDay()]}; }
+function fmtTime(t){ if(!t) return ''; const [h,m]=t.split(':'); return h+'h'+(m&&m!=='00'?m:''); }
+function escHtml(s){ return s==null?'':String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function isEspecial(e){ return (e.tipo||'').trim().toLowerCase()==='especial'; }
 
-/* ============ NAVEGAÇÃO ============ */
+/* ===== ESTADO GLOBAL ===== */
+let DATA={eventos:null,avisos:null,igrejas:null,sermoes:null,sobre:null,casa:null,casaAtualizacoes:null};
+
+/* ===== NAVEGAÇÃO ===== */
 function goTo(page){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('page-'+page).classList.add('active');
-  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.toggle('active', a.dataset.page===page));
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.toggle('active',a.dataset.page===page));
   document.getElementById('navLinks').classList.remove('open');
   window.scrollTo({top:0,behavior:'smooth'});
 }
 function toggleMenu(){ document.getElementById('navLinks').classList.toggle('open'); }
 
-/* ============ HELPERS DE DATA ============ */
-const MONTHS=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
-const MONTHS_FULL=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-const DAYS_SHORT=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
-function parseDate(d){
-  if(!d) return null;
-  const parts = d.split('-').map(Number);
-  if(parts.length!==3 || parts.some(isNaN)) return null;
-  const [y,m,day]=parts;
-  return new Date(y,m-1,day);
-}
-function fmtShort(d){ const dt=parseDate(d); if(!dt) return {num:'–',mon:'',wd:''}; return {num:dt.getDate(), mon:MONTHS[dt.getMonth()], wd:DAYS_SHORT[dt.getDay()]}; }
-function fmtTime(t){ if(!t) return ''; const [h,m]=t.split(':'); return h+'h'+(m&&m!=='00'?m:''); }
-
-/* ============ CARROSSEL (eventos especiais + avisos recentes) ============ */
+/* ===== CAROUSEL (eventos especiais) ===== */
 let carIdx=0, carSlides=[];
-function buildCarouselSlides(){
-  const slides=[];
-  const especiais = DATA.eventos.filter(e=>e.tipo==='especial').slice(0,4);
-  especiais.forEach(e=>{
-    const fd=fmtShort(e.data);
-    slides.push({tag:'Evento Especial', titulo:e.nome, desc:`${fd.wd?fd.wd+', ':''}${fd.num} de ${MONTHS_FULL[parseDate(e.data)?.getMonth()]||''} · ${fmtTime(e.hora)}`, img:''});
-  });
-  DATA.avisos.slice(0,2).forEach(a=>{
-    slides.push({tag:'Aviso', titulo:a.titulo, desc:a.corpo, img:''});
-  });
-  return slides;
-}
 function renderCarousel(){
-  carSlides = buildCarouselSlides();
+  const slides=(DATA.eventos||[]).filter(isEspecial);
+  carSlides=slides;
   const track=document.getElementById('carTrack');
   const dots=document.getElementById('carDots');
-  if(!carSlides.length){
-    track.innerHTML='<div class="car-loading">Nenhum destaque no momento.</div>';
-    dots.innerHTML='';
-    return;
+  if(!slides.length){
+    track.innerHTML='<div style="color:rgba(255,255,255,.4);padding:40px;font-size:13px;width:100%;text-align:center">Nenhum evento especial cadastrado.</div>';
+    dots.innerHTML=''; return;
   }
-  track.innerHTML = carSlides.map(s=>`
-    <div class="car-slide">
-      ${s.img?`<img src="${s.img}" alt="">`:`<div style="position:absolute;inset:0;background:linear-gradient(135deg,#3a3530,#22241f)"></div>`}
+  track.innerHTML=slides.map(s=>{
+    const fd=fmtShort(s.data);
+    const hasBg=!!s.foto_url;
+    return `<div class="car-slide">
+      ${hasBg?`<img src="${escHtml(s.foto_url)}" alt="" onerror="this.style.display='none'">`:''}
+      <div class="car-bg" ${hasBg?'style="opacity:.6"':''}></div>
+      <div class="car-overlay"></div>
       <div class="car-content">
-        <div class="car-tag">${escapeHtml(s.tag)}</div>
-        <div class="car-title">${escapeHtml(s.titulo)}</div>
-        <div class="car-desc">${escapeHtml(s.desc)}</div>
+        <div class="car-tag">Evento Especial</div>
+        <div class="car-title">${escHtml(s.nome)}</div>
+        <div class="car-desc">${fd.wd?fd.wd+', ':''} ${fd.num} de ${MONTHS_FULL[parseDate(s.data)?.getMonth()]} · ${fmtTime(s.hora)}${s.local?' · '+escHtml(s.local):''}</div>
       </div>
-    </div>`).join('');
-  dots.innerHTML = carSlides.map((_,i)=>`<div class="car-dot${i===0?' active':''}" onclick="carGo(${i})"></div>`).join('');
+    </div>`;
+  }).join('');
+  dots.innerHTML=slides.map((_,i)=>`<div class="car-dot${i===0?' active':''}" onclick="carGo(${i})"></div>`).join('');
   carIdx=0;
 }
 function carGo(i){ carIdx=i; updateCarousel(); }
@@ -445,186 +574,188 @@ function updateCarousel(){
   document.getElementById('carTrack').style.transform=`translateX(-${carIdx*100}%)`;
   document.querySelectorAll('.car-dot').forEach((d,i)=>d.classList.toggle('active',i===carIdx));
 }
-setInterval(()=>carMove(1), 6000);
+setInterval(()=>carMove(1),6000);
 
-function escapeHtml(str){
-  if(str===undefined||str===null) return '';
-  return String(str).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
-
-/* ============ AVISOS ============ */
-function renderNotices(){
-  const el=document.getElementById('noticeList');
-  if(DATA.avisos===null){ el.innerHTML='<div class="error-state">Não foi possível carregar os avisos.</div>'; return; }
-  if(!DATA.avisos.length){ el.innerHTML='<div class="empty-state">Nenhum aviso no momento.</div>'; return; }
-  el.innerHTML = DATA.avisos.map(n=>`
-    <div class="notice">
-      <div class="notice-text">
-        <div class="notice-title">${escapeHtml(n.titulo)}</div>
-        <div class="notice-body">${escapeHtml(n.corpo)}</div>
-      </div>
-      <div class="notice-date">${escapeHtml(n.data)}</div>
+/* ===== PROGRAMAÇÃO FIXA (eventos "programacao semanal") ===== */
+function renderFixedSchedule(){
+  const el=document.getElementById('fixedSchedule');
+  const rows=(DATA.eventos||[]).filter(e=>(e.tipo||'').trim().toLowerCase()==='programacao semanal');
+  if(!rows.length){ el.innerHTML='<div class="empty-state">Nenhuma programação regular cadastrada.</div>'; return; }
+  el.innerHTML=rows.map(e=>`
+    <div class="fixed-row">
+      <div class="fixed-day">${escHtml(e.nome)}</div>
+      <div class="fixed-name">${e.desc?escHtml(e.desc):''}</div>
+      <div class="fixed-meta">${fmtTime(e.hora)}${e.local?' · '+escHtml(e.local):''}</div>
     </div>`).join('');
 }
 
-/* ============ PRÓXIMO EVENTO (strip na home) ============ */
-function renderNextStrip(){
-  const el=document.getElementById('nextStrip');
-  if(!DATA.eventos || !DATA.eventos.length){ el.innerHTML=''; return; }
+/* ===== PRÓXIMOS 2 ESPECIAIS NA HOME ===== */
+function renderSpecialsGrid(){
+  const el=document.getElementById('specialsGrid');
   const now=new Date();
-  const upcoming=DATA.eventos
-    .map(e=>({...e, _dt: e.data && e.hora ? new Date(e.data+'T'+e.hora) : null}))
-    .filter(e=>e._dt && e._dt>now)
-    .sort((a,b)=>a._dt-b._dt);
-  if(!upcoming.length){ el.innerHTML=''; return; }
-  const ev=upcoming[0]; const fd=fmtShort(ev.data);
-  el.innerHTML=`
-    <div class="next-strip-left">
-      <div class="next-strip-date">${fd.num}<span>${fd.mon}</span></div>
-      <div class="next-strip-info">
-        <div class="nse">Próximo Encontro</div>
-        <div class="nsn">${escapeHtml(ev.nome)}</div>
-        <div class="nsm">${fd.wd} · ${fmtTime(ev.hora)} · ${escapeHtml(ev.local)}</div>
-      </div>
-    </div>
-    <div class="next-strip-btn" onclick="goTo('agenda')">Ver Agenda Completa</div>`;
+  const upcoming=(DATA.eventos||[])
+    .filter(e=>isEspecial(e)&&e.data)
+    .map(e=>({...e,_dt:new Date(e.data+'T'+(e.hora||'00:00'))}))
+    .filter(e=>e._dt>now)
+    .sort((a,b)=>a._dt-b._dt)
+    .slice(0,2);
+  if(!upcoming.length){ el.innerHTML='<div class="empty-state" style="grid-column:1/-1">Nenhum evento especial próximo.</div>'; return; }
+  el.innerHTML=upcoming.map(e=>{
+    const fd=fmtShort(e.data);
+    const mo=parseDate(e.data);
+    return `<div class="special-card">
+      <div class="special-card-tag">★ Evento Especial</div>
+      <div class="special-card-date">${fd.wd}, ${fd.num} de ${mo?MONTHS_FULL[mo.getMonth()]:''}</div>
+      <div class="special-card-name">${escHtml(e.nome)}</div>
+      <div class="special-card-meta">${fmtTime(e.hora)}${e.local?' · '+escHtml(e.local):''}</div>
+    </div>`;
+  }).join('');
 }
 
-/* ============ AGENDA ============ */
-let agendaFilter='all';
+/* ===== AVISOS ===== */
+function renderNotices(){
+  const el=document.getElementById('noticeList');
+  const list=DATA.avisos||[];
+  if(!list.length){ el.innerHTML='<div class="empty-state">Nenhum aviso no momento.</div>'; return; }
+  el.innerHTML=list.map(n=>`
+    <div class="notice">
+      ${n.foto_url?`<img class="notice-img" src="${escHtml(n.foto_url)}" alt="" onerror="this.remove()">`:''}
+      <div class="notice-body-wrap">
+        <div class="notice-text-block">
+          <div class="notice-title">${escHtml(n.titulo)}</div>
+          <div class="notice-body">${escHtml(n.corpo)}</div>
+        </div>
+        <div class="notice-date">${escHtml(n.data)}</div>
+      </div>
+    </div>`).join('');
+}
+
+/* ===== AGENDA (só especiais) ===== */
 function renderAgenda(){
   const el=document.getElementById('agendaList');
-  if(DATA.eventos===null){ el.innerHTML='<div class="error-state">Não foi possível carregar a agenda. Verifique o link da planilha de Eventos.</div>'; return; }
-  let evs=[...DATA.eventos].filter(e=>e.data);
-  if(agendaFilter!=='all') evs=evs.filter(e=>(e.tipo||'').trim().toLowerCase()===agendaFilter);
-  evs.sort((a,b)=> new Date(a.data+'T'+(a.hora||'00:00')) - new Date(b.data+'T'+(b.hora||'00:00')) );
-
-  if(!evs.length){ el.innerHTML='<div class="empty-state">Nenhum evento encontrado.</div>'; return; }
-  let html=''; let lastGroup='';
+  const evs=(DATA.eventos||[]).filter(e=>isEspecial(e)&&e.data)
+    .sort((a,b)=>new Date(a.data+'T'+(a.hora||'00:00'))-new Date(b.data+'T'+(b.hora||'00:00')));
+  if(!evs.length){ el.innerHTML='<div class="empty-state">Nenhum evento especial cadastrado.</div>'; return; }
   const now=new Date(); now.setHours(0,0,0,0);
+  let html=''; let lastGroup='';
   evs.forEach(ev=>{
-    const d=parseDate(ev.data);
-    if(!d) return;
-    const diffDays=Math.floor((d-now)/86400000);
-    let group = diffDays<0 ? 'Eventos Passados' : diffDays<7 ? 'Esta Semana' : diffDays<14 ? 'Próxima Semana' : MONTHS_FULL[d.getMonth()]+' '+d.getFullYear();
+    const d=parseDate(ev.data); if(!d) return;
+    const diff=Math.floor((d-now)/86400000);
+    const group=diff<0?'Realizados':diff<7?'Esta Semana':diff<14?'Próxima Semana':MONTHS_FULL[d.getMonth()]+' '+d.getFullYear();
     if(group!==lastGroup){ html+=`<div class="agenda-group-title">${group}</div>`; lastGroup=group; }
     const fd=fmtShort(ev.data);
-    const isEspecial = (ev.tipo||'').trim().toLowerCase()==='especial';
-    html+=`
-    <div class="event-row${isEspecial?' special':''}">
-      <div class="ev-date"><b>${fd.num}</b><small>${fd.mon}</small></div>
-      <div class="ev-body">
-        <div class="ev-tag">${isEspecial?'★ Especial':'Programação Semanal'}</div>
-        <div class="ev-name">${escapeHtml(ev.nome)}</div>
-        ${ev.desc?`<div class="ev-desc">${escapeHtml(ev.desc)}</div>`:''}
-        <div class="ev-meta">${ev.hora?`<span>🕐 ${fmtTime(ev.hora)}</span>`:''}${ev.local?`<span>📍 ${escapeHtml(ev.local)}</span>`:''}</div>
+    html+=`<div class="event-row"${diff<0?' style="opacity:.5"':''}>
+      ${ev.foto_url?`<img class="event-row-img" src="${escHtml(ev.foto_url)}" alt="" onerror="this.remove()">`:''}
+      <div class="event-row-body">
+        <div class="ev-date"><b>${fd.num}</b><small>${fd.mon}</small></div>
+        <div class="ev-body">
+          <div class="ev-tag">★ Especial</div>
+          <div class="ev-name">${escHtml(ev.nome)}</div>
+          ${ev.desc?`<div class="ev-desc">${escHtml(ev.desc)}</div>`:''}
+          <div class="ev-meta">${ev.hora?`<span>🕐 ${fmtTime(ev.hora)}</span>`:''}${ev.local?`<span>📍 ${escHtml(ev.local)}</span>`:''}</div>
+        </div>
       </div>
     </div>`;
   });
-  el.innerHTML=html || '<div class="empty-state">Nenhum evento encontrado.</div>';
-}
-function filterAgenda(f,btn){
-  agendaFilter=f;
-  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  renderAgenda();
+  el.innerHTML=html;
 }
 
-/* ============ IGREJAS ============ */
+/* ===== IGREJAS (Google Maps) ===== */
+function mapsUrl(addr){ return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(addr); }
 function renderChurches(){
   const el=document.getElementById('churchGrid');
-  if(DATA.igrejas===null){ el.innerHTML='<div class="error-state">Não foi possível carregar as igrejas.</div>'; return; }
-  if(!DATA.igrejas.length){ el.innerHTML='<div class="empty-state">Nenhuma igreja cadastrada.</div>'; return; }
-  el.innerHTML = DATA.igrejas.map(c=>`
-    <div class="church-card">
+  const list=DATA.igrejas||[];
+  if(!list.length){ el.innerHTML='<div class="empty-state">Nenhuma igreja cadastrada.</div>'; return; }
+  el.innerHTML=list.map(c=>`
+    <div class="church-card" onclick="window.open('${mapsUrl(c.nome+' '+c.endereco)}','_blank')" title="Abrir no Google Maps">
       <div class="church-img">
-        ${c.foto_url?`<img src="${c.foto_url}" alt="${escapeHtml(c.nome)}" onerror="this.parentElement.innerHTML='<div class=&quot;church-img-placeholder&quot;>Foto indisponível</div>'">`:`<div class="church-img-placeholder">Foto da igreja</div>`}
+        ${c.foto_url?`<img src="${escHtml(c.foto_url)}" alt="${escHtml(c.nome)}" onerror="this.parentElement.innerHTML='<div class=&quot;church-img-ph&quot;>Foto indisponível</div>'">`:`<div class="church-img-ph">📷 Sem foto</div>`}
       </div>
       <div class="church-body">
-        <div class="church-name">${escapeHtml(c.nome)}</div>
-        ${c.endereco?`<div class="church-detail"><b>Endereço</b><span>${escapeHtml(c.endereco)}</span></div>`:''}
-        ${c.pastor?`<div class="church-detail"><b>Pastor</b><span>${escapeHtml(c.pastor)}</span></div>`:''}
+        <div class="church-name">${escHtml(c.nome)}</div>
+        ${c.endereco?`<div class="church-detail"><b>Endereço</b><span>${escHtml(c.endereco)}</span></div>`:''}
+        ${c.pastor?`<div class="church-detail"><b>Pastor</b><span>${escHtml(c.pastor)}</span></div>`:''}
+        <div class="church-maps">📍 Ver no Google Maps</div>
       </div>
     </div>`).join('');
 }
 
-/* ============ SERMÕES ============ */
+/* ===== SERMÕES ===== */
+let _allSermons=[];
 function renderSermons(filter=''){
   const el=document.getElementById('sermonList');
-  if(DATA.sermoes===null){ el.innerHTML='<div class="error-state">Não foi possível carregar os sermões.</div>'; return; }
   const f=filter.toLowerCase();
-  const list = DATA.sermoes.filter(s =>
-    (s.titulo||'').toLowerCase().includes(f) || (s.pregador||'').toLowerCase().includes(f) || (s.tema||'').toLowerCase().includes(f)
-  );
+  const list=_allSermons.filter(s=>(s.titulo||'').toLowerCase().includes(f)||(s.pregador||'').toLowerCase().includes(f)||(s.tema||'').toLowerCase().includes(f));
   if(!list.length){ el.innerHTML='<div class="empty-state">Nenhum sermão encontrado.</div>'; return; }
-  el.innerHTML = list.map((s,i)=>{
-    const sid = 's'+i;
-    // texto pode ter \n simples vindo da planilha — transforma em parágrafos
-    const paragraphs = (s.texto||'').split(/\n+/).filter(p=>p.trim()).map(p=>`<p>${escapeHtml(p)}</p>`).join('');
-    return `
-    <div class="sermon-item" onclick="toggleSermon('${sid}')">
-      <div class="sermon-top">
-        <div>
-          <div class="sermon-title">${escapeHtml(s.titulo)}</div>
-          <div class="sermon-meta">${s.pregador?`<span>${escapeHtml(s.pregador)}</span>`:''}${s.data?`<span>${escapeHtml(s.data)}</span>`:''}${s.tema?`<span>${escapeHtml(s.tema)}</span>`:''}</div>
-          ${s.resumo?`<div class="sermon-excerpt">${escapeHtml(s.resumo)}</div>`:''}
+  el.innerHTML=list.map((s,i)=>{
+    const sid='s'+i;
+    const paras=(s.texto||'').split(/\n+/).filter(p=>p.trim()).map(p=>`<p>${escHtml(p)}</p>`).join('');
+    return `<div class="sermon-item">
+      ${s.foto_url?`<img class="sermon-img" src="${escHtml(s.foto_url)}" alt="" onerror="this.remove()">`:''}
+      <div class="sermon-inner" onclick="toggleSermon('${sid}')">
+        <div class="sermon-top">
+          <div>
+            <div class="sermon-title">${escHtml(s.titulo)}</div>
+            <div class="sermon-meta">${s.pregador?`<span>${escHtml(s.pregador)}</span>`:''}${s.data?`<span>${escHtml(s.data)}</span>`:''}${s.tema?`<span>${escHtml(s.tema)}</span>`:''}</div>
+            ${s.resumo?`<div class="sermon-excerpt">${escHtml(s.resumo)}</div>`:''}
+          </div>
+          <div class="sermon-expand" id="exp-${sid}">Ler →</div>
         </div>
-        <div class="sermon-expand" id="exp-${sid}">Ler →</div>
+        <div class="sermon-full" id="full-${sid}">${paras}</div>
       </div>
-      <div class="sermon-full" id="full-${sid}">${paragraphs}</div>
     </div>`;
   }).join('');
 }
 function toggleSermon(id){
-  const full=document.getElementById('full-'+id);
-  const exp=document.getElementById('exp-'+id);
-  const open=full.classList.toggle('open');
-  exp.textContent = open ? 'Fechar ↑' : 'Ler →';
+  const f=document.getElementById('full-'+id), e=document.getElementById('exp-'+id);
+  e.textContent=f.classList.toggle('open')?'Fechar ↑':'Ler →';
 }
 function filterSermons(v){ renderSermons(v); }
 
-/* ============ SOBRE ============ */
+/* ===== SOBRE ===== */
 function renderTimeline(){
   const el=document.getElementById('timelineList');
-  if(DATA.sobre===null){ el.innerHTML='<div class="error-state">Não foi possível carregar a história.</div>'; return; }
-  if(!DATA.sobre.length){ el.innerHTML=''; return; }
-  el.innerHTML = DATA.sobre.map(t=>`
+  const list=DATA.sobre||[];
+  if(!list.length){ el.innerHTML=''; return; }
+  el.innerHTML=list.map(t=>`
     <div class="tl-item">
-      <div class="tl-year">${escapeHtml(t.ano)}</div>
-      <div class="tl-content"><h4>${escapeHtml(t.titulo)}</h4><p>${escapeHtml(t.texto)}</p></div>
+      <div class="tl-year">${escHtml(t.ano)}</div>
+      <div class="tl-content"><h4>${escHtml(t.titulo)}</h4><p>${escHtml(t.texto)}</p></div>
     </div>`).join('');
 }
 
-/* ============ NOSSA CASA ============ */
+/* ===== NOSSA CASA ===== */
 function renderCasa(){
-  const fill=document.getElementById('progressFill');
-  const pct=document.getElementById('progressPct');
-  if(DATA.casa===null){
-    pct.textContent='—';
-  } else {
-    const val = DATA.casa[0] ? parseFloat(DATA.casa[0].progresso) : NaN;
-    if(!isNaN(val)){
-      fill.style.width = Math.max(0,Math.min(100,val))+'%';
-      pct.textContent = val+'%';
-    } else {
-      pct.textContent='—';
-    }
+  const val=DATA.casa&&DATA.casa[0]?parseFloat(DATA.casa[0].progresso):NaN;
+  if(!isNaN(val)){
+    document.getElementById('progressFill').style.width=Math.min(100,Math.max(0,val))+'%';
+    document.getElementById('progressPct').textContent=val+'%';
   }
-
   const el=document.getElementById('updateList');
-  if(DATA.casaAtualizacoes===null){ el.innerHTML='<div class="error-state">Não foi possível carregar as atualizações.</div>'; return; }
-  if(!DATA.casaAtualizacoes.length){ el.innerHTML='<div class="empty-state">Nenhuma atualização registrada ainda.</div>'; return; }
-  el.innerHTML = DATA.casaAtualizacoes.map(u=>`
+  const list=DATA.casaAtualizacoes||[];
+  if(!list.length){ el.innerHTML='<div class="empty-state">Nenhuma atualização ainda.</div>'; return; }
+  el.innerHTML=list.map(u=>`
     <div class="update-item">
-      <div class="update-date">${escapeHtml(u.data)}</div>
-      <div class="update-title">${escapeHtml(u.titulo)}</div>
-      <div class="update-body">${escapeHtml(u.texto)}</div>
+      ${u.foto_url?`<img class="update-item-img" src="${escHtml(u.foto_url)}" alt="" onerror="this.remove()">`:''}
+      <div class="update-date">${escHtml(u.data)}</div>
+      <div class="update-title">${escHtml(u.titulo)}</div>
+      <div class="update-body">${escHtml(u.texto)}</div>
     </div>`).join('');
 }
 
-/* ============ CARREGAMENTO INICIAL ============ */
+/* ===== PIX ===== */
+document.getElementById('pixKey').textContent=PIX_KEY;
+function copyPix(){
+  const btn=document.querySelector('.pix-copy-btn');
+  navigator.clipboard.writeText(PIX_KEY).then(()=>{
+    btn.textContent='Copiado ✓'; btn.classList.add('copied');
+    setTimeout(()=>{ btn.textContent='Copiar chave'; btn.classList.remove('copied'); },2500);
+  }).catch(()=>{ prompt('Copie a chave PIX:', PIX_KEY); });
+}
+
+/* ===== INIT ===== */
 async function loadAll(){
-  const [eventos, avisos, igrejas, sermoes, sobre, casa, casaAtualizacoes] = await Promise.all([
+  const [eventos,avisos,igrejas,sermoes,sobre,casa,casaAtualizacoes]=await Promise.all([
     fetchSheet(SHEET_URLS.eventos),
     fetchSheet(SHEET_URLS.avisos),
     fetchSheet(SHEET_URLS.igrejas),
@@ -633,18 +764,18 @@ async function loadAll(){
     fetchSheet(SHEET_URLS.casa),
     fetchSheet(SHEET_URLS.casaAtualizacoes),
   ]);
-  DATA = { eventos, avisos, igrejas, sermoes, sobre, casa, casaAtualizacoes };
-
+  DATA={eventos:eventos||[],avisos:avisos||[],igrejas:igrejas||[],sermoes:sermoes||[],sobre:sobre||[],casa:casa||[],casaAtualizacoes:casaAtualizacoes||[]};
+  _allSermons=DATA.sermoes;
   renderCarousel();
+  renderFixedSchedule();
+  renderSpecialsGrid();
   renderNotices();
-  renderNextStrip();
   renderAgenda();
   renderChurches();
   renderSermons();
   renderTimeline();
   renderCasa();
 }
-
 loadAll();
 </script>
 </body>
