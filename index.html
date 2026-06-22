@@ -8,16 +8,9 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#faf8f4;
-  --paper:#ffffff;
-  --ink:#22241f;
-  --ink-soft:#5a5d54;
-  --line:#e2ddd2;
-  --accent:#7a2e2e;
-  --accent-soft:#f3e9e4;
-  --gold:#a9863a;
-  --serif:'Cormorant Garamond',serif;
-  --sans:'Inter',sans-serif;
+  --bg:#faf8f4;--paper:#ffffff;--ink:#22241f;--ink-soft:#5a5d54;
+  --line:#e2ddd2;--accent:#7a2e2e;--accent-soft:#f3e9e4;--gold:#a9863a;
+  --serif:'Cormorant Garamond',serif;--sans:'Inter',sans-serif;
 }
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:300;line-height:1.6}
@@ -27,16 +20,18 @@ a{color:inherit;text-decoration:none}
 
 /* NAV */
 .nav{position:sticky;top:0;z-index:100;background:rgba(250,248,244,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-.nav-inner{max-width:1080px;margin:0 auto;padding:18px 24px;display:flex;align-items:center;justify-content:space-between}
-.brand{font-family:var(--serif);font-size:22px;font-weight:700;letter-spacing:.02em}
-.brand span{color:var(--accent)}
-.nav-links{display:flex;gap:28px;list-style:none}
+.nav-inner{max-width:1080px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.brand-logo{height:38px;width:auto;object-fit:contain;display:block}
+.brand-logo-ph{height:38px;width:38px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:700;font-family:var(--serif);flex-shrink:0}
+.brand-text{font-family:var(--serif);font-size:20px;font-weight:700;letter-spacing:.02em;line-height:1.1}
+.brand-text span{color:var(--accent)}
+.nav-links{display:flex;gap:24px;list-style:none}
 .nav-links a{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);font-weight:500;padding-bottom:3px;border-bottom:1px solid transparent;transition:all .2s;cursor:pointer}
 .nav-links a:hover,.nav-links a.active{color:var(--accent);border-color:var(--accent)}
-.nav-links a.bold-link{font-weight:700;color:var(--accent)}
 .nav-toggle{display:none;background:none;border:none;font-size:22px;cursor:pointer;color:var(--ink)}
 @media(max-width:900px){
-  .nav-links{position:fixed;top:62px;left:0;right:0;bottom:0;background:var(--paper);flex-direction:column;padding:32px 24px;gap:22px;transform:translateX(100%);transition:transform .3s;overflow-y:auto;z-index:99}
+  .nav-links{position:fixed;top:66px;left:0;right:0;bottom:0;background:var(--paper);flex-direction:column;padding:32px 24px;gap:22px;transform:translateX(100%);transition:transform .3s;overflow-y:auto;z-index:99}
   .nav-links.open{transform:translateX(0)}
   .nav-toggle{display:block}
 }
@@ -62,13 +57,13 @@ a{color:inherit;text-decoration:none}
 .carousel{position:relative;margin:40px 0;overflow:hidden;border-radius:4px;background:var(--ink);min-height:340px}
 .carousel-track{display:flex;transition:transform .5s cubic-bezier(.4,0,.2,1)}
 .car-slide{min-width:100%;position:relative;height:340px;display:flex;align-items:flex-end;overflow:hidden}
-.car-slide img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.5}
+.car-slide img.car-bg-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.52;display:block}
 .car-bg{position:absolute;inset:0;background:linear-gradient(135deg,#3a3530,#22241f)}
-.car-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.6) 0%,transparent 60%)}
+.car-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.65) 0%,transparent 60%)}
 .car-content{position:relative;z-index:2;padding:32px 40px;color:#fff}
 .car-tag{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:8px}
 .car-title{font-family:var(--serif);font-size:clamp(22px,3.5vw,36px);font-weight:600;margin-bottom:6px;max-width:580px}
-.car-desc{font-size:13px;font-weight:300;opacity:.85;max-width:500px}
+.car-desc{font-size:13px;font-weight:300;opacity:.85;max-width:500px;line-height:1.6}
 .car-nav{position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:16px;cursor:pointer;z-index:3;display:flex;align-items:center;justify-content:center;transition:background .2s}
 .car-nav:hover{background:rgba(255,255,255,.3)}
 .car-prev{left:14px}.car-next{right:14px}
@@ -77,7 +72,7 @@ a{color:inherit;text-decoration:none}
 .car-dot.active{background:#fff}
 @media(max-width:600px){.car-slide{height:280px}.car-content{padding:22px}}
 
-/* PRÓXIMOS 2 ESPECIAIS NA HOME */
+/* PRÓXIMOS 2 ESPECIAIS */
 .specials-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:0 0 48px}
 @media(max-width:600px){.specials-grid{grid-template-columns:1fr}}
 .special-card{background:var(--paper);border:1px solid var(--line);border-top:3px solid var(--gold);padding:22px}
@@ -88,8 +83,7 @@ a{color:inherit;text-decoration:none}
 
 /* PROGRAMAÇÃO FIXA */
 .fixed-schedule{background:var(--paper);border:1px solid var(--line);padding:28px 32px;margin-bottom:56px}
-.fixed-schedule-title{font-family:var(--serif);font-size:22px;font-weight:600;margin-bottom:20px;color:var(--ink)}
-.fixed-rows{display:flex;flex-direction:column;gap:0}
+.fixed-rows{display:flex;flex-direction:column}
 .fixed-row{display:flex;align-items:center;gap:20px;padding:13px 0;border-bottom:1px solid var(--line)}
 .fixed-row:last-child{border-bottom:none}
 .fixed-day{min-width:90px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--accent)}
@@ -98,13 +92,16 @@ a{color:inherit;text-decoration:none}
 
 /* AVISOS */
 .notice-list{display:flex;flex-direction:column;gap:12px;margin:0 0 56px}
-.notice{background:var(--paper);border:1px solid var(--line);border-left:3px solid var(--accent);overflow:hidden}
+.notice{background:var(--paper);border:1px solid var(--line);border-left:3px solid var(--accent);overflow:hidden;transition:border-color .2s,box-shadow .2s}
+.notice.clickable{cursor:pointer}
+.notice.clickable:hover{border-color:var(--accent);box-shadow:0 2px 12px rgba(122,46,46,.1)}
 .notice-img{width:100%;height:160px;object-fit:cover;display:block}
 .notice-body-wrap{padding:16px 20px;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
 .notice-text-block{flex:1;min-width:180px}
 .notice-title{font-weight:500;font-size:15px;margin-bottom:4px}
 .notice-body{font-size:13px;color:var(--ink-soft);font-weight:300;line-height:1.6}
 .notice-date{font-size:11px;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;padding-top:2px}
+.notice-link-badge{display:inline-flex;align-items:center;gap:4px;margin-top:8px;font-size:11px;color:var(--accent);font-weight:600;letter-spacing:.04em;text-transform:uppercase}
 
 /* SOCIAL */
 .social-band{background:var(--ink);color:#fff;padding:48px 0;margin-top:20px;text-align:center}
@@ -114,12 +111,12 @@ a{color:inherit;text-decoration:none}
 .social-btn{display:flex;align-items:center;gap:7px;padding:10px 20px;border:1px solid rgba(255,255,255,.22);border-radius:30px;font-size:13px;font-weight:500;transition:all .2s;background:rgba(255,255,255,.04)}
 .social-btn:hover{background:#fff;color:var(--ink)}
 
-/* AGENDA (só especiais) */
+/* AGENDA */
 .agenda-group-title{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);font-weight:600;margin:28px 0 12px}
 .agenda-group-title:first-child{margin-top:0}
 .event-row{background:var(--paper);border:1px solid var(--line);border-left:3px solid var(--gold);margin-bottom:10px;transition:border-color .2s;overflow:hidden}
 .event-row:hover{border-color:var(--accent)}
-.event-row-img{width:100%;height:180px;object-fit:cover;display:block}
+.event-row-img{width:100%;height:200px;object-fit:cover;display:block}
 .event-row-body{padding:18px 22px;display:flex;gap:20px;align-items:flex-start}
 .ev-date{min-width:50px;text-align:center}
 .ev-date b{font-family:var(--serif);font-size:27px;font-weight:700;display:block;line-height:1}
@@ -149,13 +146,13 @@ a{color:inherit;text-decoration:none}
 .sermon-search input:focus{border-color:var(--accent)}
 .sermon-item{border-bottom:1px solid var(--line);overflow:hidden}
 .sermon-item:first-child{border-top:1px solid var(--line)}
-.sermon-img{width:100%;height:180px;object-fit:cover;display:block}
+.sermon-img{width:100%;height:200px;object-fit:cover;display:block}
 .sermon-inner{padding:20px 4px;cursor:pointer}
 .sermon-top{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}
 .sermon-title{font-family:var(--serif);font-size:21px;font-weight:600;margin-bottom:4px}
 .sermon-meta{font-size:12px;color:var(--ink-soft);display:flex;gap:12px;flex-wrap:wrap}
 .sermon-excerpt{font-size:13px;color:var(--ink-soft);font-weight:300;margin-top:7px;line-height:1.6;max-width:680px}
-.sermon-expand{font-size:11px;color:var(--gold);text-transform:uppercase;letter-spacing:.08em;white-space:nowrap;font-weight:600}
+.sermon-expand{font-size:11px;color:var(--gold);text-transform:uppercase;letter-spacing:.08em;white-space:nowrap;font-weight:600;flex-shrink:0}
 .sermon-full{display:none;margin-top:14px;font-size:14px;line-height:1.9;color:var(--ink);font-weight:300;border-top:1px solid var(--line);padding-top:14px}
 .sermon-full.open{display:block}
 .sermon-full p{margin-bottom:14px}
@@ -184,15 +181,15 @@ a{color:inherit;text-decoration:none}
 .casa-pix-btn{background:var(--accent);color:#fff;padding:11px 24px;font-size:13px;font-weight:500;border-radius:2px;white-space:nowrap;cursor:pointer;text-decoration:none;display:inline-block;margin-top:4px}
 .casa-pix-btn:hover{opacity:.85}
 .update-list{max-width:680px;margin:0 auto}
-.update-item{border-left:2px solid var(--line);padding:4px 0 26px 22px;position:relative}
+.update-item{border-left:2px solid var(--line);padding:4px 0 28px 22px;position:relative}
 .update-item::before{content:'';position:absolute;left:-6px;top:4px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
-.update-item-img{width:100%;max-height:220px;object-fit:cover;margin-bottom:12px;border-radius:2px}
+.update-item-img{width:100%;max-height:240px;object-fit:cover;margin-bottom:14px;border-radius:2px;display:block}
 .update-date{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:5px}
 .update-title{font-family:var(--serif);font-size:18px;font-weight:600;margin-bottom:5px}
 .update-body{font-size:13px;color:var(--ink-soft);font-weight:300;line-height:1.7}
 
 /* CONTRIBUA */
-.contrib-hero{background:var(--ink);color:#fff;padding:64px 0 48px;text-align:center;margin-bottom:0}
+.contrib-hero{background:var(--ink);color:#fff;padding:64px 0 48px;text-align:center}
 .contrib-hero .sec-eyebrow{color:var(--gold)}
 .contrib-hero .sec-title{color:#fff}
 .contrib-hero p{color:rgba(255,255,255,.6);font-size:15px;max-width:520px;margin:16px auto 0;font-weight:300;line-height:1.8}
@@ -209,12 +206,20 @@ a{color:inherit;text-decoration:none}
 .contrib-cause-icon{font-size:24px;margin-bottom:10px}
 .contrib-cause-title{font-family:var(--serif);font-size:17px;font-weight:600;margin-bottom:6px}
 .contrib-cause-desc{font-size:12px;color:var(--ink-soft);font-weight:300;line-height:1.6}
-.pix-block{background:var(--accent-soft);border:1px solid #e8d5cb;padding:30px 32px;margin-top:32px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
-.pix-key-group{}
-.pix-key-label{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:8px}
-.pix-key{font-family:var(--serif);font-size:22px;font-weight:600;margin-bottom:4px}
-.pix-key-note{font-size:12px;color:var(--ink-soft);font-weight:300}
-.pix-copy-btn{background:var(--accent);color:#fff;border:none;padding:12px 26px;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--sans);letter-spacing:.04em;border-radius:2px;transition:opacity .2s;white-space:nowrap}
+
+/* PIX — dois blocos distintos */
+.pix-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:32px}
+@media(max-width:600px){.pix-grid{grid-template-columns:1fr}}
+.pix-block{border:1px solid #e8d5cb;padding:26px 28px;display:flex;flex-direction:column;gap:12px}
+.pix-block.regular{background:var(--paper)}
+.pix-block.obra{background:var(--accent-soft)}
+.pix-block-label{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600}
+.pix-block-head{font-family:var(--serif);font-size:20px;font-weight:600;margin-bottom:2px}
+.pix-block-sub{font-size:12px;color:var(--ink-soft);font-weight:300;line-height:1.5}
+.pix-key-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:4px;padding-top:12px;border-top:1px solid var(--line)}
+.pix-key{font-family:var(--serif);font-size:17px;font-weight:600}
+.pix-key-note{font-size:11px;color:var(--ink-soft);font-weight:300;margin-top:2px}
+.pix-copy-btn{background:var(--accent);color:#fff;border:none;padding:9px 20px;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--sans);letter-spacing:.04em;border-radius:2px;transition:opacity .2s;white-space:nowrap;flex-shrink:0}
 .pix-copy-btn:hover{opacity:.85}
 .pix-copy-btn.copied{background:#4a7a4a}
 
@@ -223,20 +228,23 @@ a{color:inherit;text-decoration:none}
 .error-state{text-align:center;padding:30px 20px;color:#a14b4b;font-size:13px;background:#fbf2f0;border:1px solid #f0d8d3}
 
 /* FOOTER */
-.footer{border-top:1px solid var(--line);padding:32px 0;text-align:center;margin-top:0}
+.footer{border-top:1px solid var(--line);padding:32px 0;text-align:center}
 .footer p{font-size:12px;color:var(--ink-soft)}
 
-@media(max-width:600px){
-  .pix-block{flex-direction:column;align-items:flex-start}
-  .casa-pix-block{flex-direction:column}
-}
+@media(max-width:600px){.casa-pix-block{flex-direction:column}}
 </style>
 </head>
 <body>
 
 <nav class="nav">
   <div class="nav-inner">
-    <div class="brand">AD BELÉM <span>BARUERI</span></div>
+    <!-- LOGO: substitua LOGO_URL pelo link da sua imagem, ou remova a tag img para usar apenas o texto -->
+    <a class="brand" onclick="goTo('home')" style="cursor:pointer">
+      <div class="brand-logo-ph" id="brandLogoPh">AD</div>
+      <img class="brand-logo" id="brandLogoImg" src="" alt="AD Belém Barueri" style="display:none"
+           onerror="this.style.display='none';document.getElementById('brandLogoPh').style.display='flex'">
+      <div class="brand-text">AD BELÉM <span>BARUERI</span></div>
+    </a>
     <button class="nav-toggle" onclick="toggleMenu()">☰</button>
     <ul class="nav-links" id="navLinks">
       <li><a onclick="goTo('home')" data-page="home">Início</a></li>
@@ -260,15 +268,12 @@ a{color:inherit;text-decoration:none}
     </div>
   </div>
   <div class="wrap">
-    <!-- Carrossel: eventos especiais da planilha -->
     <div class="carousel" id="carousel">
       <div class="carousel-track" id="carTrack"><div style="color:rgba(255,255,255,.4);padding:40px;font-size:13px;width:100%;text-align:center">Carregando…</div></div>
       <button class="car-nav car-prev" onclick="carMove(-1)">‹</button>
       <button class="car-nav car-next" onclick="carMove(1)">›</button>
       <div class="car-dots" id="carDots"></div>
     </div>
-
-    <!-- Programação fixa -->
     <div class="sec-head">
       <div class="sec-eyebrow">Toda semana</div>
       <h2 class="sec-title">Programação Regular</h2>
@@ -277,16 +282,12 @@ a{color:inherit;text-decoration:none}
     <div class="fixed-schedule">
       <div class="fixed-rows" id="fixedSchedule"><div class="empty-state">Carregando…</div></div>
     </div>
-
-    <!-- Próximos 2 especiais -->
     <div class="sec-head">
       <div class="sec-eyebrow">Não perca</div>
       <h2 class="sec-title">Próximos Eventos Especiais</h2>
       <div class="sec-divider"></div>
     </div>
     <div class="specials-grid" id="specialsGrid"><div class="empty-state" style="grid-column:1/-1">Carregando…</div></div>
-
-    <!-- Avisos -->
     <div class="sec-head">
       <div class="sec-eyebrow">Fique por dentro</div>
       <h2 class="sec-title">Avisos</h2>
@@ -294,7 +295,6 @@ a{color:inherit;text-decoration:none}
     </div>
     <div class="notice-list" id="noticeList"><div class="empty-state">Carregando avisos…</div></div>
   </div>
-
   <div class="social-band">
     <div class="wrap">
       <div class="sec-eyebrow" style="color:var(--gold)">Acompanhe</div>
@@ -310,7 +310,7 @@ a{color:inherit;text-decoration:none}
   </div>
 </div>
 
-<!-- AGENDA (só especiais) -->
+<!-- AGENDA -->
 <div class="page" id="page-agenda">
   <div class="wrap">
     <div class="sec-head" style="margin-top:50px">
@@ -373,14 +373,10 @@ a{color:inherit;text-decoration:none}
       <div class="sec-divider"></div>
       <p style="font-size:14px;color:var(--ink-soft);margin-top:16px;font-weight:300;max-width:520px;margin-left:auto;margin-right:auto">Estamos construindo um novo espaço para receber mais famílias e expandir nosso alcance na cidade.</p>
     </div>
-
-    <!-- Progresso -->
     <div class="casa-progress-wrap">
       <div class="casa-pct-row"><span>Progresso da construção</span><span id="progressPct">—</span></div>
       <div class="casa-bar"><div class="casa-fill" id="progressFill"></div></div>
     </div>
-
-    <!-- PIX Nossa Casa -->
     <div class="casa-pix-block">
       <div class="casa-pix-icon">🏛</div>
       <div class="casa-pix-info">
@@ -390,8 +386,6 @@ a{color:inherit;text-decoration:none}
       </div>
       <a class="casa-pix-btn" onclick="goTo('contribua')">Como Contribuir →</a>
     </div>
-
-    <!-- Atualizações -->
     <div class="sec-head">
       <div class="sec-eyebrow">Linha do tempo</div>
       <h2 class="sec-title">Atualizações da Obra</h2>
@@ -411,67 +405,84 @@ a{color:inherit;text-decoration:none}
     </div>
   </div>
 
-  <!-- Dízimo -->
   <div class="contrib-section">
-    <div class="wrap">
-      <div class="contrib-inner">
-        <div class="contrib-sub">Princípio bíblico</div>
-        <h3 class="contrib-head">Dízimo</h3>
-        <p class="contrib-text">Deus nos chama para devolvermos os primeiros 10% de nossa renda a Ele como ato de fé e confiança. O dízimo sustenta a obra local — o ministério, os cultos, o cuidado pastoral e tudo que acontece na nossa comunidade semana após semana.</p>
-        <div class="contrib-verse">
-          "Trazei todos os dízimos à casa do tesouro, para que haja mantimento na minha casa; e provai-me nisto, diz o Senhor dos Exércitos, se eu não vos abrir as janelas do céu e não derramar sobre vós uma bênção tal que não haja lugar bastante para a recolherdes."
-          <cite>Malaquias 3:10</cite>
-        </div>
+    <div class="wrap"><div class="contrib-inner">
+      <div class="contrib-sub">Princípio bíblico</div>
+      <h3 class="contrib-head">Dízimo</h3>
+      <p class="contrib-text">Deus nos chama para devolvermos os primeiros 10% de nossa renda a Ele como ato de fé e confiança. O dízimo sustenta a obra local — o ministério, os cultos, o cuidado pastoral e tudo que acontece na nossa comunidade semana após semana.</p>
+      <div class="contrib-verse">
+        "Trazei todos os dízimos à casa do tesouro, para que haja mantimento na minha casa; e provai-me nisto, diz o Senhor dos Exércitos, se eu não vos abrir as janelas do céu e não derramar sobre vós uma bênção tal que não haja lugar bastante para a recolherdes."
+        <cite>Malaquias 3:10</cite>
       </div>
-    </div>
+    </div></div>
   </div>
 
-  <!-- Ofertas -->
   <div class="contrib-section" style="background:var(--bg)">
-    <div class="wrap">
-      <div class="contrib-inner">
-        <div class="contrib-sub">Além do dízimo</div>
-        <h3 class="contrib-head">Ofertas e Causas</h3>
-        <p class="contrib-text">É importante imitar Jesus em tudo, inclusive em generosidade. Além do dízimo, suas ofertas podem ir a causas específicas que ampliam o alcance da nossa missão.</p>
-        <div class="contrib-causes">
-          <div class="contrib-cause">
-            <div class="contrib-cause-icon">🏛</div>
-            <div class="contrib-cause-title">Nossa Casa</div>
-            <div class="contrib-cause-desc">Ajude a construir o novo templo — um espaço para as próximas gerações.</div>
-          </div>
-          <div class="contrib-cause">
-            <div class="contrib-cause-icon">🌍</div>
-            <div class="contrib-cause-title">Missões</div>
-            <div class="contrib-cause-desc">Leve a verdadeira Esperança a comunidades locais e ao redor do mundo.</div>
-          </div>
-          <div class="contrib-cause">
-            <div class="contrib-cause-icon">🌐</div>
-            <div class="contrib-cause-title">Alcance Digital</div>
-            <div class="contrib-cause-desc">Transmissões, redes sociais e conteúdo que alcança quem não pode estar presente.</div>
-          </div>
+    <div class="wrap"><div class="contrib-inner">
+      <div class="contrib-sub">Além do dízimo</div>
+      <h3 class="contrib-head">Ofertas e Causas</h3>
+      <p class="contrib-text">É importante imitar Jesus em tudo, inclusive em generosidade. Além do dízimo, suas ofertas podem ir a causas específicas que ampliam o alcance da nossa missão.</p>
+      <div class="contrib-causes">
+        <div class="contrib-cause">
+          <div class="contrib-cause-icon">🏛</div>
+          <div class="contrib-cause-title">Nossa Casa</div>
+          <div class="contrib-cause-desc">Ajude a construir o novo templo — um espaço para as próximas gerações.</div>
+        </div>
+        <div class="contrib-cause">
+          <div class="contrib-cause-icon">🌍</div>
+          <div class="contrib-cause-title">Missões</div>
+          <div class="contrib-cause-desc">Leve a verdadeira Esperança a comunidades locais e ao redor do mundo.</div>
+        </div>
+        <div class="contrib-cause">
+          <div class="contrib-cause-icon">🌐</div>
+          <div class="contrib-cause-title">Alcance Digital</div>
+          <div class="contrib-cause-desc">Transmissões, redes sociais e conteúdo que alcança quem não pode estar presente.</div>
         </div>
       </div>
-    </div>
+    </div></div>
   </div>
 
-  <!-- Como contribuir / PIX -->
   <div class="contrib-section">
-    <div class="wrap">
-      <div class="contrib-inner">
-        <div class="contrib-sub">Simples e rápido</div>
-        <h3 class="contrib-head">Como Contribuir</h3>
-        <p class="contrib-text">Você pode contribuir presencialmente durante os cultos ou pelo PIX a qualquer momento.</p>
-        <div class="pix-block">
-          <div class="pix-key-group">
-            <div class="pix-key-label">Chave PIX</div>
-            <div class="pix-key" id="pixKey">62.769.500/0249-10</div>
-            <div class="pix-key-note">CNPJ · ASSEMBLEIA DE DEUS - BELÉM - BARUERI</div>
+    <div class="wrap"><div class="contrib-inner">
+      <div class="contrib-sub">Simples e rápido</div>
+      <h3 class="contrib-head">Como Contribuir</h3>
+      <p class="contrib-text">Você pode contribuir presencialmente durante os cultos ou pelo PIX a qualquer momento. Temos duas chaves distintas — escolha a que corresponde ao destino da sua contribuição.</p>
+
+      <div class="pix-grid">
+        <!-- PIX REGULAR (dízimo / oferta) -->
+        <div class="pix-block regular">
+          <div>
+            <div class="pix-block-label">Dízimo &amp; Oferta</div>
+            <div class="pix-block-head">Contribuição Regular</div>
+            <div class="pix-block-sub">Para dízimos, ofertas e contribuições gerais da igreja.</div>
           </div>
-          <button class="pix-copy-btn" onclick="copyPix()">Copiar chave</button>
+          <div class="pix-key-row">
+            <div>
+              <div class="pix-key" id="pixKeyRegular">62.769.500/0249-10</div>
+              <div class="pix-key-note">CNPJ · AD BELÉM - BARUERI</div>
+            </div>
+            <button class="pix-copy-btn" onclick="copyPix('regular')">Copiar</button>
+          </div>
         </div>
-        <p style="font-size:12px;color:var(--ink-soft);margin-top:14px;font-weight:300">Ao fazer sua transferência, inclua no campo de mensagem se é dízimo, oferta ou uma causa específica.</p>
+        <!-- PIX OBRA (Nossa Casa) -->
+        <div class="pix-block obra">
+          <div>
+            <div class="pix-block-label">Nossa Casa</div>
+            <div class="pix-block-head">Oferta para a Obra</div>
+            <div class="pix-block-sub">Exclusivo para o projeto de construção do novo templo.</div>
+          </div>
+          <div class="pix-key-row">
+            <div>
+              <div class="pix-key" id="pixKeyObra">00.000.000/0001-00</div>
+              <div class="pix-key-note">CNPJ · Fundo Nossa Casa</div>
+            </div>
+            <button class="pix-copy-btn" onclick="copyPix('obra')">Copiar</button>
+          </div>
+        </div>
       </div>
-    </div>
+
+      <p style="font-size:12px;color:var(--ink-soft);margin-top:16px;font-weight:300">Ao fazer sua transferência, inclua no campo de mensagem se é dízimo, oferta ou uma causa específica.</p>
+    </div></div>
   </div>
 </div>
 
@@ -480,8 +491,10 @@ a{color:inherit;text-decoration:none}
 </div>
 
 <script>
-/* ===== CONFIGURAÇÕES — edite aqui ===== */
-const PIX_KEY = '62.769.500/0249-10'; // substitua pela chave real
+/* ===== CONFIGURAÇÕES ===== */
+const LOGO_URL     = 'https://ad.org.br/wp-content/uploads/2024/03/Logo-AD-Belem-2024-Mono-01.png';                   // cole aqui a URL da logo (Google Drive, Imgur, etc.)
+const PIX_REGULAR  = '62.769.500/0249-10'; // chave PIX dízimo/oferta
+const PIX_OBRA     = '11 93471-6963'; // chave PIX Nossa Casa — substitua
 
 const SHEET_URLS = {
   eventos:'https://docs.google.com/spreadsheets/d/e/2PACX-1vRyhTenbfftqs8iUdYuhP_6XSjAWeRJIHouHTtpTtWgqLRDEDssg8zex00DDDHDu5s_GsmVnQFWQdNy/pub?gid=0&single=true&output=tsv',
@@ -492,6 +505,29 @@ const SHEET_URLS = {
   casa:'https://docs.google.com/spreadsheets/d/e/2PACX-1vRyhTenbfftqs8iUdYuhP_6XSjAWeRJIHouHTtpTtWgqLRDEDssg8zex00DDDHDu5s_GsmVnQFWQdNy/pub?gid=2095369827&single=true&output=tsv',
   casaAtualizacoes:'https://docs.google.com/spreadsheets/d/e/2PACX-1vRyhTenbfftqs8iUdYuhP_6XSjAWeRJIHouHTtpTtWgqLRDEDssg8zex00DDDHDu5s_GsmVnQFWQdNy/pub?gid=812893903&single=true&output=tsv',
 };
+
+/* ===== LOGO ===== */
+(function(){
+  if(!LOGO_URL) return;
+  const img=document.getElementById('brandLogoImg');
+  const ph=document.getElementById('brandLogoPh');
+  img.src=LOGO_URL;
+  img.style.display='block';
+  ph.style.display='none';
+})();
+
+/* ===== PIX ===== */
+document.getElementById('pixKeyRegular').textContent=PIX_REGULAR;
+document.getElementById('pixKeyObra').textContent=PIX_OBRA;
+function copyPix(type){
+  const key = type==='obra' ? PIX_OBRA : PIX_REGULAR;
+  const btn = event.currentTarget;
+  navigator.clipboard.writeText(key).then(()=>{
+    const orig=btn.textContent;
+    btn.textContent='Copiado ✓'; btn.classList.add('copied');
+    setTimeout(()=>{ btn.textContent=orig; btn.classList.remove('copied'); },2500);
+  }).catch(()=>prompt('Copie a chave PIX:',key));
+}
 
 /* ===== TSV PARSER ===== */
 function parseTSV(text){
@@ -520,14 +556,13 @@ async function fetchSheet(url){
 const MONTHS=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
 const MONTHS_FULL=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 const DAYS=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
-const DAYS_FULL=['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'];
 function parseDate(d){ if(!d) return null; const p=d.split('-').map(Number); if(p.length!==3||p.some(isNaN)) return null; return new Date(p[0],p[1]-1,p[2]); }
 function fmtShort(d){ const dt=parseDate(d); if(!dt) return {num:'–',mon:'',wd:''}; return {num:dt.getDate(),mon:MONTHS[dt.getMonth()],wd:DAYS[dt.getDay()]}; }
 function fmtTime(t){ if(!t) return ''; const [h,m]=t.split(':'); return h+'h'+(m&&m!=='00'?m:''); }
 function escHtml(s){ return s==null?'':String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function isEspecial(e){ return (e.tipo||'').trim().toLowerCase()==='especial'; }
 
-/* ===== ESTADO GLOBAL ===== */
+/* ===== ESTADO ===== */
 let DATA={eventos:null,avisos:null,igrejas:null,sermoes:null,sobre:null,casa:null,casaAtualizacoes:null};
 
 /* ===== NAVEGAÇÃO ===== */
@@ -540,32 +575,60 @@ function goTo(page){
 }
 function toggleMenu(){ document.getElementById('navLinks').classList.toggle('open'); }
 
-/* ===== CAROUSEL (eventos especiais) ===== */
+/* ===== CARROSSEL — intercala aviso/evento/aviso/evento ===== */
 let carIdx=0, carSlides=[];
+function buildCarSlides(){
+  const especiais=(DATA.eventos||[]).filter(isEspecial).slice(0,2);
+  const avisos=(DATA.avisos||[]).slice(0,2);
+  // intercala: aviso, evento, aviso, evento (só o que existe)
+  const slides=[];
+  const maxLen=Math.max(especiais.length,avisos.length);
+  for(let i=0;i<maxLen;i++){
+    if(i<avisos.length) slides.push({kind:'aviso', data:avisos[i]});
+    if(i<especiais.length) slides.push({kind:'evento', data:especiais[i]});
+  }
+  return slides;
+}
 function renderCarousel(){
-  const slides=(DATA.eventos||[]).filter(isEspecial);
-  carSlides=slides;
+  carSlides=buildCarSlides();
   const track=document.getElementById('carTrack');
   const dots=document.getElementById('carDots');
-  if(!slides.length){
-    track.innerHTML='<div style="color:rgba(255,255,255,.4);padding:40px;font-size:13px;width:100%;text-align:center">Nenhum evento especial cadastrado.</div>';
+  if(!carSlides.length){
+    track.innerHTML='<div style="color:rgba(255,255,255,.4);padding:40px;font-size:13px;width:100%;text-align:center">Nenhum destaque cadastrado.</div>';
     dots.innerHTML=''; return;
   }
-  track.innerHTML=slides.map(s=>{
-    const fd=fmtShort(s.data);
-    const hasBg=!!s.foto_url;
-    return `<div class="car-slide">
-      ${hasBg?`<img src="${escHtml(s.foto_url)}" alt="" onerror="this.style.display='none'">`:''}
-      <div class="car-bg" ${hasBg?'style="opacity:.6"':''}></div>
-      <div class="car-overlay"></div>
-      <div class="car-content">
-        <div class="car-tag">Evento Especial</div>
-        <div class="car-title">${escHtml(s.nome)}</div>
-        <div class="car-desc">${fd.wd?fd.wd+', ':''} ${fd.num} de ${MONTHS_FULL[parseDate(s.data)?.getMonth()]} · ${fmtTime(s.hora)}${s.local?' · '+escHtml(s.local):''}</div>
-      </div>
-    </div>`;
+  track.innerHTML=carSlides.map(s=>{
+    const hasBg=!!(s.data.foto_url);
+    if(s.kind==='aviso'){
+      const n=s.data;
+      return `<div class="car-slide"${n.link_aviso?` style="cursor:pointer" onclick="window.open('${escHtml(n.link_aviso)}','_blank')"`:''}>
+        ${hasBg?`<img class="car-bg-img" src="${escHtml(n.foto_url)}" alt="" onerror="this.style.display='none'">`:''}
+        <div class="car-bg"${hasBg?' style="opacity:.55"':''}></div>
+        <div class="car-overlay"></div>
+        <div class="car-content">
+          <div class="car-tag">📢 Aviso</div>
+          <div class="car-title">${escHtml(n.titulo)}</div>
+          <div class="car-desc">${escHtml(n.corpo)}</div>
+          ${n.link_aviso?`<div style="margin-top:10px;font-size:11px;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;font-weight:600">Saiba mais →</div>`:''}
+        </div>
+      </div>`;
+    } else {
+      const e=s.data;
+      const fd=fmtShort(e.data);
+      const mo=parseDate(e.data);
+      return `<div class="car-slide">
+        ${hasBg?`<img class="car-bg-img" src="${escHtml(e.foto_url)}" alt="" onerror="this.style.display='none'">`:''}
+        <div class="car-bg"${hasBg?' style="opacity:.55"':''}></div>
+        <div class="car-overlay"></div>
+        <div class="car-content">
+          <div class="car-tag">★ Evento Especial</div>
+          <div class="car-title">${escHtml(e.nome)}</div>
+          <div class="car-desc">${fd.wd?fd.wd+', ':''} ${fd.num} de ${mo?MONTHS_FULL[mo.getMonth()]:''} · ${fmtTime(e.hora)}${e.local?' · '+escHtml(e.local):''}</div>
+        </div>
+      </div>`;
+    }
   }).join('');
-  dots.innerHTML=slides.map((_,i)=>`<div class="car-dot${i===0?' active':''}" onclick="carGo(${i})"></div>`).join('');
+  dots.innerHTML=carSlides.map((_,i)=>`<div class="car-dot${i===0?' active':''}" onclick="carGo(${i})"></div>`).join('');
   carIdx=0;
 }
 function carGo(i){ carIdx=i; updateCarousel(); }
@@ -576,7 +639,7 @@ function updateCarousel(){
 }
 setInterval(()=>carMove(1),6000);
 
-/* ===== PROGRAMAÇÃO FIXA (eventos "programacao semanal") ===== */
+/* ===== PROGRAMAÇÃO FIXA ===== */
 function renderFixedSchedule(){
   const el=document.getElementById('fixedSchedule');
   const rows=(DATA.eventos||[]).filter(e=>(e.tipo||'').trim().toLowerCase()==='programacao semanal');
@@ -589,20 +652,16 @@ function renderFixedSchedule(){
     </div>`).join('');
 }
 
-/* ===== PRÓXIMOS 2 ESPECIAIS NA HOME ===== */
+/* ===== PRÓXIMOS 2 ESPECIAIS ===== */
 function renderSpecialsGrid(){
   const el=document.getElementById('specialsGrid');
   const now=new Date();
-  const upcoming=(DATA.eventos||[])
-    .filter(e=>isEspecial(e)&&e.data)
+  const upcoming=(DATA.eventos||[]).filter(e=>isEspecial(e)&&e.data)
     .map(e=>({...e,_dt:new Date(e.data+'T'+(e.hora||'00:00'))}))
-    .filter(e=>e._dt>now)
-    .sort((a,b)=>a._dt-b._dt)
-    .slice(0,2);
+    .filter(e=>e._dt>now).sort((a,b)=>a._dt-b._dt).slice(0,2);
   if(!upcoming.length){ el.innerHTML='<div class="empty-state" style="grid-column:1/-1">Nenhum evento especial próximo.</div>'; return; }
   el.innerHTML=upcoming.map(e=>{
-    const fd=fmtShort(e.data);
-    const mo=parseDate(e.data);
+    const fd=fmtShort(e.data); const mo=parseDate(e.data);
     return `<div class="special-card">
       <div class="special-card-tag">★ Evento Especial</div>
       <div class="special-card-date">${fd.wd}, ${fd.num} de ${mo?MONTHS_FULL[mo.getMonth()]:''}</div>
@@ -617,27 +676,33 @@ function renderNotices(){
   const el=document.getElementById('noticeList');
   const list=DATA.avisos||[];
   if(!list.length){ el.innerHTML='<div class="empty-state">Nenhum aviso no momento.</div>'; return; }
-  el.innerHTML=list.map(n=>`
-    <div class="notice">
+  el.innerHTML=list.map(n=>{
+    const hasLink=!!(n.link_aviso&&n.link_aviso.trim());
+    const wrapOpen=hasLink
+      ?`<div class="notice clickable" onclick="window.open('${escHtml(n.link_aviso)}','_blank')" role="link" tabindex="0">`
+      :`<div class="notice">`;
+    return `${wrapOpen}
       ${n.foto_url?`<img class="notice-img" src="${escHtml(n.foto_url)}" alt="" onerror="this.remove()">`:''}
       <div class="notice-body-wrap">
         <div class="notice-text-block">
           <div class="notice-title">${escHtml(n.titulo)}</div>
           <div class="notice-body">${escHtml(n.corpo)}</div>
+          ${hasLink?`<div class="notice-link-badge">Ver mais →</div>`:''}
         </div>
         <div class="notice-date">${escHtml(n.data)}</div>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
-/* ===== AGENDA (só especiais) ===== */
+/* ===== AGENDA ===== */
 function renderAgenda(){
   const el=document.getElementById('agendaList');
   const evs=(DATA.eventos||[]).filter(e=>isEspecial(e)&&e.data)
     .sort((a,b)=>new Date(a.data+'T'+(a.hora||'00:00'))-new Date(b.data+'T'+(b.hora||'00:00')));
   if(!evs.length){ el.innerHTML='<div class="empty-state">Nenhum evento especial cadastrado.</div>'; return; }
   const now=new Date(); now.setHours(0,0,0,0);
-  let html=''; let lastGroup='';
+  let html='',lastGroup='';
   evs.forEach(ev=>{
     const d=parseDate(ev.data); if(!d) return;
     const diff=Math.floor((d-now)/86400000);
@@ -660,8 +725,8 @@ function renderAgenda(){
   el.innerHTML=html;
 }
 
-/* ===== IGREJAS (Google Maps) ===== */
-function mapsUrl(addr){ return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(addr); }
+/* ===== IGREJAS ===== */
+function mapsUrl(q){ return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q); }
 function renderChurches(){
   const el=document.getElementById('churchGrid');
   const list=DATA.igrejas||[];
@@ -669,7 +734,7 @@ function renderChurches(){
   el.innerHTML=list.map(c=>`
     <div class="church-card" onclick="window.open('${mapsUrl(c.nome+' '+c.endereco)}','_blank')" title="Abrir no Google Maps">
       <div class="church-img">
-        ${c.foto_url?`<img src="${escHtml(c.foto_url)}" alt="${escHtml(c.nome)}" onerror="this.parentElement.innerHTML='<div class=&quot;church-img-ph&quot;>Foto indisponível</div>'">`:`<div class="church-img-ph">📷 Sem foto</div>`}
+        ${c.foto_url?`<img src="${escHtml(c.foto_url)}" alt="${escHtml(c.nome)}" onerror="this.parentElement.innerHTML='<div class=\\'church-img-ph\\'>Foto indisponível</div>'">`:`<div class="church-img-ph">📷 Sem foto</div>`}
       </div>
       <div class="church-body">
         <div class="church-name">${escHtml(c.nome)}</div>
@@ -707,7 +772,7 @@ function renderSermons(filter=''){
   }).join('');
 }
 function toggleSermon(id){
-  const f=document.getElementById('full-'+id), e=document.getElementById('exp-'+id);
+  const f=document.getElementById('full-'+id),e=document.getElementById('exp-'+id);
   e.textContent=f.classList.toggle('open')?'Fechar ↑':'Ler →';
 }
 function filterSermons(v){ renderSermons(v); }
@@ -743,38 +808,21 @@ function renderCasa(){
     </div>`).join('');
 }
 
-/* ===== PIX ===== */
-document.getElementById('pixKey').textContent=PIX_KEY;
-function copyPix(){
-  const btn=document.querySelector('.pix-copy-btn');
-  navigator.clipboard.writeText(PIX_KEY).then(()=>{
-    btn.textContent='Copiado ✓'; btn.classList.add('copied');
-    setTimeout(()=>{ btn.textContent='Copiar chave'; btn.classList.remove('copied'); },2500);
-  }).catch(()=>{ prompt('Copie a chave PIX:', PIX_KEY); });
-}
-
 /* ===== INIT ===== */
 async function loadAll(){
   const [eventos,avisos,igrejas,sermoes,sobre,casa,casaAtualizacoes]=await Promise.all([
-    fetchSheet(SHEET_URLS.eventos),
-    fetchSheet(SHEET_URLS.avisos),
-    fetchSheet(SHEET_URLS.igrejas),
-    fetchSheet(SHEET_URLS.sermoes),
-    fetchSheet(SHEET_URLS.sobre),
-    fetchSheet(SHEET_URLS.casa),
+    fetchSheet(SHEET_URLS.eventos),fetchSheet(SHEET_URLS.avisos),fetchSheet(SHEET_URLS.igrejas),
+    fetchSheet(SHEET_URLS.sermoes),fetchSheet(SHEET_URLS.sobre),fetchSheet(SHEET_URLS.casa),
     fetchSheet(SHEET_URLS.casaAtualizacoes),
   ]);
-  DATA={eventos:eventos||[],avisos:avisos||[],igrejas:igrejas||[],sermoes:sermoes||[],sobre:sobre||[],casa:casa||[],casaAtualizacoes:casaAtualizacoes||[]};
+  DATA={
+    eventos:eventos||[],avisos:avisos||[],igrejas:igrejas||[],
+    sermoes:sermoes||[],sobre:sobre||[],casa:casa||[],casaAtualizacoes:casaAtualizacoes||[]
+  };
   _allSermons=DATA.sermoes;
-  renderCarousel();
-  renderFixedSchedule();
-  renderSpecialsGrid();
-  renderNotices();
-  renderAgenda();
-  renderChurches();
-  renderSermons();
-  renderTimeline();
-  renderCasa();
+  renderCarousel(); renderFixedSchedule(); renderSpecialsGrid();
+  renderNotices(); renderAgenda(); renderChurches();
+  renderSermons(); renderTimeline(); renderCasa();
 }
 loadAll();
 </script>
