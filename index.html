@@ -4,234 +4,269 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AD BELÉM - BARUERI</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,600;0,700;1,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#faf8f4;--paper:#ffffff;--ink:#22241f;--ink-soft:#5a5d54;
+  --bg:#faf8f4;--paper:#fff;--ink:#1e1e1e;--ink-soft:#5a5d54;
   --line:#e2ddd2;--accent:#7a2e2e;--accent-soft:#f3e9e4;--gold:#a9863a;
-  --serif:'Cormorant Garamond',serif;--sans:'Inter',sans-serif;
+  --bodoni:'Bodoni Moda',serif;--sans:'Montserrat',sans-serif;
 }
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:300;line-height:1.6}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:300;line-height:1.65}
 img{max-width:100%;display:block}
 a{color:inherit;text-decoration:none}
 .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
 
 /* NAV */
-.nav{position:sticky;top:0;z-index:100;background:rgba(250,248,244,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-.nav-inner{max-width:1080px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+.nav{position:sticky;top:0;z-index:100;background:rgba(250,248,244,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{max-width:1080px;margin:0 auto;padding:13px 24px;display:flex;align-items:center;justify-content:space-between}
 .brand{display:flex;align-items:center;gap:10px;cursor:pointer}
-.brand-logo{height:38px;width:auto;object-fit:contain;display:none}
-.brand-logo-ph{height:38px;width:38px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:700;font-family:var(--serif);flex-shrink:0}
-.brand-text{font-family:var(--serif);font-size:20px;font-weight:700;letter-spacing:.02em;line-height:1.1}
+.brand-logo{height:36px;width:auto;object-fit:contain;display:none}
+.brand-logo-ph{height:36px;width:36px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:700;font-family:var(--sans);flex-shrink:0}
+.brand-text{font-family:var(--sans);font-size:16px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;line-height:1.1}
 .brand-text span{color:var(--accent)}
-.nav-links{display:flex;gap:24px;list-style:none}
-.nav-links a{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);font-weight:500;padding-bottom:3px;border-bottom:1px solid transparent;transition:all .2s;cursor:pointer}
+.nav-links{display:flex;gap:22px;list-style:none}
+.nav-links a{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);font-weight:500;padding-bottom:3px;border-bottom:1px solid transparent;transition:all .2s;cursor:pointer}
 .nav-links a:hover,.nav-links a.active{color:var(--accent);border-color:var(--accent)}
 .nav-toggle{display:none;background:none;border:none;font-size:22px;cursor:pointer;color:var(--ink)}
 @media(max-width:900px){
-  .nav-links{position:fixed;top:66px;left:0;right:0;bottom:0;background:var(--paper);flex-direction:column;padding:32px 24px;gap:22px;transform:translateX(100%);transition:transform .3s;overflow-y:auto;z-index:99}
+  .nav-links{position:fixed;top:62px;left:0;right:0;bottom:0;background:var(--paper);flex-direction:column;padding:32px 24px;gap:20px;transform:translateX(100%);transition:transform .3s;overflow-y:auto;z-index:99}
   .nav-links.open{transform:translateX(0)}
   .nav-toggle{display:block}
 }
 
 /* PAGES */
-.page{display:none;animation:fadeIn .4s ease}
+.page{display:none;animation:fadeIn .35s ease}
 .page.active{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 
 /* HERO */
-.hero{padding:70px 0 50px;text-align:center;border-bottom:1px solid var(--line)}
-.hero-eyebrow{font-size:12px;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);font-weight:500;margin-bottom:14px}
-.hero-title{font-family:var(--serif);font-size:clamp(36px,6vw,64px);font-weight:600;line-height:1.1;margin-bottom:16px}
-.hero-sub{font-size:16px;color:var(--ink-soft);max-width:480px;margin:0 auto;font-weight:300}
+.hero{padding:72px 0 52px;text-align:center;border-bottom:1px solid var(--line)}
+.hero-eyebrow{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:14px}
+.hero-title{font-family:var(--bodoni);font-size:clamp(36px,6vw,68px);font-weight:700;line-height:1.08;margin-bottom:18px}
+.hero-sub{font-size:15px;color:var(--ink-soft);max-width:460px;margin:0 auto;font-weight:300;letter-spacing:.01em}
 
 /* SECTION HEADER */
 .sec-head{text-align:center;margin:64px 0 36px}
-.sec-eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:10px}
-.sec-title{font-family:var(--serif);font-size:clamp(26px,4vw,38px);font-weight:600}
-.sec-divider{width:40px;height:2px;background:var(--accent);margin:18px auto 0}
+.sec-eyebrow{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:10px}
+.sec-title{font-family:var(--bodoni);font-size:clamp(24px,4vw,36px);font-weight:600}
+.sec-divider{width:36px;height:2px;background:var(--accent);margin:16px auto 0}
 
-/* CAROUSEL */
-.carousel{position:relative;margin:40px 0;overflow:hidden;border-radius:4px;background:var(--ink);min-height:340px}
-.carousel-track{display:flex;transition:transform .5s cubic-bezier(.4,0,.2,1)}
-.car-slide{min-width:100%;position:relative;height:340px;display:flex;align-items:flex-end;overflow:hidden}
-.car-slide .car-bg-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.52}
-.car-bg{position:absolute;inset:0;background:linear-gradient(135deg,#3a3530,#22241f)}
-.car-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.68) 0%,transparent 65%)}
-.car-content{position:relative;z-index:2;padding:32px 40px;color:#fff}
-.car-tag{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:8px}
-.car-title{font-family:var(--serif);font-size:clamp(22px,3.5vw,36px);font-weight:600;margin-bottom:6px;max-width:580px}
-.car-desc{font-size:13px;font-weight:300;opacity:.85;max-width:500px;line-height:1.6}
-.car-link-hint{margin-top:10px;font-size:11px;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;font-weight:600}
-.car-nav{position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:16px;cursor:pointer;z-index:3;display:flex;align-items:center;justify-content:center;transition:background .2s}
-.car-nav:hover{background:rgba(255,255,255,.3)}
-.car-prev{left:14px}.car-next{right:14px}
-.car-dots{position:absolute;bottom:14px;right:20px;z-index:3;display:flex;gap:6px}
-.car-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.4);cursor:pointer;transition:background .2s}
-.car-dot.active{background:#fff}
-@media(max-width:600px){.car-slide{height:280px}.car-content{padding:22px 20px}}
+/* ── CARROSSEL FULL-WIDTH ── */
+.carousel-fw{position:relative;width:100%;overflow:hidden;background:var(--ink);height:520px}
+@media(max-width:768px){.carousel-fw{height:380px}}
+@media(max-width:480px){.carousel-fw{height:300px}}
+.carousel-track{display:flex;height:100%;transition:transform .55s cubic-bezier(.4,0,.2,1)}
+.car-slide{min-width:100%;height:100%;position:relative;display:flex;align-items:flex-end;overflow:hidden}
+.car-slide .car-bg-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.5}
+.car-bg{position:absolute;inset:0;background:linear-gradient(135deg,#2c2520,#1a1a1a)}
+.car-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.78) 0%,rgba(0,0,0,.1) 55%,transparent 100%)}
+.car-content{position:relative;z-index:2;padding:44px 60px;color:#fff;max-width:720px}
+@media(max-width:600px){.car-content{padding:28px 24px}}
+.car-tag{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:10px}
+.car-title{font-family:var(--bodoni);font-size:clamp(26px,4vw,46px);font-weight:700;margin-bottom:10px;line-height:1.1}
+.car-desc{font-size:13px;font-weight:300;opacity:.85;max-width:480px;line-height:1.65}
+.car-link-hint{margin-top:12px;font-size:10px;color:var(--gold);letter-spacing:.15em;text-transform:uppercase;font-weight:600}
+.car-nav{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:18px;cursor:pointer;z-index:3;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.car-nav:hover{background:rgba(255,255,255,.28)}
+.car-prev{left:18px}.car-next{right:18px}
+.car-dots{position:absolute;bottom:18px;right:24px;z-index:3;display:flex;gap:7px}
+.car-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.38);cursor:pointer;transition:background .2s,transform .2s}
+.car-dot.active{background:#fff;transform:scale(1.3)}
 
 /* PRÓXIMOS 2 ESPECIAIS */
-.specials-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:0 0 48px}
-@media(max-width:600px){.specials-grid{grid-template-columns:1fr}}
-.special-card{background:var(--paper);border:1px solid var(--line);border-top:3px solid var(--gold);padding:22px}
-.special-card-tag{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:8px}
-.special-card-date{font-family:var(--serif);font-size:15px;color:var(--ink-soft);margin-bottom:4px}
-.special-card-name{font-family:var(--serif);font-size:20px;font-weight:600;margin-bottom:6px}
-.special-card-meta{font-size:12px;color:var(--ink-soft)}
+.specials-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:0 0 52px}
+@media(max-width:560px){.specials-grid{grid-template-columns:1fr}}
+.special-card{background:var(--paper);border:1px solid var(--line);border-top:3px solid var(--gold);padding:22px 24px}
+.special-card-tag{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:8px}
+.special-card-date{font-size:13px;color:var(--ink-soft);margin-bottom:5px;font-weight:400}
+.special-card-name{font-family:var(--bodoni);font-size:20px;font-weight:600;margin-bottom:6px;line-height:1.25}
+.special-card-meta{font-size:11px;color:var(--ink-soft);font-weight:400}
 
 /* PROGRAMAÇÃO FIXA */
-.fixed-schedule{background:var(--paper);border:1px solid var(--line);padding:28px 32px;margin-bottom:56px}
+.fixed-schedule{background:var(--paper);border:1px solid var(--line);padding:26px 32px;margin-bottom:56px}
 .fixed-rows{display:flex;flex-direction:column}
-.fixed-row{display:flex;align-items:center;gap:20px;padding:13px 0;border-bottom:1px solid var(--line)}
+.fixed-row{display:flex;align-items:center;gap:20px;padding:12px 0;border-bottom:1px solid var(--line)}
 .fixed-row:last-child{border-bottom:none}
-.fixed-day{min-width:90px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--accent)}
-.fixed-name{font-size:15px;font-weight:500;flex:1}
-.fixed-meta{font-size:12px;color:var(--ink-soft);text-align:right;white-space:nowrap}
+.fixed-day{min-width:100px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--accent)}
+.fixed-name{font-size:14px;font-weight:500;flex:1}
+.fixed-meta{font-size:11px;color:var(--ink-soft);text-align:right;white-space:nowrap;font-weight:400}
 
-/* AVISOS */
-.notice-list{display:flex;flex-direction:column;gap:12px;margin:0 0 56px}
-.notice{background:var(--paper);border:1px solid var(--line);border-left:3px solid var(--accent);overflow:hidden;transition:border-color .2s,box-shadow .2s}
+/* ── AVISOS MAGAZINE ── */
+.notice-list{display:flex;flex-direction:column;gap:0;margin:0 0 60px;border-top:1px solid var(--line)}
+.notice{background:var(--paper);border-bottom:1px solid var(--line);overflow:hidden;transition:background .2s}
 .notice.clickable{cursor:pointer}
-.notice.clickable:hover{border-color:var(--accent);box-shadow:0 2px 12px rgba(122,46,46,.1)}
-.notice-img{width:100%;height:180px;object-fit:cover;display:block}
-.notice-body-wrap{padding:16px 20px;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
-.notice-text-block{flex:1;min-width:180px}
-.notice-title{font-weight:500;font-size:15px;margin-bottom:4px}
-.notice-body{font-size:13px;color:var(--ink-soft);font-weight:300;line-height:1.6}
-.notice-date{font-size:11px;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;padding-top:2px}
-.notice-link-badge{display:inline-flex;align-items:center;gap:4px;margin-top:8px;font-size:11px;color:var(--accent);font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.notice.clickable:hover{background:#f8f4ef}
+
+/* com imagem: layout magazine horizontal */
+.notice.has-img{display:grid;grid-template-columns:42% 1fr;min-height:220px}
+.notice.has-img .notice-img-wrap{overflow:hidden;position:relative}
+.notice.has-img .notice-img-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}
+.notice.clickable.has-img:hover .notice-img-wrap img{transform:scale(1.04)}
+.notice.has-img .notice-body-wrap{padding:28px 32px;display:flex;flex-direction:column;justify-content:center}
+@media(max-width:600px){
+  .notice.has-img{grid-template-columns:1fr;grid-template-rows:200px auto}
+  .notice.has-img .notice-img-wrap{height:200px}
+  .notice.has-img .notice-body-wrap{padding:20px}
+}
+/* sem imagem: layout simples */
+.notice:not(.has-img) .notice-body-wrap{padding:20px 24px;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
+
+.notice-eyebrow{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:8px}
+.notice-title{font-family:var(--bodoni);font-size:clamp(17px,2.2vw,22px);font-weight:600;margin-bottom:8px;line-height:1.25}
+.notice-body{font-size:13px;color:var(--ink-soft);font-weight:300;line-height:1.65}
+.notice-date{font-size:10px;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;font-weight:600;margin-top:12px}
+.notice-link-badge{display:inline-flex;align-items:center;gap:4px;margin-top:12px;font-size:10px;color:var(--accent);font-weight:600;letter-spacing:.08em;text-transform:uppercase}
 
 /* SOCIAL */
-.social-band{background:var(--ink);color:#fff;padding:48px 0;margin-top:20px;text-align:center}
-.social-band .sec-title{color:#fff}
-.social-sub{color:rgba(255,255,255,.55);font-size:14px;margin-top:8px;margin-bottom:26px}
-.social-links{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
-.social-btn{display:flex;align-items:center;gap:7px;padding:10px 20px;border:1px solid rgba(255,255,255,.22);border-radius:30px;font-size:13px;font-weight:500;transition:all .2s;background:rgba(255,255,255,.04)}
+.social-band{background:var(--ink);color:#fff;padding:52px 0;margin-top:20px;text-align:center}
+.social-band-title{font-family:var(--bodoni);font-size:clamp(24px,4vw,36px);font-weight:600;color:#fff;margin-bottom:8px}
+.social-sub{color:rgba(255,255,255,.5);font-size:13px;margin-bottom:28px;font-weight:300}
+.social-links{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.social-btn{display:flex;align-items:center;gap:7px;padding:10px 22px;border:1px solid rgba(255,255,255,.2);border-radius:2px;font-size:12px;font-weight:500;transition:all .2s;background:rgba(255,255,255,.04);letter-spacing:.04em}
 .social-btn:hover{background:#fff;color:var(--ink)}
 
-/* AGENDA */
-.agenda-group-title{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);font-weight:600;margin:28px 0 12px}
+/* ── AGENDA — cards magazine ── */
+.agenda-group-title{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600;margin:32px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--line)}
 .agenda-group-title:first-child{margin-top:0}
-.event-row{background:var(--paper);border:1px solid var(--line);border-left:3px solid var(--gold);margin-bottom:10px;transition:border-color .2s;overflow:hidden}
-.event-row:hover{border-color:var(--accent)}
-.event-row-img{width:100%;height:200px;object-fit:cover;display:block}
-.event-row-body{padding:18px 22px;display:flex;gap:20px;align-items:flex-start}
-.ev-date{min-width:50px;text-align:center}
-.ev-date b{font-family:var(--serif);font-size:27px;font-weight:700;display:block;line-height:1}
-.ev-date small{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft)}
+.event-card{background:var(--paper);border:1px solid var(--line);margin-bottom:14px;overflow:hidden;transition:box-shadow .2s}
+.event-card:hover{box-shadow:0 4px 20px rgba(0,0,0,.08)}
+/* com imagem: layout horizontal */
+.event-card.has-img{display:grid;grid-template-columns:38% 1fr}
+.event-card.has-img .ev-img-wrap{overflow:hidden;position:relative;min-height:200px}
+.event-card.has-img .ev-img-wrap img{width:100%;height:100%;object-fit:cover;display:block}
+.event-card.has-img .ev-body-wrap{padding:24px 28px;display:flex;flex-direction:column;justify-content:center}
+/* sem imagem */
+.event-card:not(.has-img) .ev-body-wrap{padding:20px 24px;display:flex;gap:18px;align-items:flex-start}
+@media(max-width:600px){
+  .event-card.has-img{grid-template-columns:1fr;grid-template-rows:200px auto}
+  .event-card.has-img .ev-img-wrap{min-height:200px}
+  .event-card.has-img .ev-body-wrap{padding:20px}
+}
+.ev-date-badge{display:flex;flex-direction:column;align-items:center;min-width:48px;padding-top:2px}
+.ev-date-badge b{font-family:var(--bodoni);font-size:30px;font-weight:700;line-height:1;color:var(--ink)}
+.ev-date-badge small{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-soft);margin-top:2px}
 .ev-body{flex:1}
-.ev-tag{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:5px}
-.ev-name{font-family:var(--serif);font-size:19px;font-weight:600;margin-bottom:4px}
-.ev-desc{font-size:13px;color:var(--ink-soft);font-weight:300;margin-bottom:7px;line-height:1.6}
-.ev-meta{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--ink-soft)}
+.ev-tag{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:6px}
+.ev-name{font-family:var(--bodoni);font-size:clamp(17px,2.2vw,22px);font-weight:600;margin-bottom:6px;line-height:1.25}
+.ev-desc{font-size:12px;color:var(--ink-soft);font-weight:300;margin-bottom:8px;line-height:1.65}
+.ev-meta{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--ink-soft);font-weight:400}
 
 /* IGREJAS */
-.church-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin:0 0 60px}
+.church-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin:0 0 60px}
 .church-card{background:var(--paper);border:1px solid var(--line);cursor:pointer;transition:border-color .2s,transform .15s}
 .church-card:hover{border-color:var(--accent);transform:translateY(-2px)}
-.church-img{height:180px;background:#e8e4da;overflow:hidden;position:relative}
-.church-img img{width:100%;height:100%;object-fit:cover}
+.church-img{height:190px;background:#e8e4da;overflow:hidden;position:relative}
+.church-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.church-card:hover .church-img img{transform:scale(1.04)}
 .church-img-ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#bbb;font-size:12px}
-.church-body{padding:20px}
-.church-name{font-family:var(--serif);font-size:20px;font-weight:600;margin-bottom:10px}
-.church-detail{font-size:13px;color:var(--ink-soft);margin-bottom:5px;display:flex;gap:8px;line-height:1.5}
-.church-detail b{color:var(--ink);font-weight:500;min-width:58px}
-.church-maps{display:inline-flex;align-items:center;gap:6px;margin-top:12px;font-size:12px;color:var(--accent);font-weight:500;letter-spacing:.04em;text-transform:uppercase;border-bottom:1px solid var(--accent-soft)}
+.church-body{padding:20px 22px}
+.church-name{font-family:var(--bodoni);font-size:19px;font-weight:600;margin-bottom:10px;line-height:1.2}
+.church-detail{font-size:12px;color:var(--ink-soft);margin-bottom:5px;display:flex;gap:8px;line-height:1.55}
+.church-detail b{color:var(--ink);font-weight:600;min-width:58px;font-size:11px;letter-spacing:.04em}
+.church-maps{display:inline-flex;align-items:center;gap:5px;margin-top:12px;font-size:11px;color:var(--accent);font-weight:600;letter-spacing:.06em;text-transform:uppercase}
 
 /* SERMÕES */
-.sermon-search{max-width:420px;margin:0 auto 32px}
-.sermon-search input{width:100%;padding:12px 18px;border:1px solid var(--line);background:var(--paper);font-family:var(--sans);font-size:14px;outline:none}
+.sermon-search{max-width:440px;margin:0 auto 36px}
+.sermon-search input{width:100%;padding:12px 18px;border:1px solid var(--line);background:var(--paper);font-family:var(--sans);font-size:13px;outline:none;letter-spacing:.02em}
 .sermon-search input:focus{border-color:var(--accent)}
 .sermon-item{border-bottom:1px solid var(--line);overflow:hidden}
 .sermon-item:first-child{border-top:1px solid var(--line)}
-.sermon-img{width:100%;height:200px;object-fit:cover;display:block}
-.sermon-inner{padding:20px 4px;cursor:pointer}
+/* com imagem */
+.sermon-item.has-img .sermon-img-wrap{overflow:hidden;height:240px}
+.sermon-item.has-img .sermon-img-wrap img{width:100%;height:100%;object-fit:cover;display:block}
+.sermon-inner{padding:22px 4px;cursor:pointer}
 .sermon-top{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}
-.sermon-title{font-family:var(--serif);font-size:21px;font-weight:600;margin-bottom:4px}
-.sermon-meta{font-size:12px;color:var(--ink-soft);display:flex;gap:12px;flex-wrap:wrap}
-.sermon-excerpt{font-size:13px;color:var(--ink-soft);font-weight:300;margin-top:7px;line-height:1.6;max-width:680px}
-.sermon-expand{font-size:11px;color:var(--gold);text-transform:uppercase;letter-spacing:.08em;white-space:nowrap;font-weight:600;flex-shrink:0}
-.sermon-full{display:none;margin-top:14px;font-size:14px;line-height:1.9;color:var(--ink);font-weight:300;border-top:1px solid var(--line);padding-top:14px}
+.sermon-title{font-family:var(--bodoni);font-size:clamp(18px,2.5vw,23px);font-weight:600;margin-bottom:5px;line-height:1.2}
+.sermon-meta{font-size:11px;color:var(--ink-soft);display:flex;gap:12px;flex-wrap:wrap;font-weight:400}
+.sermon-excerpt{font-size:13px;color:var(--ink-soft);font-weight:300;margin-top:8px;line-height:1.65;max-width:680px}
+.sermon-expand{font-size:10px;color:var(--gold);text-transform:uppercase;letter-spacing:.1em;white-space:nowrap;font-weight:600;flex-shrink:0;padding-top:4px}
+/* vídeo embed */
+.sermon-video{margin-top:18px;position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:2px}
+.sermon-video iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none}
+/* texto expandido */
+.sermon-full{display:none;margin-top:16px;font-size:14px;line-height:1.9;color:var(--ink);font-weight:300;border-top:1px solid var(--line);padding-top:16px}
 .sermon-full.open{display:block}
 .sermon-full p{margin-bottom:14px}
-.sermon-full h3{font-family:var(--serif);font-size:18px;font-weight:600;margin:20px 0 8px;color:var(--ink)}
-.sermon-full blockquote{border-left:3px solid var(--gold);padding:10px 16px;background:var(--accent-soft);font-style:italic;margin:16px 0;font-family:var(--serif);font-size:16px}
+.sermon-full h3{font-family:var(--bodoni);font-size:19px;font-weight:600;margin:22px 0 8px}
+.sermon-full strong{font-weight:600;color:var(--ink)}
+.sermon-full em{font-style:italic}
+.sermon-full blockquote{border-left:3px solid var(--gold);padding:12px 18px;background:var(--accent-soft);font-style:italic;margin:18px 0;font-family:var(--bodoni);font-size:16px;line-height:1.7}
+.sermon-hint{font-size:11px;color:var(--ink-soft);margin-top:8px;font-style:italic;opacity:.7}
 
 /* SOBRE */
 .about-text{max-width:680px;margin:0 auto;font-size:15px;line-height:1.9;color:var(--ink-soft);font-weight:300}
 .about-text p{margin-bottom:18px}
 .tl-item{display:flex;gap:24px;padding-bottom:30px;position:relative;max-width:680px;margin:0 auto}
-.tl-item::before{content:'';position:absolute;left:33px;top:28px;bottom:0;width:1px;background:var(--line)}
+.tl-item::before{content:'';position:absolute;left:34px;top:28px;bottom:0;width:1px;background:var(--line)}
 .tl-item:last-child::before{display:none}
-.tl-year{min-width:66px;font-family:var(--serif);font-size:20px;font-weight:700;color:var(--accent)}
-.tl-content h4{font-family:var(--serif);font-size:17px;font-weight:600;margin-bottom:4px}
+.tl-year{min-width:66px;font-family:var(--bodoni);font-size:20px;font-weight:700;color:var(--accent)}
+.tl-content h4{font-family:var(--bodoni);font-size:17px;font-weight:600;margin-bottom:4px}
 .tl-content p{font-size:13px;color:var(--ink-soft);font-weight:300;line-height:1.7}
 
 /* NOSSA CASA */
 .casa-progress-wrap{max-width:680px;margin:0 auto 44px}
-.casa-pct-row{display:flex;justify-content:space-between;font-size:13px;margin-bottom:10px;font-weight:500}
-.casa-bar{height:8px;background:var(--line);border-radius:10px;overflow:hidden}
-.casa-fill{height:100%;background:var(--accent);border-radius:10px;transition:width 1.2s ease;width:0%}
+.casa-pct-row{display:flex;justify-content:space-between;font-size:12px;margin-bottom:10px;font-weight:500;letter-spacing:.04em}
+.casa-bar{height:7px;background:var(--line);border-radius:10px;overflow:hidden}
+.casa-fill{height:100%;background:var(--accent);border-radius:10px;transition:width 1.3s ease;width:0%}
 .casa-pix-block{max-width:680px;margin:0 auto 52px;background:var(--accent-soft);border:1px solid #e8d5cb;padding:28px 32px;display:flex;align-items:center;gap:24px;flex-wrap:wrap}
-.casa-pix-icon{font-size:36px;flex-shrink:0}
+.casa-pix-icon{font-size:34px;flex-shrink:0}
 .casa-pix-info{flex:1;min-width:180px}
-.casa-pix-label{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:6px}
-.casa-pix-title{font-family:var(--serif);font-size:20px;font-weight:600;margin-bottom:4px}
-.casa-pix-sub{font-size:13px;color:var(--ink-soft);font-weight:300}
-.casa-pix-btn{background:var(--accent);color:#fff;padding:11px 24px;font-size:13px;font-weight:500;border-radius:2px;white-space:nowrap;cursor:pointer;display:inline-block;margin-top:4px}
+.casa-pix-label{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:6px}
+.casa-pix-title{font-family:var(--bodoni);font-size:20px;font-weight:600;margin-bottom:4px}
+.casa-pix-sub{font-size:12px;color:var(--ink-soft);font-weight:300}
+.casa-pix-btn{background:var(--accent);color:#fff;padding:11px 24px;font-size:12px;font-weight:500;border-radius:2px;white-space:nowrap;cursor:pointer;display:inline-block;margin-top:4px;letter-spacing:.06em;text-transform:uppercase}
 .casa-pix-btn:hover{opacity:.85}
 .update-list{max-width:680px;margin:0 auto}
 .update-item{border-left:2px solid var(--line);padding:4px 0 28px 22px;position:relative}
 .update-item::before{content:'';position:absolute;left:-6px;top:4px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
-.update-item-img{width:100%;max-height:260px;object-fit:cover;margin-bottom:14px;border-radius:2px;display:block}
-.update-date{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:5px}
-.update-title{font-family:var(--serif);font-size:18px;font-weight:600;margin-bottom:5px}
+.update-item-img{width:100%;max-height:280px;object-fit:cover;margin-bottom:14px;border-radius:2px;display:block}
+.update-date{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:6px}
+.update-title{font-family:var(--bodoni);font-size:18px;font-weight:600;margin-bottom:6px}
 .update-body{font-size:13px;color:var(--ink-soft);font-weight:300;line-height:1.7}
 
 /* CONTRIBUA */
-.contrib-hero{background:var(--ink);color:#fff;padding:64px 0 48px;text-align:center}
+.contrib-hero{background:var(--ink);color:#fff;padding:64px 0 52px;text-align:center}
 .contrib-hero .sec-eyebrow{color:var(--gold)}
-.contrib-hero .sec-title{color:#fff}
-.contrib-hero p{color:rgba(255,255,255,.6);font-size:15px;max-width:520px;margin:16px auto 0;font-weight:300;line-height:1.8}
-.contrib-section{padding:56px 0;border-bottom:1px solid var(--line)}
+.contrib-hero-title{font-family:var(--bodoni);font-size:clamp(30px,5vw,48px);font-weight:700;color:#fff;margin-bottom:12px}
+.contrib-hero p{color:rgba(255,255,255,.58);font-size:14px;max-width:480px;margin:0 auto;font-weight:300;line-height:1.8}
+.contrib-section{padding:54px 0;border-bottom:1px solid var(--line)}
 .contrib-section:last-of-type{border-bottom:none}
 .contrib-inner{max-width:680px;margin:0 auto}
-.contrib-head{font-family:var(--serif);font-size:30px;font-weight:600;margin-bottom:12px}
-.contrib-sub{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:16px}
-.contrib-text{font-size:15px;color:var(--ink-soft);font-weight:300;line-height:1.9;margin-bottom:18px}
-.contrib-verse{border-left:3px solid var(--gold);padding:14px 20px;background:var(--accent-soft);font-family:var(--serif);font-size:17px;font-style:italic;color:var(--ink);line-height:1.7;margin:24px 0}
-.contrib-verse cite{display:block;font-size:12px;font-style:normal;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin-top:8px}
-.contrib-causes{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-top:28px}
+.contrib-head{font-family:var(--bodoni);font-size:28px;font-weight:600;margin-bottom:12px}
+.contrib-sub{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:14px}
+.contrib-text{font-size:14px;color:var(--ink-soft);font-weight:300;line-height:1.9;margin-bottom:18px}
+.contrib-verse{border-left:3px solid var(--gold);padding:14px 20px;background:var(--accent-soft);font-family:var(--bodoni);font-size:16px;font-style:italic;color:var(--ink);line-height:1.75;margin:24px 0}
+.contrib-verse cite{display:block;font-size:11px;font-style:normal;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-top:8px;font-family:var(--sans)}
+.contrib-causes{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:12px;margin-top:26px}
 .contrib-cause{border:1px solid var(--line);background:var(--paper);padding:20px}
-.contrib-cause-icon{font-size:24px;margin-bottom:10px}
-.contrib-cause-title{font-family:var(--serif);font-size:17px;font-weight:600;margin-bottom:6px}
-.contrib-cause-desc{font-size:12px;color:var(--ink-soft);font-weight:300;line-height:1.6}
-.pix-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:32px}
-@media(max-width:600px){.pix-grid{grid-template-columns:1fr}}
-.pix-block{border:1px solid #e8d5cb;padding:26px 28px;display:flex;flex-direction:column;gap:12px}
+.contrib-cause-icon{font-size:22px;margin-bottom:10px}
+.contrib-cause-title{font-family:var(--bodoni);font-size:16px;font-weight:600;margin-bottom:5px}
+.contrib-cause-desc{font-size:11px;color:var(--ink-soft);font-weight:300;line-height:1.6}
+.pix-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:30px}
+@media(max-width:580px){.pix-grid{grid-template-columns:1fr}}
+.pix-block{border:1px solid #e8d5cb;padding:24px 26px;display:flex;flex-direction:column;gap:12px}
 .pix-block.regular{background:var(--paper)}
 .pix-block.obra{background:var(--accent-soft)}
-.pix-block-label{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600}
-.pix-block-head{font-family:var(--serif);font-size:20px;font-weight:600;margin-bottom:2px}
-.pix-block-sub{font-size:12px;color:var(--ink-soft);font-weight:300;line-height:1.5}
+.pix-block-label{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600}
+.pix-block-head{font-family:var(--bodoni);font-size:19px;font-weight:600;margin-bottom:2px}
+.pix-block-sub{font-size:11px;color:var(--ink-soft);font-weight:300;line-height:1.55}
 .pix-key-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:4px;padding-top:12px;border-top:1px solid var(--line)}
-.pix-key{font-family:var(--serif);font-size:17px;font-weight:600}
-.pix-key-note{font-size:11px;color:var(--ink-soft);font-weight:300;margin-top:2px}
-.pix-copy-btn{background:var(--accent);color:#fff;border:none;padding:9px 20px;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--sans);letter-spacing:.04em;border-radius:2px;transition:opacity .2s;white-space:nowrap;flex-shrink:0}
+.pix-key{font-family:var(--bodoni);font-size:16px;font-weight:600}
+.pix-key-note{font-size:10px;color:var(--ink-soft);font-weight:300;margin-top:2px}
+.pix-copy-btn{background:var(--accent);color:#fff;border:none;padding:9px 18px;font-size:11px;font-weight:600;cursor:pointer;font-family:var(--sans);letter-spacing:.06em;text-transform:uppercase;border-radius:2px;transition:opacity .2s;white-space:nowrap;flex-shrink:0}
 .pix-copy-btn:hover{opacity:.85}
 .pix-copy-btn.copied{background:#4a7a4a}
 
 /* FOOTER */
 .footer{border-top:1px solid var(--line);padding:36px 0;text-align:center;background:var(--paper)}
-.footer-logo{height:44px;width:auto;margin:0 auto 12px;display:block;object-fit:contain}
-.footer-logo-ph{font-family:var(--serif);font-size:18px;font-weight:700;margin-bottom:8px;color:var(--ink)}
+.footer-logo{height:42px;width:auto;margin:0 auto 12px;display:block;object-fit:contain}
+.footer-logo-ph{font-family:var(--sans);font-size:15px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;color:var(--ink)}
 .footer-logo-ph span{color:var(--accent)}
-.footer p{font-size:12px;color:var(--ink-soft);margin-top:4px}
+.footer p{font-size:11px;color:var(--ink-soft);margin-top:4px;letter-spacing:.04em}
 
-.empty-state{text-align:center;padding:40px 20px;color:var(--ink-soft);font-size:14px}
+.empty-state{text-align:center;padding:40px 20px;color:var(--ink-soft);font-size:13px}
 @media(max-width:600px){.casa-pix-block{flex-direction:column}}
 </style>
 </head>
@@ -267,13 +302,18 @@ a{color:inherit;text-decoration:none}
       <p class="hero-sub">Uma família reunida para adorar, aprender e servir juntos.</p>
     </div>
   </div>
-  <div class="wrap">
-    <div class="carousel" id="carousel">
-      <div class="carousel-track" id="carTrack"><div style="color:rgba(255,255,255,.4);padding:40px;font-size:13px;width:100%;text-align:center">Carregando…</div></div>
-      <button class="car-nav car-prev" onclick="carMove(-1)">‹</button>
-      <button class="car-nav car-next" onclick="carMove(1)">›</button>
-      <div class="car-dots" id="carDots"></div>
+
+  <!-- CARROSSEL FULL-WIDTH -->
+  <div class="carousel-fw" id="carousel">
+    <div class="carousel-track" id="carTrack">
+      <div style="color:rgba(255,255,255,.35);padding:50px;font-size:13px;width:100%;text-align:center;min-width:100%;display:flex;align-items:center;justify-content:center">Carregando…</div>
     </div>
+    <button class="car-nav car-prev" onclick="carMove(-1)">‹</button>
+    <button class="car-nav car-next" onclick="carMove(1)">›</button>
+    <div class="car-dots" id="carDots"></div>
+  </div>
+
+  <div class="wrap">
     <div class="sec-head">
       <div class="sec-eyebrow">Toda semana</div>
       <h2 class="sec-title">Programação Regular</h2>
@@ -282,12 +322,14 @@ a{color:inherit;text-decoration:none}
     <div class="fixed-schedule">
       <div class="fixed-rows" id="fixedSchedule"><div class="empty-state">Carregando…</div></div>
     </div>
+
     <div class="sec-head">
       <div class="sec-eyebrow">Não perca</div>
       <h2 class="sec-title">Próximos Eventos Especiais</h2>
       <div class="sec-divider"></div>
     </div>
     <div class="specials-grid" id="specialsGrid"><div class="empty-state" style="grid-column:1/-1">Carregando…</div></div>
+
     <div class="sec-head">
       <div class="sec-eyebrow">Fique por dentro</div>
       <h2 class="sec-title">Avisos</h2>
@@ -295,10 +337,11 @@ a{color:inherit;text-decoration:none}
     </div>
     <div class="notice-list" id="noticeList"><div class="empty-state">Carregando avisos…</div></div>
   </div>
+
   <div class="social-band">
     <div class="wrap">
-      <div class="sec-eyebrow" style="color:var(--gold)">Acompanhe</div>
-      <h2 class="sec-title">Nas Redes Sociais</h2>
+      <div class="sec-eyebrow" style="color:var(--gold);margin-bottom:10px">Acompanhe</div>
+      <div class="social-band-title">Nas Redes Sociais</div>
       <p class="social-sub">Cultos ao vivo, mensagens e bastidores da nossa igreja</p>
       <div class="social-links">
         <a class="social-btn" href="https://www.youtube.com/@adbelembarueri" target="_blank">▶ YouTube</a>
@@ -317,7 +360,7 @@ a{color:inherit;text-decoration:none}
       <div class="sec-eyebrow">Eventos</div>
       <h2 class="sec-title">Agenda de Eventos Especiais</h2>
       <div class="sec-divider"></div>
-      <p style="font-size:14px;color:var(--ink-soft);margin-top:16px;font-weight:300">Santa Ceia, conferências, vigílias e outros eventos extraordinários.</p>
+      <p style="font-size:13px;color:var(--ink-soft);margin-top:14px;font-weight:300">Santa Ceia, conferências, vigílias e outros eventos extraordinários.</p>
     </div>
     <div id="agendaList"><div class="empty-state">Carregando…</div></div>
   </div>
@@ -343,7 +386,13 @@ a{color:inherit;text-decoration:none}
       <h2 class="sec-title">Sermões</h2>
       <div class="sec-divider"></div>
     </div>
-    <div class="sermon-search"><input type="text" placeholder="Buscar por título, pregador ou tema…" oninput="filterSermons(this.value)"></div>
+    <div class="sermon-search">
+      <input type="text" placeholder="Buscar por título, pregador ou tema…" oninput="filterSermons(this.value)">
+    </div>
+    <!-- dica de formatação para o admin -->
+    <p class="sermon-hint" style="text-align:center;margin-bottom:24px">
+      💡 No Sheets, use <code>||</code> para separar parágrafos · <code>**texto**</code> negrito · <code>_texto_</code> itálico · <code>### Título</code> · <code>&gt; citação</code>
+    </p>
     <div id="sermonList"><div class="empty-state">Carregando…</div></div>
   </div>
 </div>
@@ -360,7 +409,7 @@ a{color:inherit;text-decoration:none}
       <p>A AD BELÉM BARUERI nasceu do desejo de um pequeno grupo de famílias que se reunia em uma sala de estar, buscando um espaço de fé genuína, ensino bíblico sólido e comunhão verdadeira.</p>
       <p>Ao longo dos anos, o que começou pequeno se tornou uma comunidade viva, formada por pessoas de diferentes histórias, unidas por um mesmo propósito: conhecer a Deus e dar a conhecê-Lo.</p>
     </div>
-    <div style="margin:50px 0 0" id="timelineList"><div class="empty-state">Carregando história…</div></div>
+    <div style="margin:52px 0 0" id="timelineList"><div class="empty-state">Carregando história…</div></div>
   </div>
 </div>
 
@@ -369,9 +418,10 @@ a{color:inherit;text-decoration:none}
   <div class="wrap">
     <div class="sec-head" style="margin-top:50px">
       <div class="sec-eyebrow">Projeto</div>
-      <h2 class="sec-title" style="font-weight:700">Nossa Casa</h2>
+      <!-- Bodoni Moda no título desta página -->
+      <h2 style="font-family:var(--bodoni);font-size:clamp(28px,5vw,48px);font-weight:700;text-align:center">Nossa Casa</h2>
       <div class="sec-divider"></div>
-      <p style="font-size:14px;color:var(--ink-soft);margin-top:16px;font-weight:300;max-width:520px;margin-left:auto;margin-right:auto">Estamos construindo um novo espaço para receber mais famílias e expandir nosso alcance na cidade.</p>
+      <p style="font-size:13px;color:var(--ink-soft);margin-top:16px;font-weight:300;max-width:500px;margin-left:auto;margin-right:auto;text-align:center">Estamos construindo um novo espaço para receber mais famílias e expandir nosso alcance na cidade.</p>
     </div>
     <div class="casa-progress-wrap">
       <div class="casa-pct-row"><span>Progresso da construção</span><span id="progressPct">—</span></div>
@@ -388,7 +438,7 @@ a{color:inherit;text-decoration:none}
     </div>
     <div class="sec-head">
       <div class="sec-eyebrow">Linha do tempo</div>
-      <h2 class="sec-title">Atualizações da Obra</h2>
+      <h2 style="font-family:var(--bodoni);font-size:clamp(22px,3.5vw,32px);font-weight:600;text-align:center">Atualizações da Obra</h2>
       <div class="sec-divider"></div>
     </div>
     <div class="update-list" id="updateList"><div class="empty-state">Carregando…</div></div>
@@ -399,8 +449,8 @@ a{color:inherit;text-decoration:none}
 <div class="page" id="page-contribua">
   <div class="contrib-hero">
     <div class="wrap">
-      <div class="sec-eyebrow">Generosidade</div>
-      <h2 class="sec-title">Contribua</h2>
+      <div class="sec-eyebrow" style="margin-bottom:12px">Generosidade</div>
+      <div class="contrib-hero-title">Contribua</div>
       <p>Quando você doa, você está investindo no Reino de Deus e na vida de pessoas. A sua oferta faz diferença.</p>
     </div>
   </div>
@@ -456,7 +506,7 @@ a{color:inherit;text-decoration:none}
           </div>
         </div>
       </div>
-      <p style="font-size:12px;color:var(--ink-soft);margin-top:16px;font-weight:300">Ao fazer sua transferência, inclua no campo de mensagem se é dízimo, oferta ou uma causa específica.</p>
+      <p style="font-size:11px;color:var(--ink-soft);margin-top:16px;font-weight:300">Ao fazer sua transferência, inclua no campo de mensagem se é dízimo, oferta ou uma causa específica.</p>
     </div></div>
   </div>
 </div>
@@ -467,12 +517,12 @@ a{color:inherit;text-decoration:none}
     <img class="footer-logo" id="footerLogoImg" alt="AD Belém Barueri"
          onerror="this.style.display='none';document.getElementById('footerLogoPh').style.display='block'">
     <div class="footer-logo-ph" id="footerLogoPh" style="display:none">AD BELÉM <span>BARUERI</span></div>
-    <p>AD BELÉM - BARUERI</p>
+    <p>AD BELÉM - BARUERI · Todos os direitos reservados</p>
   </div>
 </div>
 
 <script>
-/* ===== CONFIGURAÇÕES — edite aqui ===== */
+/* ===== CONFIGURAÇÕES ===== */
 const LOGO_URL    = 'https://ad.org.br/wp-content/uploads/2024/03/Logo-AD-Belem-2024-Mono-01.png';
 const PIX_REGULAR = '62.769.500/0249-10';
 const PIX_OBRA    = '11 93471-6963';
@@ -487,32 +537,35 @@ const SHEET_URLS = {
   casaAtualizacoes:'https://docs.google.com/spreadsheets/d/e/2PACX-1vRyhTenbfftqs8iUdYuhP_6XSjAWeRJIHouHTtpTtWgqLRDEDssg8zex00DDDHDu5s_GsmVnQFWQdNy/pub?gid=812893903&single=true&output=tsv',
 };
 
-/* ===== CONVERTE LINK DO GOOGLE DRIVE PARA URL DIRETA =====
-   Aceita qualquer formato de link do Drive e retorna URL direta para imagem.
-   Se não for link do Drive, retorna o original intacto.                     */
+/* ===== GOOGLE DRIVE → URL DIRETA ===== */
 function driveImg(url){
   if(!url||!url.trim()) return '';
-  url = url.trim();
-  // já é URL direta (uc?id=) → retorna
+  url=url.trim();
   if(url.includes('drive.google.com/uc')) return url;
-  // formato /file/d/ID/view  ou  /open?id=ID
-  let id='';
   const m1=url.match(/\/file\/d\/([^\/\?&]+)/);
   const m2=url.match(/[?&]id=([^&]+)/);
-  if(m1) id=m1[1];
-  else if(m2) id=m2[1];
+  const id=m1?m1[1]:m2?m2[1]:'';
   if(id) return `https://drive.google.com/uc?export=view&id=${id}`;
-  // não é link do Drive — devolve original (Imgur, etc.)
   return url;
+}
+
+/* ===== YOUTUBE: extrai ID e retorna embed URL ===== */
+function ytEmbed(url){
+  if(!url||!url.trim()) return '';
+  url=url.trim();
+  // youtu.be/ID  ou  youtube.com/watch?v=ID  ou  youtube.com/embed/ID
+  const m=url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([A-Za-z0-9_-]{11})/);
+  if(m) return `https://www.youtube.com/embed/${m[1]}?rel=0&modestbranding=1`;
+  return '';
 }
 
 /* ===== LOGO ===== */
 (function(){
-  const src = driveImg(LOGO_URL);
+  const src=driveImg(LOGO_URL);
   if(!src) return;
   ['brandLogoImg','footerLogoImg'].forEach(id=>{
     const el=document.getElementById(id);
-    if(el){ el.src=src; el.style.display='block'; }
+    if(el){el.src=src;el.style.display='block';}
   });
   const ph=document.getElementById('brandLogoPh');
   if(ph) ph.style.display='none';
@@ -525,8 +578,8 @@ function copyPix(type,btn){
   const key=type==='obra'?PIX_OBRA:PIX_REGULAR;
   navigator.clipboard.writeText(key).then(()=>{
     const orig=btn.textContent;
-    btn.textContent='Copiado ✓'; btn.classList.add('copied');
-    setTimeout(()=>{ btn.textContent=orig; btn.classList.remove('copied'); },2500);
+    btn.textContent='Copiado ✓';btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent=orig;btn.classList.remove('copied');},2500);
   }).catch(()=>prompt('Copie a chave PIX:',key));
 }
 
@@ -540,7 +593,7 @@ function parseTSV(text){
   for(let i=1;i<lines.length;i++){
     const cells=lines[i].split('\t');
     const obj={};
-    headers.forEach((h,j)=>{ obj[h]=(cells[j]!==undefined?cells[j]:'').trim(); });
+    headers.forEach((h,j)=>{obj[h]=(cells[j]!==undefined?cells[j]:'').trim();});
     if(Object.values(obj).some(v=>v!=='')) rows.push(obj);
   }
   return rows;
@@ -550,46 +603,43 @@ async function fetchSheet(url){
     const r=await fetch(url,{cache:'no-store'});
     if(!r.ok) throw new Error('HTTP '+r.status);
     return parseTSV(await r.text());
-  }catch(e){ console.error(e); return null; }
+  }catch(e){console.error(e);return null;}
 }
 
 /* ===== HELPERS ===== */
 const MONTHS=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
 const MONTHS_FULL=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 const DAYS=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
-function parseDate(d){ if(!d) return null; const p=d.split('-').map(Number); if(p.length!==3||p.some(isNaN)) return null; return new Date(p[0],p[1]-1,p[2]); }
-function fmtShort(d){ const dt=parseDate(d); if(!dt) return {num:'–',mon:'',wd:''}; return {num:dt.getDate(),mon:MONTHS[dt.getMonth()],wd:DAYS[dt.getDay()]}; }
-function fmtTime(t){ if(!t) return ''; const [h,m]=t.split(':'); return h+'h'+(m&&m!=='00'?m:''); }
-function escHtml(s){ return s==null?'':String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-function isEspecial(e){ return (e.tipo||'').trim().toLowerCase()==='especial'; }
+function parseDate(d){if(!d) return null;const p=d.split('-').map(Number);if(p.length!==3||p.some(isNaN)) return null;return new Date(p[0],p[1]-1,p[2]);}
+function fmtShort(d){const dt=parseDate(d);if(!dt) return{num:'–',mon:'',wd:''};return{num:dt.getDate(),mon:MONTHS[dt.getMonth()],wd:DAYS[dt.getDay()]};}
+function fmtTime(t){if(!t) return '';const[h,m]=t.split(':');return h+'h'+(m&&m!=='00'?m:'');}
+function escHtml(s){return s==null?'':String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function isEspecial(e){return(e.tipo||'').trim().toLowerCase()==='especial';}
 
-/* ===== MARKDOWN SIMPLES PARA HTML (sermões) =====
-   Suporte na célula do Sheets:
-   **texto**        → <strong>texto</strong>
-   _texto_          → <em>texto</em>
-   ### Título       → <h3>Título</h3>
-   > citação        → <blockquote>
-   linha em branco  → novo parágrafo                */
+/* ===== MARKDOWN → HTML para sermões =====
+   Na célula do Google Sheets use:
+   ||            → separador de parágrafo (substitui \n\n que o TSV perde)
+   **texto**     → negrito
+   _texto_       → itálico
+   ### Título    → subtítulo
+   > citação     → blockquote
+   ============================================= */
 function mdToHtml(raw){
   if(!raw) return '';
-  const paras=raw.split(/\n{2,}/);
-  return paras.map(block=>{
+  // || vira separador de bloco; também aceita \n\n caso sobreviva
+  const blocks=raw.replace(/\|\|/g,'\n\n').split(/\n{2,}/);
+  return blocks.map(block=>{
     block=block.trim();
     if(!block) return '';
-    // blockquote: linhas que começam com >
     if(block.startsWith('>')){
-      const inner=block.replace(/^>\s?/gm,'').trim();
-      return `<blockquote>${inlinemd(inner)}</blockquote>`;
+      return `<blockquote>${inlineMd(block.replace(/^>\s?/gm,'').trim())}</blockquote>`;
     }
-    // heading ### ou ##
     const hm=block.match(/^(#{2,3})\s+(.+)/);
     if(hm) return `<h3>${escHtml(hm[2])}</h3>`;
-    // parágrafo normal (pode ter \n simples = <br>)
-    const lines=block.split('\n').map(l=>inlinemd(l)).join('<br>');
-    return `<p>${lines}</p>`;
+    return `<p>${block.split('\n').map(inlineMd).join('<br>')}</p>`;
   }).join('');
 }
-function inlinemd(s){
+function inlineMd(s){
   return escHtml(s)
     .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
     .replace(/_(.+?)_/g,'<em>$1</em>');
@@ -606,10 +656,10 @@ function goTo(page){
   document.getElementById('navLinks').classList.remove('open');
   window.scrollTo({top:0,behavior:'smooth'});
 }
-function toggleMenu(){ document.getElementById('navLinks').classList.toggle('open'); }
+function toggleMenu(){document.getElementById('navLinks').classList.toggle('open');}
 
 /* ===== CARROSSEL ===== */
-let carIdx=0, carSlides=[];
+let carIdx=0,carSlides=[];
 function buildCarSlides(){
   const especiais=DATA.eventos.filter(isEspecial).slice(0,2);
   const avisos=DATA.avisos.slice(0,2);
@@ -626,18 +676,18 @@ function renderCarousel(){
   const track=document.getElementById('carTrack');
   const dots=document.getElementById('carDots');
   if(!carSlides.length){
-    track.innerHTML='<div style="color:rgba(255,255,255,.4);padding:40px;font-size:13px;width:100%;text-align:center">Nenhum destaque cadastrado.</div>';
-    dots.innerHTML=''; return;
+    track.innerHTML='<div style="color:rgba(255,255,255,.35);padding:60px;font-size:13px;width:100%;min-width:100%;text-align:center;display:flex;align-items:center;justify-content:center">Nenhum destaque cadastrado.</div>';
+    dots.innerHTML='';return;
   }
   track.innerHTML=carSlides.map(s=>{
     const imgUrl=driveImg(s.data.foto_url||'');
     const hasBg=!!imgUrl;
     if(s.kind==='aviso'){
       const n=s.data;
-      const onclick=n.link_aviso?` onclick="window.open('${escHtml(n.link_aviso)}','_blank')" style="cursor:pointer"`:'';
-      return `<div class="car-slide"${onclick}>
+      const oc=n.link_aviso?` onclick="window.open('${escHtml(n.link_aviso)}','_blank')" style="cursor:pointer"`:'';
+      return `<div class="car-slide"${oc}>
         ${hasBg?`<img class="car-bg-img" src="${imgUrl}" alt="" onerror="this.style.display='none'">`:''}
-        <div class="car-bg"${hasBg?' style="opacity:.55"':''}></div>
+        <div class="car-bg"${hasBg?' style="opacity:.5"':''}></div>
         <div class="car-overlay"></div>
         <div class="car-content">
           <div class="car-tag">📢 Aviso</div>
@@ -646,11 +696,11 @@ function renderCarousel(){
           ${n.link_aviso?'<div class="car-link-hint">Saiba mais →</div>':''}
         </div>
       </div>`;
-    } else {
-      const e=s.data; const fd=fmtShort(e.data); const mo=parseDate(e.data);
+    }else{
+      const e=s.data;const fd=fmtShort(e.data);const mo=parseDate(e.data);
       return `<div class="car-slide">
         ${hasBg?`<img class="car-bg-img" src="${imgUrl}" alt="" onerror="this.style.display='none'">`:''}
-        <div class="car-bg"${hasBg?' style="opacity:.55"':''}></div>
+        <div class="car-bg"${hasBg?' style="opacity:.5"':''}></div>
         <div class="car-overlay"></div>
         <div class="car-content">
           <div class="car-tag">★ Evento Especial</div>
@@ -663,8 +713,8 @@ function renderCarousel(){
   dots.innerHTML=carSlides.map((_,i)=>`<div class="car-dot${i===0?' active':''}" onclick="carGo(${i})"></div>`).join('');
   carIdx=0;
 }
-function carGo(i){ carIdx=i; updateCarousel(); }
-function carMove(dir){ if(!carSlides.length) return; carIdx=(carIdx+dir+carSlides.length)%carSlides.length; updateCarousel(); }
+function carGo(i){carIdx=i;updateCarousel();}
+function carMove(dir){if(!carSlides.length) return;carIdx=(carIdx+dir+carSlides.length)%carSlides.length;updateCarousel();}
 function updateCarousel(){
   document.getElementById('carTrack').style.transform=`translateX(-${carIdx*100}%)`;
   document.querySelectorAll('.car-dot').forEach((d,i)=>d.classList.toggle('active',i===carIdx));
@@ -675,7 +725,7 @@ setInterval(()=>carMove(1),6000);
 function renderFixedSchedule(){
   const el=document.getElementById('fixedSchedule');
   const rows=DATA.eventos.filter(e=>(e.tipo||'').trim().toLowerCase()==='programacao semanal');
-  if(!rows.length){ el.innerHTML='<div class="empty-state">Nenhuma programação regular cadastrada.</div>'; return; }
+  if(!rows.length){el.innerHTML='<div class="empty-state">Nenhuma programação regular cadastrada.</div>';return;}
   el.innerHTML=rows.map(e=>`
     <div class="fixed-row">
       <div class="fixed-day">${escHtml(e.nome)}</div>
@@ -688,12 +738,12 @@ function renderFixedSchedule(){
 function renderSpecialsGrid(){
   const el=document.getElementById('specialsGrid');
   const now=new Date();
-  const upcoming=DATA.eventos.filter(e=>isEspecial(e)&&e.data)
+  const up=DATA.eventos.filter(e=>isEspecial(e)&&e.data)
     .map(e=>({...e,_dt:new Date(e.data+'T'+(e.hora||'00:00'))}))
     .filter(e=>e._dt>now).sort((a,b)=>a._dt-b._dt).slice(0,2);
-  if(!upcoming.length){ el.innerHTML='<div class="empty-state" style="grid-column:1/-1">Nenhum evento especial próximo.</div>'; return; }
-  el.innerHTML=upcoming.map(e=>{
-    const fd=fmtShort(e.data); const mo=parseDate(e.data);
+  if(!up.length){el.innerHTML='<div class="empty-state" style="grid-column:1/-1">Nenhum evento especial próximo.</div>';return;}
+  el.innerHTML=up.map(e=>{
+    const fd=fmtShort(e.data);const mo=parseDate(e.data);
     return `<div class="special-card">
       <div class="special-card-tag">★ Evento Especial</div>
       <div class="special-card-date">${fd.wd}, ${fd.num} de ${mo?MONTHS_FULL[mo.getMonth()]:''}</div>
@@ -703,47 +753,51 @@ function renderSpecialsGrid(){
   }).join('');
 }
 
-/* ===== AVISOS ===== */
+/* ===== AVISOS (magazine) ===== */
 function renderNotices(){
   const el=document.getElementById('noticeList');
-  if(!DATA.avisos.length){ el.innerHTML='<div class="empty-state">Nenhum aviso no momento.</div>'; return; }
+  if(!DATA.avisos.length){el.innerHTML='<div class="empty-state">Nenhum aviso no momento.</div>';return;}
   el.innerHTML=DATA.avisos.map(n=>{
     const hasLink=!!(n.link_aviso&&n.link_aviso.trim());
     const imgUrl=driveImg(n.foto_url||'');
-    return `<div class="notice${hasLink?' clickable':''}"${hasLink?` onclick="window.open('${escHtml(n.link_aviso)}','_blank')" role="link" tabindex="0"`:''}>
-      ${imgUrl?`<img class="notice-img" src="${imgUrl}" alt="" onerror="this.remove()">`:''}
+    const hasImg=!!imgUrl;
+    const cls=`notice${hasLink?' clickable':''}${hasImg?' has-img':''}`;
+    const oc=hasLink?` onclick="window.open('${escHtml(n.link_aviso)}','_blank')" role="link" tabindex="0"`:'';
+    return `<div class="${cls}"${oc}>
+      ${hasImg?`<div class="notice-img-wrap"><img src="${imgUrl}" alt="" onerror="this.parentElement.remove()"></div>`:''}
       <div class="notice-body-wrap">
-        <div class="notice-text-block">
-          <div class="notice-title">${escHtml(n.titulo)}</div>
-          <div class="notice-body">${escHtml(n.corpo)}</div>
-          ${hasLink?'<div class="notice-link-badge">Ver mais →</div>':''}
-        </div>
+        <div class="notice-eyebrow">Aviso</div>
+        <div class="notice-title">${escHtml(n.titulo)}</div>
+        <div class="notice-body">${escHtml(n.corpo)}</div>
         <div class="notice-date">${escHtml(n.data)}</div>
+        ${hasLink?'<div class="notice-link-badge">Ver mais →</div>':''}
       </div>
     </div>`;
   }).join('');
 }
 
-/* ===== AGENDA ===== */
+/* ===== AGENDA (magazine) ===== */
 function renderAgenda(){
   const el=document.getElementById('agendaList');
   const evs=DATA.eventos.filter(e=>isEspecial(e)&&e.data)
     .sort((a,b)=>new Date(a.data+'T'+(a.hora||'00:00'))-new Date(b.data+'T'+(b.hora||'00:00')));
-  if(!evs.length){ el.innerHTML='<div class="empty-state">Nenhum evento especial cadastrado.</div>'; return; }
-  const now=new Date(); now.setHours(0,0,0,0);
+  if(!evs.length){el.innerHTML='<div class="empty-state">Nenhum evento especial cadastrado.</div>';return;}
+  const now=new Date();now.setHours(0,0,0,0);
   let html='',lastGroup='';
   evs.forEach(ev=>{
-    const d=parseDate(ev.data); if(!d) return;
+    const d=parseDate(ev.data);if(!d) return;
     const diff=Math.floor((d-now)/86400000);
     const group=diff<0?'Realizados':diff<7?'Esta Semana':diff<14?'Próxima Semana':MONTHS_FULL[d.getMonth()]+' '+d.getFullYear();
-    if(group!==lastGroup){ html+=`<div class="agenda-group-title">${group}</div>`; lastGroup=group; }
+    if(group!==lastGroup){html+=`<div class="agenda-group-title">${group}</div>`;lastGroup=group;}
     const fd=fmtShort(ev.data);
     const imgUrl=driveImg(ev.foto_url||'');
-    html+=`<div class="event-row"${diff<0?' style="opacity:.5"':''}>
-      ${imgUrl?`<img class="event-row-img" src="${imgUrl}" alt="" onerror="this.remove()">`:''}
-      <div class="event-row-body">
-        <div class="ev-date"><b>${fd.num}</b><small>${fd.mon}</small></div>
+    const hasImg=!!imgUrl;
+    html+=`<div class="event-card${hasImg?' has-img':''}"${diff<0?' style="opacity:.5"':''}>
+      ${hasImg?`<div class="ev-img-wrap"><img src="${imgUrl}" alt="" onerror="this.parentElement.remove()"></div>`:''}
+      <div class="ev-body-wrap">
+        ${!hasImg?`<div class="ev-date-badge"><b>${fd.num}</b><small>${fd.mon}</small></div>`:''}
         <div class="ev-body">
+          ${hasImg?`<div class="ev-tag" style="margin-bottom:8px">${fd.wd}, ${fd.num} de ${MONTHS_FULL[d.getMonth()]}</div>`:''}
           <div class="ev-tag">★ Especial</div>
           <div class="ev-name">${escHtml(ev.nome)}</div>
           ${ev.desc?`<div class="ev-desc">${escHtml(ev.desc)}</div>`:''}
@@ -756,10 +810,10 @@ function renderAgenda(){
 }
 
 /* ===== IGREJAS ===== */
-function mapsUrl(q){ return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q); }
+function mapsUrl(q){return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q);}
 function renderChurches(){
   const el=document.getElementById('churchGrid');
-  if(!DATA.igrejas.length){ el.innerHTML='<div class="empty-state">Nenhuma igreja cadastrada.</div>'; return; }
+  if(!DATA.igrejas.length){el.innerHTML='<div class="empty-state">Nenhuma igreja cadastrada.</div>';return;}
   el.innerHTML=DATA.igrejas.map(c=>{
     const imgUrl=driveImg(c.foto_url||'');
     return `<div class="church-card" onclick="window.open('${mapsUrl(c.nome+' '+c.endereco)}','_blank')" title="Abrir no Google Maps">
@@ -784,13 +838,15 @@ function renderSermons(filter=''){
   const el=document.getElementById('sermonList');
   const f=filter.toLowerCase();
   const list=_allSermons.filter(s=>(s.titulo||'').toLowerCase().includes(f)||(s.pregador||'').toLowerCase().includes(f)||(s.tema||'').toLowerCase().includes(f));
-  if(!list.length){ el.innerHTML='<div class="empty-state">Nenhum sermão encontrado.</div>'; return; }
+  if(!list.length){el.innerHTML='<div class="empty-state">Nenhum sermão encontrado.</div>';return;}
   el.innerHTML=list.map((s,i)=>{
     const sid='s'+i;
     const imgUrl=driveImg(s.foto_url||'');
+    const hasImg=!!imgUrl;
+    const embedUrl=ytEmbed(s.video_url||'');
     const bodyHtml=mdToHtml(s.texto||'');
-    return `<div class="sermon-item">
-      ${imgUrl?`<img class="sermon-img" src="${imgUrl}" alt="" onerror="this.remove()">`:''}
+    return `<div class="sermon-item${hasImg?' has-img':''}">
+      ${hasImg?`<div class="sermon-img-wrap"><img src="${imgUrl}" alt="" onerror="this.parentElement.remove()"></div>`:''}
       <div class="sermon-inner" onclick="toggleSermon('${sid}')">
         <div class="sermon-top">
           <div>
@@ -802,23 +858,27 @@ function renderSermons(filter=''){
             </div>
             ${s.resumo?`<div class="sermon-excerpt">${escHtml(s.resumo)}</div>`:''}
           </div>
-          <div class="sermon-expand" id="exp-${sid}">Ler →</div>
+          <div class="sermon-expand" id="exp-${sid}">Ler ${embedUrl?'/ Assistir':''} →</div>
         </div>
-        <div class="sermon-full" id="full-${sid}">${bodyHtml}</div>
+        <div class="sermon-full" id="full-${sid}">
+          ${embedUrl?`<div class="sermon-video"><iframe src="${embedUrl}" allowfullscreen loading="lazy" title="${escHtml(s.titulo)}"></iframe></div>`:''}
+          ${bodyHtml}
+        </div>
       </div>
     </div>`;
   }).join('');
 }
 function toggleSermon(id){
   const f=document.getElementById('full-'+id),e=document.getElementById('exp-'+id);
-  e.textContent=f.classList.toggle('open')?'Fechar ↑':'Ler →';
+  const open=f.classList.toggle('open');
+  e.textContent=open?'Fechar ↑':'Ler →';
 }
-function filterSermons(v){ renderSermons(v); }
+function filterSermons(v){renderSermons(v);}
 
 /* ===== SOBRE ===== */
 function renderTimeline(){
   const el=document.getElementById('timelineList');
-  if(!DATA.sobre.length){ el.innerHTML=''; return; }
+  if(!DATA.sobre.length){el.innerHTML='';return;}
   el.innerHTML=DATA.sobre.map(t=>`
     <div class="tl-item">
       <div class="tl-year">${escHtml(t.ano)}</div>
@@ -834,7 +894,7 @@ function renderCasa(){
     document.getElementById('progressPct').textContent=val+'%';
   }
   const el=document.getElementById('updateList');
-  if(!DATA.casaAtualizacoes.length){ el.innerHTML='<div class="empty-state">Nenhuma atualização ainda.</div>'; return; }
+  if(!DATA.casaAtualizacoes.length){el.innerHTML='<div class="empty-state">Nenhuma atualização ainda.</div>';return;}
   el.innerHTML=DATA.casaAtualizacoes.map(u=>{
     const imgUrl=driveImg(u.foto_url||'');
     return `<div class="update-item">
@@ -848,19 +908,19 @@ function renderCasa(){
 
 /* ===== INIT ===== */
 async function loadAll(){
-  const [eventos,avisos,igrejas,sermoes,sobre,casa,casaAt]=await Promise.all([
+  const[eventos,avisos,igrejas,sermoes,sobre,casa,casaAt]=await Promise.all([
     fetchSheet(SHEET_URLS.eventos),fetchSheet(SHEET_URLS.avisos),fetchSheet(SHEET_URLS.igrejas),
     fetchSheet(SHEET_URLS.sermoes),fetchSheet(SHEET_URLS.sobre),fetchSheet(SHEET_URLS.casa),
     fetchSheet(SHEET_URLS.casaAtualizacoes),
   ]);
   DATA={
-    eventos:eventos||[], avisos:avisos||[], igrejas:igrejas||[],
-    sermoes:sermoes||[], sobre:sobre||[], casa:casa||[], casaAtualizacoes:casaAt||[]
+    eventos:eventos||[],avisos:avisos||[],igrejas:igrejas||[],
+    sermoes:sermoes||[],sobre:sobre||[],casa:casa||[],casaAtualizacoes:casaAt||[]
   };
   _allSermons=DATA.sermoes;
-  renderCarousel(); renderFixedSchedule(); renderSpecialsGrid();
-  renderNotices(); renderAgenda(); renderChurches();
-  renderSermons(); renderTimeline(); renderCasa();
+  renderCarousel();renderFixedSchedule();renderSpecialsGrid();
+  renderNotices();renderAgenda();renderChurches();
+  renderSermons();renderTimeline();renderCasa();
 }
 loadAll();
 </script>
