@@ -61,7 +61,7 @@ Cada seção do site possui sua própria aba na planilha:
 - sobre
 - casa
 - casaAtualizacoes
-- revista (opcional)
+- revista
 
 ## Configuração
 
@@ -122,12 +122,10 @@ E configurar a aba `revista` na planilha.
 ## Melhorias futuras
 
 - Analytics de acessos
-- Área administrativa
 - Painel de membros
 - Integração com calendário
 - Sistema de pedidos de oração
 - Área de notícias
-- Login para líderes
 - Banco de dados dedicado (Supabase/Firebase)
 
 ## Objetivo
