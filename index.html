@@ -13,7 +13,6 @@
   gtag('js',new Date());
   gtag('config','G-1WSMGRCP8R',{send_page_view:false});
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -54,6 +53,18 @@ a{color:inherit;text-decoration:none}
 .page{display:none;animation:fadeIn .35s ease}
 .page.active{display:block}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* AO VIVO */
+.live-banner{display:none;background:#c0000d;width:100%}
+.live-banner.visible{display:block}
+.live-inner{max-width:1080px;margin:0 auto;padding:11px 24px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.live-left{display:flex;align-items:center;gap:10px}
+.live-dot{width:9px;height:9px;border-radius:50%;background:#fff;animation:lpulse 1.4s infinite;flex-shrink:0}
+@keyframes lpulse{0%,100%{opacity:1}50%{opacity:.3}}
+.live-label{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#fff}
+.live-desc{font-size:12px;color:rgba(255,255,255,.8);font-weight:300}
+.live-btn{background:#fff;color:#c0000d;border:none;font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:7px 16px;border-radius:2px;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.live-btn:hover{opacity:.9}
 
 /* HERO */
 .hero{padding:72px 0 52px;text-align:center;border-bottom:1px solid var(--line)}
@@ -136,7 +147,7 @@ a{color:inherit;text-decoration:none}
 .social-links{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
 .social-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border:1px solid rgba(255,255,255,.2);border-radius:2px;font-size:12px;font-weight:500;transition:all .2s;background:rgba(255,255,255,.04);letter-spacing:.04em}
 .social-btn:hover{background:#fff;color:var(--ink)}
-.social-btn svg{flex-shrink:0}
+.social-btn svg,.nav-social svg{flex-shrink:0}
 .ic{display:flex;align-items:center;justify-content:center}
 
 /* AGENDA */
@@ -187,33 +198,32 @@ a{color:inherit;text-decoration:none}
 .church-name{font-family:var(--sans);font-size:17px;font-weight:600;margin-bottom:8px;line-height:1.2}
 .church-detail{font-size:12px;color:var(--ink-soft);margin-bottom:4px;display:flex;gap:8px;line-height:1.55}
 .church-detail b{color:var(--ink);font-weight:600;min-width:58px;font-size:11px;letter-spacing:.04em}
-.church-footer{display:flex;align-items:center;justify-content:space-between;margin-top:12px;gap:10px;flex-wrap:wrap}
-.church-maps{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--accent);font-weight:600;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+.church-footer{display:flex;align-items:center;justify-content:space-between;margin-top:14px;gap:10px}
+.church-maps-link{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--accent);font-weight:600;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
 .church-more-btn{background:var(--accent);color:#fff;border:none;font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:6px 14px;border-radius:2px;cursor:pointer;transition:opacity .2s}
 .church-more-btn:hover{opacity:.85}
 
-/* MODAL IGREJAS */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .25s;backdrop-filter:blur(4px)}
-.modal-overlay.open{opacity:1;pointer-events:all}
-.modal-box{background:var(--paper);width:100%;max-width:560px;max-height:88vh;overflow-y:auto;transform:translateY(18px);transition:transform .25s;border-radius:2px}
-.modal-overlay.open .modal-box{transform:translateY(0)}
-.modal-church-img{width:100%;height:220px;object-fit:cover;display:block}
-.modal-church-img-ph{width:100%;height:120px;background:#e8e4da;display:flex;align-items:center;justify-content:center;color:#bbb;font-size:13px}
-.modal-body{padding:28px 30px}
-.modal-eyebrow{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:8px}
-.modal-name{font-family:var(--sans);font-size:clamp(22px,3vw,28px);font-weight:700;margin-bottom:18px;line-height:1.2}
-.modal-detail{font-size:13px;color:var(--ink-soft);margin-bottom:8px;display:flex;gap:10px;line-height:1.6}
-.modal-detail b{color:var(--ink);font-weight:600;min-width:90px;font-size:11px;letter-spacing:.04em;text-transform:uppercase;flex-shrink:0;padding-top:1px}
-.modal-divider{border:none;border-top:1px solid var(--line);margin:20px 0}
-.modal-section-title{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:12px}
-.modal-programacao{font-size:13px;color:var(--ink-soft);font-weight:300;line-height:1.8;white-space:pre-line}
-.modal-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
-.modal-btn{display:inline-flex;align-items:center;gap:7px;padding:10px 20px;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;border-radius:2px;cursor:pointer;border:none;font-family:var(--sans);transition:opacity .2s;text-decoration:none}
-.modal-btn-maps{background:var(--accent);color:#fff}
-.modal-btn-ig{background:#e1306c;color:#fff}
-.modal-btn:hover{opacity:.85}
-.modal-close{position:absolute;top:14px;right:16px;background:rgba(0,0,0,.35);border:none;color:#fff;width:32px;height:32px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:5;line-height:1}
+/* MODAL IGREJA */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
+.modal-overlay.open{display:flex}
+.modal-box{background:var(--paper);width:100%;max-width:560px;max-height:88vh;overflow-y:auto;border-radius:2px;position:relative;animation:fadeIn .25s ease}
 .modal-img-wrap{position:relative}
+.modal-close{position:absolute;top:12px;right:12px;background:rgba(0,0,0,.4);border:none;color:#fff;width:32px;height:32px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:5;line-height:1}
+.modal-church-img{width:100%;height:220px;object-fit:cover;display:block}
+.modal-church-img-ph{width:100%;height:80px;background:#e8e4da;display:flex;align-items:center;justify-content:center;color:#bbb;font-size:13px}
+.modal-body{padding:26px 28px}
+.modal-eyebrow{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:8px}
+.modal-name{font-family:var(--sans);font-size:clamp(20px,3vw,26px);font-weight:700;margin-bottom:16px;line-height:1.2}
+.modal-detail{font-size:13px;color:var(--ink-soft);margin-bottom:8px;display:flex;gap:10px;line-height:1.6}
+.modal-detail b{color:var(--ink);font-weight:600;min-width:80px;font-size:11px;letter-spacing:.04em;text-transform:uppercase;flex-shrink:0}
+.modal-divider{border:none;border-top:1px solid var(--line);margin:18px 0}
+.modal-section-label{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:10px}
+.modal-prog-text{font-size:13px;color:var(--ink-soft);font-weight:300;line-height:1.8;white-space:pre-line}
+.modal-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.modal-btn{display:inline-flex;align-items:center;gap:7px;padding:10px 18px;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;border-radius:2px;cursor:pointer;border:none;font-family:var(--sans);transition:opacity .2s}
+.modal-btn:hover{opacity:.85}
+.modal-btn-maps{background:var(--accent);color:#fff}
+.modal-btn-ig{background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);color:#fff}
 
 /* SERMÕES */
 .sermon-search{max-width:440px;margin:0 auto 36px}
@@ -238,6 +248,31 @@ a{color:inherit;text-decoration:none}
 .sermon-full strong{font-weight:600}
 .sermon-full em{font-style:italic}
 .sermon-full blockquote{border-left:3px solid var(--gold);padding:12px 18px;background:var(--accent-soft);font-style:italic;margin:18px 0;font-size:15px;line-height:1.7}
+
+/* REVISTA */
+.revista-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:24px;margin:0 0 60px}
+.revista-card{background:var(--paper);border:1px solid var(--line);cursor:pointer;transition:transform .2s,box-shadow .2s;overflow:hidden}
+.revista-card:hover{transform:translateY(-4px);box-shadow:0 8px 28px rgba(0,0,0,.1)}
+.revista-card-capa{aspect-ratio:3/4;overflow:hidden;background:#e8e4da;position:relative}
+.revista-card-capa img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.revista-card:hover .revista-card-capa img{transform:scale(1.04)}
+.revista-card-capa-ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#aaa;font-size:24px}
+.revista-card-body{padding:14px 16px}
+.revista-card-edicao{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:4px}
+.revista-card-titulo{font-family:var(--sans);font-size:15px;font-weight:600;margin-bottom:3px;line-height:1.3}
+.revista-card-data{font-size:11px;color:var(--ink-soft)}
+.revista-card-desc{font-size:11px;color:var(--ink-soft);margin-top:5px;line-height:1.5;font-weight:300}
+
+/* LEITOR REVISTA — iframe Google Drive */
+.revista-reader{display:none;position:fixed;inset:0;z-index:300;background:#111;flex-direction:column}
+.revista-reader.open{display:flex}
+.reader-header{background:#111;padding:12px 20px;display:flex;align-items:center;gap:16px;flex-shrink:0;border-bottom:1px solid rgba(255,255,255,.1)}
+.reader-back{background:none;border:1px solid rgba(255,255,255,.25);color:#fff;padding:7px 16px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;font-family:var(--sans);border-radius:2px}
+.reader-back:hover{background:rgba(255,255,255,.12)}
+.reader-title{color:#fff;font-size:14px;font-weight:500;opacity:.8;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.reader-body{flex:1;position:relative}
+.reader-body iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
+.reader-msg{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:rgba(255,255,255,.5);font-size:13px;text-align:center;padding:20px;pointer-events:none}
 
 /* SOBRE */
 .about-text{max-width:680px;margin:0 auto;font-size:15px;line-height:1.9;color:var(--ink-soft);font-weight:300}
@@ -302,50 +337,12 @@ a{color:inherit;text-decoration:none}
 .pix-copy-btn:hover{opacity:.85}
 .pix-copy-btn.copied{background:#4a7a4a}
 
-/* AO VIVO */
-.live-banner{display:none;background:var(--ink);margin:0 0 0;padding:0}
-.live-banner.visible{display:block}
-.live-banner-inner{max-width:1080px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
-.live-dot-wrap{display:flex;align-items:center;gap:8px}
-.live-dot{width:9px;height:9px;border-radius:50%;background:#ff3b3b;animation:livePulse 1.4s infinite}
-@keyframes livePulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
-.live-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#fff}
-.live-title{font-size:13px;color:rgba(255,255,255,.7);font-weight:300;flex:1}
-.live-btn{background:#ff3b3b;color:#fff;border:none;font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:8px 18px;border-radius:2px;cursor:pointer;white-space:nowrap;transition:opacity .2s}
-.live-btn:hover{opacity:.85}
-
-/* REVISTA */
-.revista-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:24px;margin:0 0 60px}
-.revista-card{background:var(--paper);border:1px solid var(--line);cursor:pointer;transition:transform .2s,box-shadow .2s;overflow:hidden}
-.revista-card:hover{transform:translateY(-4px);box-shadow:0 8px 28px rgba(0,0,0,.1)}
-.revista-card-capa{aspect-ratio:3/4;overflow:hidden;background:#e8e4da;position:relative}
-.revista-card-capa img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
-.revista-card:hover .revista-card-capa img{transform:scale(1.04)}
-.revista-card-capa-ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#aaa;font-size:11px}
-.revista-card-body{padding:14px 16px}
-.revista-card-edicao{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:4px}
-.revista-card-titulo{font-family:var(--sans);font-size:15px;font-weight:600;margin-bottom:3px;line-height:1.3}
-.revista-card-data{font-size:11px;color:var(--ink-soft)}
-.revista-card-desc{font-size:11px;color:var(--ink-soft);margin-top:5px;line-height:1.5;font-weight:300}
-
-/* LEITOR REVISTA (iframe Google Drive) */
-.revista-reader{display:none;position:fixed;inset:0;z-index:200;background:#1a1a1a;flex-direction:column}
-.revista-reader.open{display:flex}
-.reader-header{background:#111;padding:12px 20px;display:flex;align-items:center;gap:16px;flex-shrink:0}
-.reader-back{background:none;border:1px solid rgba(255,255,255,.25);color:#fff;padding:7px 16px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;font-family:var(--sans);border-radius:2px}
-.reader-back:hover{background:rgba(255,255,255,.12)}
-.reader-title{color:#fff;font-size:14px;font-weight:500;opacity:.8;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.reader-body{flex:1;overflow:hidden;position:relative}
-.reader-body iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
-.reader-loading-msg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.4);font-size:13px;pointer-events:none}
-
 /* FOOTER */
 .footer{border-top:1px solid var(--line);padding:36px 0;text-align:center;background:var(--paper)}
 .footer-logo{height:42px;width:auto;margin:0 auto 12px;display:block;object-fit:contain}
 .footer-logo-ph{font-family:var(--sans);font-size:15px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;color:var(--ink)}
 .footer-logo-ph span{color:var(--accent)}
 .footer p{font-size:11px;color:var(--ink-soft);margin-top:4px;letter-spacing:.04em}
-
 .empty-state{text-align:center;padding:40px 20px;color:var(--ink-soft);font-size:13px}
 @media(max-width:600px){.casa-pix-block{flex-direction:column}}
 </style>
@@ -355,20 +352,35 @@ a{color:inherit;text-decoration:none}
 <div class="toast" id="toast"></div>
 
 <!-- MODAL IGREJAS -->
-<div class="modal-overlay" id="churchModal" onclick="closeChurchModal(event)">
-  <div class="modal-box" id="churchModalBox">
+<div class="modal-overlay" id="churchModal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box">
     <div class="modal-img-wrap">
-      <button class="modal-close" onclick="closeChurchModalDirect()">✕</button>
-      <div id="churchModalImg"></div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div id="mImg"></div>
     </div>
     <div class="modal-body">
       <div class="modal-eyebrow">Congregação</div>
-      <div class="modal-name" id="churchModalName"></div>
-      <div id="churchModalDetails"></div>
-      <hr class="modal-divider" id="churchModalProgDivider" style="display:none">
-      <div id="churchModalProg"></div>
-      <div class="modal-actions" id="churchModalActions"></div>
+      <div class="modal-name" id="mName"></div>
+      <div id="mDetails"></div>
+      <div id="mProgWrap" style="display:none">
+        <hr class="modal-divider">
+        <div class="modal-section-label">Programação</div>
+        <div class="modal-prog-text" id="mProg"></div>
+      </div>
+      <div class="modal-actions" id="mActions"></div>
     </div>
+  </div>
+</div>
+
+<!-- LEITOR REVISTA -->
+<div class="revista-reader" id="revistaReader">
+  <div class="reader-header">
+    <button class="reader-back" onclick="closeReader()">← Voltar</button>
+    <div class="reader-title" id="readerTitle"></div>
+  </div>
+  <div class="reader-body">
+    <div class="reader-msg" id="readerMsg">Carregando…</div>
+    <iframe id="readerFrame" style="opacity:0;transition:opacity .3s" onload="this.style.opacity=1;document.getElementById('readerMsg').style.display='none'"></iframe>
   </div>
 </div>
 
@@ -404,6 +416,18 @@ a{color:inherit;text-decoration:none}
     </div>
   </div>
 </nav>
+
+<!-- BANNER AO VIVO (controlado pelo JS) -->
+<div class="live-banner" id="liveBanner">
+  <div class="live-inner">
+    <div class="live-left">
+      <div class="live-dot"></div>
+      <span class="live-label">Ao Vivo</span>
+    </div>
+    <span class="live-desc" id="liveDesc">Transmissão em andamento</span>
+    <button class="live-btn" id="liveBtn" onclick="openLive()">Assistir agora</button>
+  </div>
+</div>
 
 <!-- HOME -->
 <div class="page active" id="page-home">
@@ -455,7 +479,7 @@ a{color:inherit;text-decoration:none}
 <div class="page" id="page-igrejas">
   <div class="wrap">
     <div class="sec-head" style="margin-top:50px"><div class="sec-eyebrow">Onde estamos</div><h2 class="sec-title">Nossas Igrejas</h2><div class="sec-divider"></div></div>
-    <div class="church-search-wrap"><input type="text" id="churchSearch" placeholder="Buscar pelo nome da igreja…" oninput="filterChurches(this.value)"></div>
+    <div class="church-search-wrap"><input type="text" placeholder="Buscar pelo nome da igreja…" oninput="filterChurches(this.value)"></div>
     <div class="church-grid" id="churchGrid"><div class="empty-state">Carregando…</div></div>
   </div>
 </div>
@@ -475,20 +499,6 @@ a{color:inherit;text-decoration:none}
     <div class="sec-head" style="margin-top:50px"><div class="sec-eyebrow">Publicação</div><h2 class="sec-title">Revista AD Belém</h2><div class="sec-divider"></div><p style="font-size:13px;color:var(--ink-soft);margin-top:14px;font-weight:300">Clique em uma edição para ler.</p></div>
     <div class="revista-grid" id="revistaGrid"><div class="empty-state">Carregando edições…</div></div>
   </div>
-</div>
-
-<!-- LEITOR PDF -->
-<div class="revista-reader" id="revistaReader">
-  <div class="reader-header">
-    <button class="reader-back" onclick="closeReader()">← Voltar</button>
-    <div class="reader-title" id="readerTitle"></div>
-    <div class="reader-nav">
-      <button onclick="readerPrev()">‹</button>
-      <span class="reader-page-info" id="readerPageInfo">1 / 1</span>
-      <button onclick="readerNext()">›</button>
-    </div>
-  </div>
-  <div class="reader-body"><div class="reader-canvas-wrap" id="readerCanvasWrap"><div class="reader-loading" id="readerLoading">Carregando PDF…</div></div></div>
 </div>
 
 <!-- SOBRE NÓS -->
@@ -534,7 +544,7 @@ a{color:inherit;text-decoration:none}
   <div class="contrib-section">
     <div class="wrap"><div class="contrib-inner">
       <div class="contrib-sub">Princípio bíblico</div><h3 class="contrib-head">Dízimo</h3>
-      <p class="contrib-text">Deus nos chama para devolvermos os primeiros 10% de nossa renda a Ele como ato de fé e confiança.</p>
+      <p class="contrib-text">Deus nos chama para devolvermos os primeiros 10% de nossa renda a Ele como ato de fé e confiança. O dízimo sustenta a obra local — o ministério, os cultos, o cuidado pastoral e tudo que acontece na nossa comunidade semana após semana.</p>
       <div class="contrib-verse">"Trazei todos os dízimos à casa do tesouro, para que haja mantimento na minha casa; e provai-me nisto, diz o Senhor dos Exércitos, se eu não vos abrir as janelas do céu e não derramar sobre vós uma bênção tal que não haja lugar bastante para a recolherdes."<cite>Malaquias 3:10</cite></div>
     </div></div>
   </div>
@@ -543,16 +553,16 @@ a{color:inherit;text-decoration:none}
       <div class="contrib-sub">Além do dízimo</div><h3 class="contrib-head">Ofertas e Causas</h3>
       <p class="contrib-text">É importante imitar Jesus em tudo, inclusive em generosidade. Além do dízimo, suas ofertas podem ir a causas específicas que ampliam o alcance da nossa missão.</p>
       <div class="contrib-causes">
-        <div class="contrib-cause"><div class="contrib-cause-icon">🏛</div><div class="contrib-cause-title">Nossa Casa</div><div class="contrib-cause-desc">Ajude a construir o novo templo.</div></div>
-        <div class="contrib-cause"><div class="contrib-cause-icon">🌍</div><div class="contrib-cause-title">Missões</div><div class="contrib-cause-desc">Leve a verdadeira Esperança ao redor do mundo.</div></div>
-        <div class="contrib-cause"><div class="contrib-cause-icon">🌐</div><div class="contrib-cause-title">Alcance Digital</div><div class="contrib-cause-desc">Transmissões e conteúdo que alcança quem não pode estar presente.</div></div>
+        <div class="contrib-cause"><div class="contrib-cause-icon">🏛</div><div class="contrib-cause-title">Nossa Casa</div><div class="contrib-cause-desc">Ajude a construir o novo templo — um espaço para as próximas gerações.</div></div>
+        <div class="contrib-cause"><div class="contrib-cause-icon">🌍</div><div class="contrib-cause-title">Missões</div><div class="contrib-cause-desc">Leve a verdadeira Esperança a comunidades locais e ao redor do mundo.</div></div>
+        <div class="contrib-cause"><div class="contrib-cause-icon">🌐</div><div class="contrib-cause-title">Alcance Digital</div><div class="contrib-cause-desc">Transmissões, redes sociais e conteúdo que alcança quem não pode estar presente.</div></div>
       </div>
     </div></div>
   </div>
   <div class="contrib-section">
     <div class="wrap"><div class="contrib-inner">
       <div class="contrib-sub">Simples e rápido</div><h3 class="contrib-head">Como Contribuir</h3>
-      <p class="contrib-text">Você pode contribuir presencialmente durante os cultos ou pelo PIX a qualquer momento.</p>
+      <p class="contrib-text">Você pode contribuir presencialmente durante os cultos ou pelo PIX a qualquer momento. Escolha a chave que corresponde ao destino da sua contribuição.</p>
       <div class="pix-grid">
         <div class="pix-block regular"><div><div class="pix-block-label">Dízimos &amp; Ofertas</div><div class="pix-block-head">Contribuição Regular</div><div class="pix-block-sub">Para dízimos, ofertas e contribuições gerais da igreja.</div></div><div class="pix-key-row"><div><div class="pix-key" id="pixKeyRegular"></div><div class="pix-key-note">CNPJ · AD BELÉM - BARUERI</div></div><button class="pix-copy-btn" onclick="copyPix('regular',this)">Copiar</button></div></div>
         <div class="pix-block obra"><div><div class="pix-block-label">Nossa Casa</div><div class="pix-block-head">Oferta para a construção</div><div class="pix-block-sub">Exclusivo para o projeto de construção do novo templo.</div></div><div class="pix-key-row"><div><div class="pix-key" id="pixKeyObra"></div><div class="pix-key-note">Chave PIX · Nossa Casa</div></div><button class="pix-copy-btn" onclick="copyPix('obra',this)">Copiar</button></div></div>
@@ -571,11 +581,19 @@ a{color:inherit;text-decoration:none}
 </div>
 
 <script>
-/* ═══ CONFIGURAÇÕES ═══════════════════════════════════════ */
+/* ═══ CONFIGURAÇÕES ═══════════════════════════════════════════ */
 const LOGO_URL    = 'https://ad.org.br/wp-content/uploads/2024/03/Logo-AD-Belem-2024-Mono-01.png';
 const PIX_REGULAR = '62.769.500/0249-10';
 const PIX_OBRA    = '11 93471-6963';
 const CHURCH_NAME = 'AD Belém Barueri';
+
+/* ── AO VIVO ────────────────────────────────────────────────────
+   Adicione uma coluna "youtube_live" na aba Avisos do Sheets.
+   Quando houver transmissão ao vivo, cole o link do YouTube nessa coluna
+   em qualquer linha de aviso (ou crie uma linha só para isso).
+   Quando estiver vazio, o banner some automaticamente.
+   O link pode ser: youtube.com/live/ID, youtu.be/ID, ou qualquer URL do YT.
+   ─────────────────────────────────────────────────────────────── */
 
 const SHEET_URLS = {
   eventos:         'https://docs.google.com/spreadsheets/d/e/2PACX-1vRyhTenbfftqs8iUdYuhP_6XSjAWeRJIHouHTtpTtWgqLRDEDssg8zex00DDDHDu5s_GsmVnQFWQdNy/pub?gid=0&single=true&output=tsv',
@@ -588,7 +606,7 @@ const SHEET_URLS = {
   revista:         'https://docs.google.com/spreadsheets/d/e/2PACX-1vRyhTenbfftqs8iUdYuhP_6XSjAWeRJIHouHTtpTtWgqLRDEDssg8zex00DDDHDu5s_GsmVnQFWQdNy/pub?gid=1147868776&single=true&output=tsv',
 };
 
-/* ═══ UTILITÁRIOS ════════════════════════════════════════ */
+/* ═══ UTILITÁRIOS ════════════════════════════════════════════ */
 function driveImg(url){
   if(!url||!url.trim()) return '';
   url=url.trim();
@@ -599,23 +617,29 @@ function driveImg(url){
   if(id) return `https://drive.google.com/uc?export=view&id=${id}`;
   return url;
 }
-function drivePdf(url){
+
+/* Converte qualquer link do Drive em URL de preview do iframe
+   (diferente do uc?export=view que é para imagem) */
+function drivePreview(url){
   if(!url||!url.trim()) return '';
   url=url.trim();
+  // já é preview
+  if(url.includes('drive.google.com/file/d/')&&url.includes('/preview')) return url;
   const m1=url.match(/\/file\/d\/([^\/\?&]+)/);
   const m2=url.match(/[?&]id=([^&]+)/);
   const id=m1?m1[1]:m2?m2[1]:'';
-  if(id) return `https://drive.google.com/uc?export=download&id=${id}`;
-  return url;
+  if(id) return `https://drive.google.com/file/d/${id}/preview`;
+  return url; // URL externa (ex.: Issuu, outro host)
 }
+
 function ytEmbed(url){
   if(!url||!url.trim()) return '';
-  const m=url.trim().match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([A-Za-z0-9_-]{11})/);
+  const m=url.trim().match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/|live\/))([A-Za-z0-9_-]{11})/);
   return m?`https://www.youtube.com/embed/${m[1]}?rel=0&modestbranding=1`:'';
 }
 function escHtml(s){return s==null?'':String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 
-/* ═══ LOGO + FAVICON ═════════════════════════════════════ */
+/* ═══ LOGO + FAVICON ════════════════════════════════════════ */
 (function(){
   const src=driveImg(LOGO_URL);if(!src) return;
   ['brandLogoImg','footerLogoImg'].forEach(id=>{const el=document.getElementById(id);if(el){el.src=src;el.style.display='block';}});
@@ -623,7 +647,7 @@ function escHtml(s){return s==null?'':String(s).replace(/[&<>"']/g,c=>({'&':'&am
   const fav=document.getElementById('faviconEl');if(fav) fav.href=src;
 })();
 
-/* ═══ PIX ════════════════════════════════════════════════ */
+/* ═══ PIX ════════════════════════════════════════════════════ */
 document.getElementById('pixKeyRegular').textContent=PIX_REGULAR;
 document.getElementById('pixKeyObra').textContent=PIX_OBRA;
 function copyPix(type,btn){
@@ -634,14 +658,14 @@ function copyPix(type,btn){
   }).catch(()=>prompt('Copie a chave PIX:',key));
 }
 
-/* ═══ TOAST ══════════════════════════════════════════════ */
+/* ═══ TOAST ═════════════════════════════════════════════════ */
 let toastTimer;
 function showToast(msg){
   const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
   clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2800);
 }
 
-/* ═══ TSV ════════════════════════════════════════════════ */
+/* ═══ TSV ════════════════════════════════════════════════════ */
 function parseTSV(text){
   if(!text) return [];
   const lines=text.replace(/\r/g,'').split('\n').filter(l=>l.trim());
@@ -661,7 +685,7 @@ async function fetchSheet(url){
   catch(e){console.error(e);return [];}
 }
 
-/* ═══ HELPERS DATA ═══════════════════════════════════════ */
+/* ═══ HELPERS DATA ═══════════════════════════════════════════ */
 const MONTHS=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
 const MONTHS_FULL=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 const DAYS=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
@@ -671,7 +695,7 @@ function fmtShort(d){const dt=parseDate(d);if(!dt)return{num:'–',mon:'',wd:''}
 function fmtTime(t){if(!t)return'';const[h,m]=t.split(':');return h+'h'+(m&&m!=='00'?m:'');}
 function isEspecial(e){return(e.tipo||'').trim().toLowerCase()==='especial';}
 
-/* ═══ MARKDOWN → HTML ════════════════════════════════════ */
+/* ═══ MARKDOWN ═══════════════════════════════════════════════ */
 function mdToHtml(raw){
   if(!raw)return'';
   return raw.replace(/\|\|/g,'\n\n').split(/\n{2,}/).map(block=>{
@@ -683,14 +707,14 @@ function mdToHtml(raw){
 }
 function inlineMd(s){return escHtml(s).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/_(.+?)_/g,'<em>$1</em>');}
 
-/* ═══ ANALYTICS ══════════════════════════════════════════ */
+/* ═══ ANALYTICS ═════════════════════════════════════════════ */
 function trackPage(n){if(typeof gtag==='undefined')return;gtag('event','page_view',{page_title:n,page_location:location.href+'#'+n});}
 function trackEvent(a,c,l){if(typeof gtag==='undefined')return;gtag('event',a,{event_category:c,event_label:l});}
 
-/* ═══ ESTADO ════════════════════════════════════════════ */
+/* ═══ ESTADO ════════════════════════════════════════════════ */
 let DATA={eventos:[],avisos:[],igrejas:[],sermoes:[],sobre:[],casa:[],casaAtualizacoes:[],revista:[]};
 
-/* ═══ NAVEGAÇÃO ══════════════════════════════════════════ */
+/* ═══ NAVEGAÇÃO ═════════════════════════════════════════════ */
 const PAGE_NAMES={home:'Início',agenda:'Agenda',igrejas:'Igrejas',sermoes:'Sermões',revista:'Revista',sobre:'Sobre Nós',casa:'Nossa Casa',contribua:'Contribua'};
 function goTo(page){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -702,7 +726,23 @@ function goTo(page){
 }
 function toggleMenu(){document.getElementById('navLinks').classList.toggle('open');}
 
-/* ═══ CARROSSEL ══════════════════════════════════════════ */
+/* ═══ AO VIVO ═══════════════════════════════════════════════
+   Lê a coluna "youtube_live" da aba Avisos.
+   Se qualquer linha tiver um link nessa coluna, exibe o banner.
+   Para ativar: adicione a coluna "youtube_live" na aba Avisos
+   e cole o link da live nessa linha. Para desativar, apague o valor.
+   ─────────────────────────────────────────────────────────── */
+let _liveUrl='';
+function checkLive(){
+  const live=DATA.avisos.find(a=>a.youtube_live&&a.youtube_live.trim());
+  if(!live){document.getElementById('liveBanner').classList.remove('visible');return;}
+  _liveUrl=live.youtube_live.trim();
+  document.getElementById('liveDesc').textContent=live.titulo||'Transmissão em andamento';
+  document.getElementById('liveBanner').classList.add('visible');
+}
+function openLive(){if(_liveUrl) window.open(_liveUrl,'_blank');}
+
+/* ═══ CARROSSEL ══════════════════════════════════════════════ */
 let carIdx=0,carSlides=[];
 function buildCarSlides(){
   const especiais=DATA.eventos.filter(isEspecial).slice(0,2);
@@ -733,7 +773,7 @@ function carMove(dir){if(!carSlides.length)return;carIdx=(carIdx+dir+carSlides.l
 function updateCarousel(){document.getElementById('carTrack').style.transform=`translateX(-${carIdx*100}%)`;document.querySelectorAll('.car-dot').forEach((d,i)=>d.classList.toggle('active',i===carIdx));}
 setInterval(()=>carMove(1),6000);
 
-/* ═══ PROGRAMAÇÃO FIXA ═══════════════════════════════════ */
+/* ═══ PROGRAMAÇÃO FIXA ═══════════════════════════════════════ */
 function renderFixedSchedule(){
   const el=document.getElementById('fixedSchedule');
   const rows=DATA.eventos.filter(e=>(e.tipo||'').trim().toLowerCase()==='programacao semanal');
@@ -741,7 +781,7 @@ function renderFixedSchedule(){
   el.innerHTML=rows.map(e=>`<div class="fixed-row"><div class="fixed-day">${escHtml(e.nome)}</div><div class="fixed-name">${e.desc?escHtml(e.desc):''}</div><div class="fixed-meta">${fmtTime(e.hora)}${e.local?' · '+escHtml(e.local):''}</div></div>`).join('');
 }
 
-/* ═══ PRÓXIMOS 2 ESPECIAIS ═══════════════════════════════ */
+/* ═══ PRÓXIMOS 2 ESPECIAIS ════════════════════════════════════ */
 function renderSpecialsGrid(){
   const el=document.getElementById('specialsGrid');const now=new Date();
   const up=DATA.eventos.filter(e=>isEspecial(e)&&e.data).map(e=>({...e,_dt:new Date(e.data+'T'+(e.hora||'00:00'))})).filter(e=>e._dt>now).sort((a,b)=>a._dt-b._dt).slice(0,2);
@@ -749,7 +789,7 @@ function renderSpecialsGrid(){
   el.innerHTML=up.map(e=>{const fd=fmtShort(e.data);const mo=parseDate(e.data);return`<div class="special-card"><div class="special-card-tag">★ Evento Especial</div><div class="special-card-date">${fd.wd}, ${fd.num} de ${mo?MONTHS_FULL[mo.getMonth()]:''}</div><div class="special-card-name">${escHtml(e.nome)}</div><div class="special-card-meta">${fmtTime(e.hora)}${e.local?' · '+escHtml(e.local):''}</div></div>`;}).join('');
 }
 
-/* ═══ AVISOS ════════════════════════════════════════════ */
+/* ═══ AVISOS ════════════════════════════════════════════════ */
 function renderNotices(){
   const el=document.getElementById('noticeList');
   if(!DATA.avisos.length){el.innerHTML='<div class="empty-state">Nenhum aviso no momento.</div>';return;}
@@ -762,13 +802,12 @@ function renderNotices(){
   }).join('');
 }
 
-/* ═══ COMPARTILHAR / GOOGLE AGENDA ═══════════════════════ */
+/* ═══ COMPARTILHAR / CALENDÁRIO ══════════════════════════════ */
 function shareEvent(nome,data,hora,local){
   const d=parseDate(data);
   const text=`Participe conosco: *${nome}*\n📅 ${d?DAYS_FULL[d.getDay()]+', '+d.getDate()+' de '+MONTHS_FULL[d.getMonth()]+' de '+d.getFullYear():data}\n⏰ ${fmtTime(hora)}\n📍 ${local||CHURCH_NAME}\n\n_${CHURCH_NAME}_`;
   if(navigator.share){navigator.share({title:nome,text}).catch(()=>{});}
   else{window.open(`https://wa.me/?text=${encodeURIComponent(text)}`,'_blank');}
-  trackEvent('share','Evento',nome);
 }
 function addToCalendar(nome,data,hora,local,desc){
   const dt=parseDate(data);if(!dt){showToast('Data inválida.');return;}
@@ -777,10 +816,9 @@ function addToCalendar(nome,data,hora,local,desc){
   const end=new Date(start.getTime()+2*3600000);
   const fmt=d=>d.toISOString().replace(/[-:]/g,'').slice(0,15)+'Z';
   window.open(`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(nome)}&dates=${fmt(start)}/${fmt(end)}&details=${encodeURIComponent(desc||'')}&location=${encodeURIComponent(local||CHURCH_NAME)}`,'_blank');
-  trackEvent('add_to_calendar','Evento',nome);
 }
 
-/* ═══ AGENDA ════════════════════════════════════════════ */
+/* ═══ AGENDA ════════════════════════════════════════════════ */
 function renderAgenda(){
   const el=document.getElementById('agendaList');
   const now=new Date();now.setHours(0,0,0,0);
@@ -792,8 +830,10 @@ function renderAgenda(){
     const d=ev._dt;const diff=Math.floor((d-now)/86400000);
     const group=diff<0?'Realizados Recentemente':diff===0?'Hoje':diff===1?'Amanhã':diff<7?'Esta Semana':diff<14?'Próxima Semana':MONTHS_FULL[d.getMonth()]+' '+d.getFullYear();
     if(group!==lastGroup){html+=`<div class="agenda-group-title">${group}</div>`;lastGroup=group;}
-    const fd=fmtShort(ev.data);const imgUrl=driveImg(ev.foto_url||'');const hasImg=!!imgUrl;
-    const isPast=diff<0;
+    const fd=fmtShort(ev.data);const imgUrl=driveImg(ev.foto_url||'');const hasImg=!!imgUrl;const isPast=diff<0;
+    const n=ev.nome.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    const l=(ev.local||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    const dc=(ev.desc||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
     html+=`<div class="event-card${hasImg?' has-img':''}"${isPast?' style="opacity:.55"':''}>
       ${hasImg?`<div class="ev-img-wrap"><img src="${imgUrl}" alt="" onerror="this.parentElement.remove()"></div>`:''}
       <div class="ev-body-wrap">
@@ -805,8 +845,8 @@ function renderAgenda(){
           ${ev.desc?`<div class="ev-desc">${escHtml(ev.desc)}</div>`:''}
           <div class="ev-meta">${ev.hora?`<span>🕐 ${fmtTime(ev.hora)}</span>`:''}${ev.local?`<span>📍 ${escHtml(ev.local)}</span>`:''}</div>
           ${!isPast?`<div class="ev-actions">
-            <button class="ev-btn ev-btn-share" onclick="shareEvent('${ev.nome.replace(/'/g,"\\'")}','${ev.data}','${ev.hora||''}','${(ev.local||'').replace(/'/g,"\\'")}')">📤 Compartilhar</button>
-            <button class="ev-btn ev-btn-cal" onclick="addToCalendar('${ev.nome.replace(/'/g,"\\'")}','${ev.data}','${ev.hora||''}','${(ev.local||'').replace(/'/g,"\\'")}','${(ev.desc||'').replace(/'/g,"\\'")}')">📅 Google Agenda</button>
+            <button class="ev-btn ev-btn-share" onclick="shareEvent('${n}','${ev.data}','${ev.hora||''}','${l}')">📤 Compartilhar</button>
+            <button class="ev-btn ev-btn-cal" onclick="addToCalendar('${n}','${ev.data}','${ev.hora||''}','${l}','${dc}')">📅 Google Agenda</button>
           </div>`:''}
         </div>
       </div>
@@ -815,25 +855,32 @@ function renderAgenda(){
   el.innerHTML=html;
 }
 
-/* ═══ IGREJAS com modal "Ver mais" ════════════════════════ */
+/* ═══ IGREJAS — bug do índice CORRIGIDO ══════════════════════
+   Guardamos uma referência ao objeto original de cada igreja
+   direto no atributo data-idx do botão, usando o índice
+   real em DATA.igrejas, não o índice do array filtrado.
+   ─────────────────────────────────────────────────────────── */
 function mapsUrl(q){return'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q);}
 
-function renderChurches(filter=''){
+function renderChurches(filter){
+  filter=(filter||'').toLowerCase().trim();
   const el=document.getElementById('churchGrid');
-  const f=filter.toLowerCase().trim();
-  const list=DATA.igrejas.filter(c=>!f||(c.nome||'').toLowerCase().includes(f));
-  if(!list.length){el.innerHTML=`<div class="empty-state">${f?'Nenhuma igreja encontrada.':'Nenhuma igreja cadastrada.'}</div>`;return;}
-  el.innerHTML=list.map((c,i)=>{
+  // Filtramos mas mantemos o índice original
+  const list=DATA.igrejas.map((c,i)=>({c,i})).filter(({c})=>!filter||(c.nome||'').toLowerCase().includes(filter));
+  if(!list.length){el.innerHTML=`<div class="empty-state">${filter?'Nenhuma igreja encontrada.':'Nenhuma igreja cadastrada.'}</div>`;return;}
+  el.innerHTML=list.map(({c,i})=>{
     const imgUrl=driveImg(c.foto_url||'');
     return`<div class="church-card">
-      <div class="church-img">${imgUrl?`<img src="${imgUrl}" alt="${escHtml(c.nome)}" onerror="this.parentElement.innerHTML='<div class=\\'church-img-ph\\'>📷 Sem foto</div>'">`:`<div class="church-img-ph">📷 Sem foto</div>`}</div>
+      <div class="church-img">${imgUrl
+        ?`<img src="${imgUrl}" alt="${escHtml(c.nome)}" onerror="this.parentElement.innerHTML='<div class=\\'church-img-ph\\'>📷 Sem foto</div>'">`
+        :`<div class="church-img-ph">📷 Sem foto</div>`}</div>
       <div class="church-body">
         <div class="church-name">${escHtml(c.nome)}</div>
         ${c.endereco?`<div class="church-detail"><b>Endereço</b><span>${escHtml(c.endereco)}</span></div>`:''}
         ${c.pastor?`<div class="church-detail"><b>Pastor</b><span>${escHtml(c.pastor)}</span></div>`:''}
         <div class="church-footer">
-          <span class="church-maps" onclick="window.open('${mapsUrl(c.nome+' '+c.endereco)}','_blank')">📍 Google Maps</span>
-          <button class="church-more-btn" onclick="openChurchModal(${i})">Ver mais</button>
+          <span class="church-maps-link" onclick="window.open('${mapsUrl(c.nome+' '+c.endereco)}','_blank')">📍 Google Maps</span>
+          <button class="church-more-btn" data-church-idx="${i}" onclick="openModal(parseInt(this.dataset.churchIdx))">Ver mais</button>
         </div>
       </div>
     </div>`;
@@ -841,44 +888,31 @@ function renderChurches(filter=''){
 }
 function filterChurches(v){renderChurches(v);}
 
-function openChurchModal(idx){
-  const c=DATA.igrejas[idx];if(!c) return;
+function openModal(idx){
+  const c=DATA.igrejas[idx];
+  if(!c){console.warn('Igreja não encontrada no índice',idx);return;}
   const imgUrl=driveImg(c.foto_url||'');
-  // imagem ou placeholder
-  document.getElementById('churchModalImg').innerHTML=imgUrl
-    ?`<img class="modal-church-img" src="${imgUrl}" alt="${escHtml(c.nome)}" onerror="this.outerHTML='<div class=\\'modal-church-img-ph\\'>📷</div>'">`
+  document.getElementById('mImg').innerHTML=imgUrl
+    ?`<img class="modal-church-img" src="${imgUrl}" alt="" onerror="this.outerHTML='<div class=\\'modal-church-img-ph\\'>📷</div>'">`
     :`<div class="modal-church-img-ph">📷</div>`;
-  document.getElementById('churchModalName').textContent=c.nome||'';
-  // detalhes
+  document.getElementById('mName').textContent=c.nome||'';
   let det='';
   if(c.endereco) det+=`<div class="modal-detail"><b>Endereço</b><span>${escHtml(c.endereco)}</span></div>`;
   if(c.pastor)   det+=`<div class="modal-detail"><b>Pastor</b><span>${escHtml(c.pastor)}</span></div>`;
-  document.getElementById('churchModalDetails').innerHTML=det;
-  // programação
+  document.getElementById('mDetails').innerHTML=det;
   const hasProg=!!(c.programacao&&c.programacao.trim());
-  const progDivider=document.getElementById('churchModalProgDivider');
-  const progEl=document.getElementById('churchModalProg');
-  if(hasProg){
-    progDivider.style.display='block';
-    progEl.innerHTML=`<div class="modal-section-title">Programação</div><div class="modal-programacao">${escHtml(c.programacao)}</div>`;
-  } else {
-    progDivider.style.display='none';
-    progEl.innerHTML='';
-  }
-  // botões de ação
-  const hasIg=!!(c.rede_social&&c.rede_social.trim());
+  const pw=document.getElementById('mProgWrap');
+  pw.style.display=hasProg?'block':'none';
+  if(hasProg) document.getElementById('mProg').textContent=c.programacao;
   let acts=`<a class="modal-btn modal-btn-maps" href="${mapsUrl(c.nome+' '+c.endereco)}" target="_blank">📍 Ver no Maps</a>`;
-  if(hasIg) acts+=`<a class="modal-btn modal-btn-ig" href="${escHtml(c.rede_social)}" target="_blank">📷 Instagram</a>`;
-  document.getElementById('churchModalActions').innerHTML=acts;
-  // abre
+  if(c.rede_social&&c.rede_social.trim()) acts+=`<a class="modal-btn modal-btn-ig" href="${escHtml(c.rede_social)}" target="_blank">📷 Instagram</a>`;
+  document.getElementById('mActions').innerHTML=acts;
   document.getElementById('churchModal').classList.add('open');
   document.body.style.overflow='hidden';
-  trackEvent('view','Igreja',c.nome);
 }
-function closeChurchModal(e){if(e.target===document.getElementById('churchModal')) closeChurchModalDirect();}
-function closeChurchModalDirect(){document.getElementById('churchModal').classList.remove('open');document.body.style.overflow='';}
+function closeModal(){document.getElementById('churchModal').classList.remove('open');document.body.style.overflow='';}
 
-/* ═══ SERMÕES ════════════════════════════════════════════ */
+/* ═══ SERMÕES ═══════════════════════════════════════════════ */
 let _allSermons=[];
 function renderSermons(filter=''){
   const el=document.getElementById('sermonList');
@@ -894,35 +928,27 @@ function renderSermons(filter=''){
 function toggleSermon(id){
   const f=document.getElementById('full-'+id),e=document.getElementById('exp-'+id);
   const open=f.classList.toggle('open');e.textContent=open?'Fechar ↑':'Ler →';
-  if(open)trackEvent('open','Sermão',id);
 }
 function filterSermons(v){renderSermons(v);}
 
-/* ═══ SOBRE ══════════════════════════════════════════════ */
-function renderTimeline(){
-  const el=document.getElementById('timelineList');if(!DATA.sobre.length){el.innerHTML='';return;}
-  el.innerHTML=DATA.sobre.map(t=>`<div class="tl-item"><div class="tl-year">${escHtml(t.ano)}</div><div class="tl-content"><h4>${escHtml(t.titulo)}</h4><p>${escHtml(t.texto)}</p></div></div>`).join('');
-}
-
-/* ═══ NOSSA CASA ═════════════════════════════════════════ */
-function renderCasa(){
-  const val=DATA.casa[0]?parseFloat(DATA.casa[0].progresso):NaN;
-  if(!isNaN(val)){document.getElementById('progressFill').style.width=Math.min(100,Math.max(0,val))+'%';document.getElementById('progressPct').textContent=val+'%';}
-  const el=document.getElementById('updateList');if(!DATA.casaAtualizacoes.length){el.innerHTML='<div class="empty-state">Nenhuma atualização ainda.</div>';return;}
-  el.innerHTML=DATA.casaAtualizacoes.map(u=>{const imgUrl=driveImg(u.foto_url||'');return`<div class="update-item">${imgUrl?`<img class="update-item-img" src="${imgUrl}" alt="" onerror="this.remove()">`:''}<div class="update-date">${escHtml(u.data)}</div><div class="update-title">${escHtml(u.titulo)}</div><div class="update-body">${escHtml(u.texto)}</div></div>`;}).join('');
-}
-
-/* ═══ REVISTA ════════════════════════════════════════════ */
+/* ═══ REVISTA — iframe Google Drive ═══════════════════════════
+   O leitor usa o visualizador nativo do Google Drive via iframe.
+   Isso contorna o bloqueio de CORS que impede o pdf.js de funcionar.
+   Requisito: o PDF no Drive deve estar com permissão "Qualquer pessoa
+   com o link pode ver". O link pode ser /file/d/ID/view ou /file/d/ID/preview.
+   ─────────────────────────────────────────────────────────────── */
 function renderRevista(){
   const el=document.getElementById('revistaGrid');
   if(!DATA.revista.length){el.innerHTML='<div class="empty-state">Nenhuma edição disponível.</div>';return;}
   el.innerHTML=DATA.revista.map((r,i)=>{
     const imgUrl=driveImg(r.capa_url||'');
-    return`<div class="revista-card" onclick="openReader(${i});trackEvent('open','Revista','${escHtml(r.titulo)}')">
-      <div class="revista-card-capa">${imgUrl?`<img src="${imgUrl}" alt="${escHtml(r.titulo)}" onerror="this.parentElement.innerHTML='<div class=\\'revista-card-capa-ph\\'>📖</div>'">`:`<div class="revista-card-capa-ph">📖</div>`}</div>
+    return`<div class="revista-card" onclick="openReader(${i})">
+      <div class="revista-card-capa">${imgUrl
+        ?`<img src="${imgUrl}" alt="${escHtml(r.titulo||'')}" onerror="this.parentElement.innerHTML='<div class=\\'revista-card-capa-ph\\'>📖</div>'">`
+        :`<div class="revista-card-capa-ph">📖</div>`}</div>
       <div class="revista-card-body">
         <div class="revista-card-edicao">${escHtml(r.edicao||'')}</div>
-        <div class="revista-card-titulo">${escHtml(r.titulo)}</div>
+        <div class="revista-card-titulo">${escHtml(r.titulo||'')}</div>
         <div class="revista-card-data">${escHtml(r.data||'')}</div>
         ${r.descricao?`<div class="revista-card-desc">${escHtml(r.descricao)}</div>`:''}
       </div>
@@ -930,49 +956,52 @@ function renderRevista(){
   }).join('');
 }
 
-/* ═══ PDF.js ══════════════════════════════════════════════ */
-let pdfDoc=null,pdfPage=1,pdfTotal=0;
-pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-async function openReader(idx){
-  const r=DATA.revista[idx];if(!r||!r.pdf_url) return;
-  document.getElementById('readerTitle').textContent=r.titulo+(r.edicao?' — '+r.edicao:'');
+function openReader(idx){
+  const r=DATA.revista[idx];
+  if(!r){return;}
+  const pdfUrl=r.pdf_url&&r.pdf_url.trim();
+  if(!pdfUrl){showToast('PDF não disponível para esta edição.');return;}
+  const previewUrl=drivePreview(pdfUrl);
+  document.getElementById('readerTitle').textContent=(r.titulo||'')+(r.edicao?' — '+r.edicao:'');
+  const frame=document.getElementById('readerFrame');
+  const msg=document.getElementById('readerMsg');
+  frame.style.opacity='0';
+  msg.style.display='flex';
+  msg.textContent='Carregando…';
+  frame.src=previewUrl;
   document.getElementById('revistaReader').classList.add('open');
   document.body.style.overflow='hidden';
-  document.getElementById('readerLoading').style.display='block';
-  document.querySelectorAll('#readerCanvasWrap canvas').forEach(c=>c.remove());
-  pdfPage=1;pdfDoc=null;pdfTotal=0;
-  try{
-    const url=drivePdf(r.pdf_url);
-    pdfDoc=await pdfjsLib.getDocument({url,withCredentials:false}).promise;
-    pdfTotal=pdfDoc.numPages;
-    document.getElementById('readerLoading').style.display='none';
-    renderPdfPage(pdfPage);
-  }catch(e){document.getElementById('readerLoading').textContent='Erro ao carregar PDF. Verifique se o arquivo está público no Google Drive.';}
+  trackEvent('open','Revista',r.titulo||idx);
 }
-async function renderPdfPage(num){
-  if(!pdfDoc) return;
-  const wrap=document.getElementById('readerCanvasWrap');wrap.querySelectorAll('canvas').forEach(c=>c.remove());
-  const page=await pdfDoc.getPage(num);
-  const maxH=window.innerHeight-120;const scale=maxH/page.getViewport({scale:1}).height;
-  const viewport=page.getViewport({scale});const canvas=document.createElement('canvas');
-  canvas.width=viewport.width;canvas.height=viewport.height;canvas.style.maxHeight=maxH+'px';canvas.style.width='auto';
-  wrap.appendChild(canvas);await page.render({canvasContext:canvas.getContext('2d'),viewport}).promise;
-  document.getElementById('readerPageInfo').textContent=`${num} / ${pdfTotal}`;
+function closeReader(){
+  document.getElementById('revistaReader').classList.remove('open');
+  document.getElementById('readerFrame').src='';
+  document.body.style.overflow='';
 }
-function readerNext(){if(pdfDoc&&pdfPage<pdfTotal){pdfPage++;renderPdfPage(pdfPage);}}
-function readerPrev(){if(pdfDoc&&pdfPage>1){pdfPage--;renderPdfPage(pdfPage);}}
-function closeReader(){document.getElementById('revistaReader').classList.remove('open');document.body.style.overflow='';pdfDoc=null;}
+
+/* ═══ SOBRE ═════════════════════════════════════════════════ */
+function renderTimeline(){
+  const el=document.getElementById('timelineList');if(!DATA.sobre.length){el.innerHTML='';return;}
+  el.innerHTML=DATA.sobre.map(t=>`<div class="tl-item"><div class="tl-year">${escHtml(t.ano)}</div><div class="tl-content"><h4>${escHtml(t.titulo)}</h4><p>${escHtml(t.texto)}</p></div></div>`).join('');
+}
+
+/* ═══ NOSSA CASA ════════════════════════════════════════════ */
+function renderCasa(){
+  const val=DATA.casa[0]?parseFloat(DATA.casa[0].progresso):NaN;
+  if(!isNaN(val)){document.getElementById('progressFill').style.width=Math.min(100,Math.max(0,val))+'%';document.getElementById('progressPct').textContent=val+'%';}
+  const el=document.getElementById('updateList');if(!DATA.casaAtualizacoes.length){el.innerHTML='<div class="empty-state">Nenhuma atualização ainda.</div>';return;}
+  el.innerHTML=DATA.casaAtualizacoes.map(u=>{const imgUrl=driveImg(u.foto_url||'');return`<div class="update-item">${imgUrl?`<img class="update-item-img" src="${imgUrl}" alt="" onerror="this.remove()">`:''}<div class="update-date">${escHtml(u.data)}</div><div class="update-title">${escHtml(u.titulo)}</div><div class="update-body">${escHtml(u.texto)}</div></div>`;}).join('');
+}
+
+/* ═══ ESC fecha modais ══════════════════════════════════════ */
 document.addEventListener('keydown',e=>{
-  if(document.getElementById('revistaReader').classList.contains('open')){
-    if(e.key==='ArrowRight') readerNext();
-    if(e.key==='ArrowLeft') readerPrev();
-    if(e.key==='Escape') closeReader();
-    return;
+  if(e.key==='Escape'){
+    if(document.getElementById('revistaReader').classList.contains('open')) closeReader();
+    else if(document.getElementById('churchModal').classList.contains('open')) closeModal();
   }
-  if(document.getElementById('churchModal').classList.contains('open')&&e.key==='Escape') closeChurchModalDirect();
 });
 
-/* ═══ INIT ════════════════════════════════════════════════ */
+/* ═══ INIT ══════════════════════════════════════════════════ */
 async function loadAll(){
   const res=await Promise.all([
     fetchSheet(SHEET_URLS.eventos),fetchSheet(SHEET_URLS.avisos),fetchSheet(SHEET_URLS.igrejas),
@@ -981,6 +1010,7 @@ async function loadAll(){
   ]);
   DATA={eventos:res[0]||[],avisos:res[1]||[],igrejas:res[2]||[],sermoes:res[3]||[],sobre:res[4]||[],casa:res[5]||[],casaAtualizacoes:res[6]||[],revista:res[7]||[]};
   _allSermons=DATA.sermoes;
+  checkLive();
   renderCarousel();renderFixedSchedule();renderSpecialsGrid();
   renderNotices();renderAgenda();renderChurches();
   renderSermons();renderRevista();renderTimeline();renderCasa();
