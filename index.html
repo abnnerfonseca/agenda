@@ -54,7 +54,8 @@ a{color:inherit;text-decoration:none}
 @keyframes lpulse{0%,100%{opacity:1}50%{opacity:.3}}
 .live-label{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#fff}
 .live-desc{font-size:12px;color:rgba(255,255,255,.8);font-weight:300}
-.live-btn{background:#fff;color:#c0000d;border:none;font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:7px 16px;border-radius:2px;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.live-btn{background:#fff;color:#c0000d;border:none;font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:7px 18px;border-radius:999px;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:transform .15s,box-shadow .15s}
+.live-btn:hover{transform:translateY(-1px);box-shadow:0 3px 10px rgba(0,0,0,.15)}
 .hero{padding:72px 0 52px;text-align:center;border-bottom:1px solid var(--line)}
 .hero-eyebrow{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:14px}
 .hero-title{font-family:var(--sans);font-size:clamp(36px,6vw,68px);font-weight:700;line-height:1.08;margin-bottom:18px}
@@ -80,7 +81,7 @@ a{color:inherit;text-decoration:none}
 .car-nav{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:18px;cursor:pointer;z-index:3;display:flex;align-items:center;justify-content:center;transition:background .2s}
 .car-nav:hover{background:rgba(255,255,255,.28)}
 .car-prev{left:18px}.car-next{right:18px}
-.car-dots{position:absolute;bottom:18px;right:24px;z-index:3;display:flex;gap:7px}
+.car-dots{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);z-index:3;display:flex;gap:7px}
 .car-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.38);cursor:pointer;transition:background .2s,transform .2s}
 .car-dot.active{background:#fff;transform:scale(1.3)}
 .specials-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:0 0 52px}
@@ -117,12 +118,19 @@ a{color:inherit;text-decoration:none}
 .social-band-title{font-family:var(--sans);font-size:clamp(24px,4vw,36px);font-weight:600;color:#fff;margin-bottom:8px}
 .social-sub{color:rgba(255,255,255,.5);font-size:13px;margin-bottom:28px;font-weight:300}
 .social-links{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
-.social-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border:1px solid rgba(255,255,255,.2);border-radius:2px;font-size:12px;font-weight:500;transition:all .2s;background:rgba(255,255,255,.04);letter-spacing:.04em}
-.social-btn:hover{background:#fff;color:var(--ink)}
+.social-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border:1px solid rgba(255,255,255,.2);border-radius:999px;font-size:12px;font-weight:500;transition:all .2s;background:rgba(255,255,255,.04);letter-spacing:.04em}
+.social-btn:hover{background:#fff;color:var(--ink);transform:translateY(-1px)}
 .social-btn svg,.nav-social svg{flex-shrink:0}
 .ic{display:flex;align-items:center;justify-content:center}
 .agenda-group-title{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600;margin:32px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--line)}
 .agenda-group-title:first-child{margin-top:0}
+.agenda-filters{display:flex;gap:8px;flex-wrap:nowrap;overflow-x:auto;margin:0 0 36px;padding-bottom:6px;scrollbar-width:thin}
+.agenda-filters::-webkit-scrollbar{height:4px}
+.agenda-filters::-webkit-scrollbar-thumb{background:var(--line);border-radius:4px}
+.agenda-pill{flex-shrink:0;padding:9px 18px;border-radius:999px;border:1px solid var(--line);background:var(--paper);font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);cursor:pointer;white-space:nowrap;transition:all .2s}
+.agenda-pill:hover{border-color:var(--accent);color:var(--accent)}
+.agenda-pill.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.agenda-pill.active:hover{color:#fff}
 .event-card{background:var(--paper);border:1px solid var(--line);margin-bottom:14px;overflow:hidden;transition:box-shadow .2s}
 .event-card:hover{box-shadow:0 4px 20px rgba(0,0,0,.08)}
 .event-card.has-img{display:grid;grid-template-columns:38% 1fr}
@@ -140,11 +148,11 @@ a{color:inherit;text-decoration:none}
 .ev-desc{font-size:12px;color:var(--ink-soft);font-weight:300;margin-bottom:10px;line-height:1.65}
 .ev-meta{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--ink-soft);margin-bottom:12px}
 .ev-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
-.ev-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;border-radius:2px;cursor:pointer;border:none;font-family:var(--sans);transition:opacity .2s;white-space:nowrap}
+.ev-btn{display:inline-flex;align-items:center;gap:5px;padding:7px 16px;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;cursor:pointer;border:none;font-family:var(--sans);transition:transform .15s,box-shadow .15s,opacity .2s;white-space:nowrap}
 .ev-btn-share{background:var(--accent);color:#fff}
 .ev-btn-cal{background:var(--accent-soft);color:var(--accent)}
-.ev-btn:hover{opacity:.8}
-.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:10px 22px;font-size:12px;font-weight:500;border-radius:2px;z-index:999;opacity:0;pointer-events:none;transition:all .3s;white-space:nowrap}
+.ev-btn:hover{transform:translateY(-1px);box-shadow:0 3px 10px rgba(0,0,0,.12)}
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:10px 24px;font-size:12px;font-weight:500;border-radius:999px;z-index:999;opacity:0;pointer-events:none;transition:all .3s;white-space:nowrap}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .church-search-wrap{max-width:440px;margin:0 auto 32px}
 .church-search-wrap input{width:100%;padding:12px 18px;border:1px solid var(--line);background:var(--paper);font-family:var(--sans);font-size:13px;outline:none}
@@ -162,8 +170,8 @@ a{color:inherit;text-decoration:none}
 .church-detail b{color:var(--ink);font-weight:600;min-width:58px;font-size:11px;letter-spacing:.04em}
 .church-footer{display:flex;align-items:center;justify-content:space-between;margin-top:14px;gap:10px}
 .church-maps-link{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--accent);font-weight:600;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
-.church-more-btn{background:var(--accent);color:#fff;border:none;font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:6px 14px;border-radius:2px;cursor:pointer;transition:opacity .2s}
-.church-more-btn:hover{opacity:.85}
+.church-more-btn{background:var(--accent);color:#fff;border:none;font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:7px 16px;border-radius:999px;cursor:pointer;transition:transform .15s,box-shadow .15s,opacity .2s}
+.church-more-btn:hover{transform:translateY(-1px);box-shadow:0 3px 10px rgba(0,0,0,.12)}
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
 .modal-overlay.open{display:flex}
 .modal-box{background:var(--paper);width:100%;max-width:560px;max-height:88vh;overflow-y:auto;border-radius:2px;position:relative;animation:fadeIn .25s ease}
@@ -180,8 +188,8 @@ a{color:inherit;text-decoration:none}
 .modal-section-label{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:10px}
 .modal-prog-text{font-size:13px;color:var(--ink-soft);font-weight:300;line-height:1.8;white-space:pre-line}
 .modal-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
-.modal-btn{display:inline-flex;align-items:center;gap:7px;padding:10px 18px;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;border-radius:2px;cursor:pointer;border:none;font-family:var(--sans);transition:opacity .2s}
-.modal-btn:hover{opacity:.85}
+.modal-btn{display:inline-flex;align-items:center;gap:7px;padding:11px 20px;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;cursor:pointer;border:none;font-family:var(--sans);transition:transform .15s,box-shadow .15s,opacity .2s}
+.modal-btn:hover{transform:translateY(-1px);box-shadow:0 3px 10px rgba(0,0,0,.12)}
 .modal-btn-maps{background:var(--accent);color:#fff}
 .modal-btn-ig{background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);color:#fff}
 .sermon-search{max-width:440px;margin:0 auto 36px}
@@ -221,7 +229,7 @@ a{color:inherit;text-decoration:none}
 .revista-reader{display:none;position:fixed;inset:0;z-index:300;background:#111;flex-direction:column}
 .revista-reader.open{display:flex}
 .reader-header{background:#111;padding:12px 20px;display:flex;align-items:center;gap:16px;flex-shrink:0;border-bottom:1px solid rgba(255,255,255,.1)}
-.reader-back{background:none;border:1px solid rgba(255,255,255,.25);color:#fff;padding:7px 16px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;font-family:var(--sans);border-radius:2px}
+.reader-back{background:none;border:1px solid rgba(255,255,255,.25);color:#fff;padding:8px 18px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;font-family:var(--sans);border-radius:999px;transition:background .2s}
 .reader-back:hover{background:rgba(255,255,255,.12)}
 .reader-title{color:#fff;font-size:14px;font-weight:500;opacity:.8;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .reader-body{flex:1;position:relative}
@@ -245,8 +253,8 @@ a{color:inherit;text-decoration:none}
 .casa-pix-label{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:6px}
 .casa-pix-title{font-family:var(--sans);font-size:20px;font-weight:600;margin-bottom:4px}
 .casa-pix-sub{font-size:12px;color:var(--ink-soft);font-weight:300}
-.casa-pix-btn{background:var(--accent);color:#fff;padding:11px 24px;font-size:12px;font-weight:500;border-radius:2px;white-space:nowrap;cursor:pointer;display:inline-block;margin-top:4px;letter-spacing:.06em;text-transform:uppercase}
-.casa-pix-btn:hover{opacity:.85}
+.casa-pix-btn{background:var(--accent);color:#fff;padding:12px 26px;font-size:12px;font-weight:500;border-radius:999px;white-space:nowrap;cursor:pointer;display:inline-block;margin-top:4px;letter-spacing:.06em;text-transform:uppercase;transition:transform .15s,box-shadow .15s}
+.casa-pix-btn:hover{transform:translateY(-1px);box-shadow:0 3px 10px rgba(0,0,0,.15)}
 .update-list{max-width:680px;margin:0 auto}
 .update-item{border-left:2px solid var(--line);padding:4px 0 28px 22px;position:relative}
 .update-item::before{content:'';position:absolute;left:-6px;top:4px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
@@ -281,8 +289,8 @@ a{color:inherit;text-decoration:none}
 .pix-key-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:4px;padding-top:12px;border-top:1px solid var(--line)}
 .pix-key{font-family:var(--sans);font-size:16px;font-weight:600}
 .pix-key-note{font-size:10px;color:var(--ink-soft);font-weight:300;margin-top:2px}
-.pix-copy-btn{background:var(--accent);color:#fff;border:none;padding:9px 18px;font-size:11px;font-weight:600;cursor:pointer;font-family:var(--sans);letter-spacing:.06em;text-transform:uppercase;border-radius:2px;transition:opacity .2s;white-space:nowrap;flex-shrink:0}
-.pix-copy-btn:hover{opacity:.85}
+.pix-copy-btn{background:var(--accent);color:#fff;border:none;padding:10px 20px;font-size:11px;font-weight:600;cursor:pointer;font-family:var(--sans);letter-spacing:.06em;text-transform:uppercase;border-radius:999px;transition:transform .15s,box-shadow .15s,opacity .2s;white-space:nowrap;flex-shrink:0}
+.pix-copy-btn:hover{transform:translateY(-1px);box-shadow:0 3px 10px rgba(0,0,0,.12)}
 .pix-copy-btn.copied{background:#4a7a4a}
 .footer{border-top:1px solid var(--line);padding:36px 0;text-align:center;background:var(--paper)}
 .footer-logo{height:42px;width:auto;margin:0 auto 12px;display:block;object-fit:contain}
@@ -405,6 +413,7 @@ a{color:inherit;text-decoration:none}
 <div class="page" id="page-agenda">
   <div class="wrap">
     <div class="sec-head" style="margin-top:50px"><div class="sec-eyebrow">Eventos</div><h2 class="sec-title">Agenda de Eventos</h2><div class="sec-divider"></div></div>
+    <div class="agenda-filters" id="agendaFilters"></div>
     <div id="agendaList"><div class="empty-state">Carregando…</div></div>
   </div>
 </div>
@@ -716,13 +725,37 @@ function goTo(page){
 }
 function toggleMenu(){document.getElementById('navLinks').classList.toggle('open');}
 
+const WEEKDAY_ALIASES={domingo:0,segunda:1,'segunda-feira':1,terca:2,'terca-feira':2,quarta:3,'quarta-feira':3,quinta:4,'quinta-feira':4,sexta:5,'sexta-feira':5,sabado:6,'sabado-feira':6};
+function normDay(s){return(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();}
+function weekdayFromLabel(label){
+  const n=normDay(label);
+  for(const key in WEEKDAY_ALIASES){if(n.startsWith(key)) return WEEKDAY_ALIASES[key];}
+  return null;
+}
 let _liveUrl='';
 function checkLive(){
-  const live=DATA.avisos.find(a=>isSim(a.ao_vivo)&&a.youtube_live&&a.youtube_live.trim());
-  if(!live){document.getElementById('liveBanner').classList.remove('visible');return;}
-  _liveUrl=live.youtube_live.trim();
-  document.getElementById('liveDesc').textContent=live.titulo||'Transmissão em andamento';
-  document.getElementById('liveBanner').classList.add('visible');
+  const banner=document.getElementById('liveBanner');
+  const liveUrl=cfg('youtube_live_url')||cfg('youtube_url');
+  if(!liveUrl){banner.classList.remove('visible');return;}
+  const duracaoMin=parseInt(cfg('ao_vivo_duracao_min','60'),10)||60;
+  const rows=DATA.eventos.filter(e=>(e.tipo||'').trim().toLowerCase()==='programacao semanal');
+  const now=new Date();
+  const isLive=rows.some(r=>{
+    const wd=weekdayFromLabel(r.nome);
+    if(wd===null||!r.hora||now.getDay()!==wd) return false;
+    const[h,m]=r.hora.split(':').map(Number);
+    if(isNaN(h)) return false;
+    const start=new Date(now.getFullYear(),now.getMonth(),now.getDate(),h,m||0);
+    const end=new Date(start.getTime()+duracaoMin*60000);
+    return now>=start&&now<=end;
+  });
+  _liveUrl=liveUrl;
+  if(isLive){
+    document.getElementById('liveDesc').textContent=cfg('youtube_live_label','Transmissão em andamento');
+    banner.classList.add('visible');
+  }else{
+    banner.classList.remove('visible');
+  }
 }
 function openLive(){if(_liveUrl) window.open(_liveUrl,'_blank');}
 
@@ -806,16 +839,43 @@ function addToCalendar(nome,data,hora,local,desc){
   window.open(`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(nome)}&dates=${fmt(start)}/${fmt(end)}&details=${encodeURIComponent(desc||'')}&location=${encodeURIComponent(local||cfg('nome_igreja'))}`,'_blank');
 }
 
+let _agendaFilter='proximos';
+function sortedSpecialEvents(){
+  return DATA.eventos.filter(e=>isEspecial(e)&&e.data).map(e=>({...e,_dt:parseDate(e.data)})).filter(e=>e._dt).sort((a,b)=>a._dt-b._dt);
+}
+function renderAgendaFilters(){
+  const el=document.getElementById('agendaFilters');
+  const evs=sortedSpecialEvents();
+  const seen=new Set();const months=[];
+  evs.forEach(e=>{
+    const key=e._dt.getFullYear()+'-'+String(e._dt.getMonth()+1).padStart(2,'0');
+    if(!seen.has(key)){seen.add(key);months.push({key,label:MONTHS_FULL[e._dt.getMonth()]+' '+e._dt.getFullYear()});}
+  });
+  let html=`<button class="agenda-pill${_agendaFilter==='proximos'?' active':''}" onclick="setAgendaFilter('proximos')">Próximos</button>`;
+  months.forEach(m=>{html+=`<button class="agenda-pill${_agendaFilter===m.key?' active':''}" onclick="setAgendaFilter('${m.key}')">${m.label}</button>`;});
+  el.innerHTML=html;
+}
+function setAgendaFilter(v){_agendaFilter=v;renderAgendaFilters();renderAgenda();window.scrollTo({top:document.getElementById('agendaFilters').offsetTop-90,behavior:'smooth'});}
+
 function renderAgenda(){
   const el=document.getElementById('agendaList');
   const now=new Date();now.setHours(0,0,0,0);
-  const cutoff=new Date(now.getTime()-7*86400000);
-  const evs=DATA.eventos.filter(e=>isEspecial(e)&&e.data).map(e=>({...e,_dt:parseDate(e.data)})).filter(e=>e._dt&&e._dt>=cutoff).sort((a,b)=>a._dt-b._dt);
-  if(!evs.length){el.innerHTML='<div class="empty-state">Nenhum evento próximo.</div>';return;}
+  let evs=sortedSpecialEvents();
+  if(_agendaFilter==='proximos'){
+    evs=evs.filter(e=>e._dt>=now);
+  }else{
+    evs=evs.filter(e=>e._dt.getFullYear()+'-'+String(e._dt.getMonth()+1).padStart(2,'0')===_agendaFilter);
+  }
+  if(!evs.length){el.innerHTML='<div class="empty-state">Nenhum evento neste período.</div>';return;}
   let html='',lastGroup='';
   evs.forEach(ev=>{
     const d=ev._dt;const diff=Math.floor((d-now)/86400000);
-    const group=diff<0?'Realizados Recentemente':diff===0?'Hoje':diff===1?'Amanhã':diff<7?'Esta Semana':diff<14?'Próxima Semana':MONTHS_FULL[d.getMonth()]+' '+d.getFullYear();
+    let group;
+    if(_agendaFilter==='proximos'){
+      group=diff===0?'Hoje':diff===1?'Amanhã':diff<7?'Esta Semana':diff<14?'Próxima Semana':MONTHS_FULL[d.getMonth()]+' '+d.getFullYear();
+    }else{
+      group=diff<0?'Realizados':'Programados';
+    }
     if(group!==lastGroup){html+=`<div class="agenda-group-title">${group}</div>`;lastGroup=group;}
     const fd=fmtShort(ev.data);const imgUrl=driveImg(ev.foto_url||'');const hasImg=!!imgUrl;const isPast=diff<0;
     const n=esc(ev.nome),l=esc(ev.local||''),dc=esc(ev.desc||'');
@@ -938,6 +998,7 @@ async function loadAll(){
   DATA={eventos:res[0]||[],avisos:res[1]||[],igrejas:res[2]||[],sermoes:res[3]||[],sobre:res[4]||[],casa:res[5]||[],casaAtualizacoes:res[6]||[],revista:res[7]||[]};
   _allSermons=DATA.sermoes;
   checkLive();
+  setInterval(checkLive,60000);
   renderCarousel();renderFixedSchedule();renderSpecialsGrid();
   renderNotices();renderAgenda();renderChurches();
   renderSermons();renderRevista();renderTimeline();renderCasa();
