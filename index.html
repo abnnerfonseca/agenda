@@ -226,6 +226,14 @@ a{color:inherit;text-decoration:none}
 .revista-card-titulo{font-family:var(--sans);font-size:15px;font-weight:600;margin-bottom:3px;line-height:1.3}
 .revista-card-data{font-size:11px;color:var(--ink-soft)}
 .revista-card-desc{font-size:11px;color:var(--ink-soft);margin-top:5px;line-height:1.5;font-weight:300}
+.games-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;margin:0 0 60px}
+.game-card{background:var(--paper);border:1px solid var(--line);border-top:3px solid var(--gold);padding:30px 26px;text-align:center;transition:transform .15s,box-shadow .15s}
+.game-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.08)}
+.game-card-icon{font-size:36px;margin-bottom:12px}
+.game-card-title{font-family:var(--sans);font-size:18px;font-weight:600;margin-bottom:8px}
+.game-card-desc{font-size:12px;color:var(--ink-soft);font-weight:300;line-height:1.6;margin-bottom:20px}
+.game-card-btn{background:var(--accent);color:#fff;border:none;padding:11px 26px;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;cursor:pointer;font-family:var(--sans);transition:transform .15s,box-shadow .15s}
+.game-card-btn:hover{transform:translateY(-1px);box-shadow:0 3px 10px rgba(0,0,0,.15)}
 .revista-reader{display:none;position:fixed;inset:0;z-index:300;background:#111;flex-direction:column}
 .revista-reader.open{display:flex}
 .reader-header{background:#111;padding:12px 20px;display:flex;align-items:center;gap:16px;flex-shrink:0;border-bottom:1px solid rgba(255,255,255,.1)}
@@ -350,6 +358,7 @@ a{color:inherit;text-decoration:none}
       <li id="nav-igrejas" style="display:none"><a onclick="goTo('igrejas')" data-page="igrejas">Igrejas</a></li>
       <li id="nav-sermoes" style="display:none"><a onclick="goTo('sermoes')" data-page="sermoes">Sermões</a></li>
       <li id="nav-revista" style="display:none"><a onclick="goTo('revista')" data-page="revista">Revista</a></li>
+      <li id="nav-mais" style="display:none"><a onclick="goTo('mais')" data-page="mais">Mais</a></li>
       <li id="nav-sobre" style="display:none"><a onclick="goTo('sobre')" data-page="sobre">Sobre Nós</a></li>
       <li id="nav-casa" style="display:none"><a onclick="goTo('casa')" data-page="casa" style="font-weight:700;color:var(--accent)">Nossa Casa</a></li>
       <li id="nav-contribua" style="display:none"><a onclick="goTo('contribua')" data-page="contribua" style="font-weight:700;color:var(--accent)">Contribua</a></li>
@@ -441,6 +450,21 @@ a{color:inherit;text-decoration:none}
   <div class="wrap">
     <div class="sec-head" style="margin-top:50px"><div class="sec-eyebrow">Publicação</div><h2 class="sec-title">Revista</h2><div class="sec-divider"></div></div>
     <div class="revista-grid" id="revistaGrid"><div class="empty-state">Carregando edições…</div></div>
+  </div>
+</div>
+
+<!-- MAIS -->
+<div class="page" id="page-mais">
+  <div class="wrap">
+    <div class="sec-head" style="margin-top:50px"><div class="sec-eyebrow">Diversão e aprendizado</div><h2 class="sec-title">Mais</h2><div class="sec-divider"></div></div>
+    <div class="games-grid" id="gamesGrid">
+      <div class="game-card">
+        <div class="game-card-icon">🏆</div>
+        <div class="game-card-title">Quiz do Milhão</div>
+        <div class="game-card-desc">Teste seus conhecimentos bíblicos e avance na trilha até R$ 1.000.000.</div>
+        <button class="game-card-btn" onclick="abrirQuizDoMilhao()">Jogar agora</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -676,7 +700,7 @@ function applyConfig(){
     gtag('js',new Date());gtag('config',gaId,{send_page_view:false});
   }
 
-  const abas=['agenda','igrejas','sermoes','revista','sobre','casa','contribua'];
+  const abas=['agenda','igrejas','sermoes','revista','mais','sobre','casa','contribua'];
   abas.forEach(a=>{
     const show=cfgBool(`aba_${a}`,true);
     const navEl=document.getElementById(`nav-${a}`);
@@ -1006,5 +1030,6 @@ async function loadAll(){
 }
 loadAll();
 </script>
+<script src="quiz.js"></script>
 </body>
 </html>
