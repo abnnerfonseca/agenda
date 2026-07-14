@@ -68,6 +68,15 @@ function qzBuildSequence(questions){
   return seq;
 }
 
+function qzNormKey(k){
+  return k.toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().replace(/\s+/g,'_');
+}
+function qzNormalizeRow(row){
+  const out={};
+  Object.keys(row).forEach(k=>{out[qzNormKey(k)]=row[k];});
+  return out;
+}
+
 let _qzCache=null;
 let _qzState={sequence:[],index:0,lastCorrectValue:0,securedValue:0,usedHelp:false,answered:false};
 
@@ -153,11 +162,16 @@ async function qzStart(){
   const body=document.getElementById('qzBody');
   body.innerHTML='<div class="qz-loading">Preparando as perguntas…</div>';
   if(!_qzCache){
-    _qzCache=await qzFetchSheet(QZ_SHEET_URL);
-    _qzCache=_qzCache.filter(q=>q.pergunta&&q.resposta);
+    const raw=await qzFetchSheet(QZ_SHEET_URL);
+    console.log('[Quiz do Milhão] linhas recebidas da planilha:',raw.length,raw);
+    _qzCache=raw.map(qzNormalizeRow).filter(q=>q.pergunta&&q.resposta);
+    console.log('[Quiz do Milhão] perguntas válidas após filtro:',_qzCache.length);
   }
   if(!_qzCache.length){
-    body.innerHTML='<div class="qz-empty-state">Nenhuma pergunta cadastrada ainda. Volte em breve!</div>';
+    body.innerHTML=`<div class="qz-empty-state">Nenhuma pergunta encontrada.<br><br>
+      Verifique se: (1) a aba "Quiz" está publicada em Arquivo → Compartilhar → Publicar na Web,
+      e (2) as colunas <b>pergunta</b>, <b>opcao_a</b>, <b>opcao_b</b>, <b>opcao_c</b>, <b>resposta</b> estão preenchidas.
+      Veja o console do navegador (F12) para mais detalhes.</div>`;
     return;
   }
   _qzState.sequence=qzBuildSequence(_qzCache);
