@@ -925,7 +925,7 @@ function openModal(idx){
   document.getElementById('mProgWrap').style.display=hasProg?'block':'none';
   if(hasProg) document.getElementById('mProg').textContent=c.programacao;
   let acts=`<a class="modal-btn modal-btn-maps" href="${mapsUrl(c.nome+' '+c.endereco)}" target="_blank">📍 Ver no Maps</a>`;
-  if(c.rede_social&&c.rede_social.trim()) acts+=`<a class="modal-btn modal-btn-ig" href="${escHtml(c.rede_social)}" target="_blank">📷 Instagram</a>`;
+  if(c.rede_social&&c.rede_social.trim()) acts+=`<a class="modal-btn modal-btn-ig" href="${escHtml(c.rede_social)}" target="_blank">Instagram</a>`;
   document.getElementById('mActions').innerHTML=acts;
   document.getElementById('churchModal').classList.add('open');
   document.body.style.overflow='hidden';
@@ -1000,7 +1000,7 @@ async function loadAll(){
   checkLive();
   setInterval(checkLive,60000);
   renderCarousel();renderFixedSchedule();renderSpecialsGrid();
-  renderNotices();renderAgenda();renderChurches();
+  renderNotices();renderAgendaFilters();renderAgenda();renderChurches();
   renderSermons();renderRevista();renderTimeline();renderCasa();
   trackPage('home');
 }
