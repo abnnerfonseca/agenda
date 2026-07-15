@@ -151,8 +151,8 @@ function qzRenderIntro(){
   const ladderHtml=QZ_PRIZE_STEPS.slice().reverse().map(s=>`<li>${s.checkpoint?'🛡 ':''}${qzBRL(s.value)}</li>`).join('');
   body.innerHTML=`<div class="qz-intro">
     <div class="qz-intro-eyebrow">Quiz Bíblico</div>
-    <h2 class="qz-intro-title">Quiz do Milhão</h2>
-    <p class="qz-intro-desc">Responda às perguntas e avance na trilha até R$ 1.000.000. Se errar, você leva o valor do último ponto de segurança conquistado (🛡).</p>
+    <h2 class="qz-intro-title">Quiz Bíblico</h2>
+    <p class="qz-intro-desc">Responda às perguntas e avance na trilha. Se errar, você leva os pontos do último estágio de segurança conquistado (🛡).</p>
     <ul class="qz-ladder-preview">${ladderHtml}</ul>
     <button class="qz-btn-play" onclick="qzStart()">Jogar agora</button>
   </div>`;
@@ -163,9 +163,9 @@ async function qzStart(){
   body.innerHTML='<div class="qz-loading">Preparando as perguntas…</div>';
   if(!_qzCache){
     const raw=await qzFetchSheet(QZ_SHEET_URL);
-    console.log('[Quiz do Milhão] linhas recebidas da planilha:',raw.length,raw);
+    console.log('[Quiz Bíblico] linhas recebidas da planilha:',raw.length,raw);
     _qzCache=raw.map(qzNormalizeRow).filter(q=>q.pergunta&&q.resposta);
-    console.log('[Quiz do Milhão] perguntas válidas após filtro:',_qzCache.length);
+    console.log('[Quiz Bíblico] perguntas válidas após filtro:',_qzCache.length);
   }
   if(!_qzCache.length){
     body.innerHTML=`<div class="qz-empty-state">Nenhuma pergunta encontrada.<br><br>
