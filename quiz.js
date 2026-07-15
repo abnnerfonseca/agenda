@@ -43,7 +43,7 @@ function qzNormLevel(v){
   if(n.startsWith('dificil')) return 'dificil';
   return 'facil';
 }
-function qzBRL(n){return 'R$ '+Number(n).toLocaleString('pt-BR');}
+function qzBRL(n){return Number(n).toLocaleString('pt-BR');}
 function qzCorrectText(q){
   const r=(q.resposta||'').trim();
   if(/^[a-c]$/i.test(r)) return (q['opcao_'+r.toLowerCase()]||'').trim();
