@@ -344,6 +344,16 @@ a{color:inherit;text-decoration:none}
   </div>
 </div>
 
+<div class="revista-reader" id="caminhoReader">
+  <div class="reader-header">
+    <button class="reader-back" onclick="closeCaminho()">← Voltar</button>
+    <div class="reader-title">O Caminho</div>
+  </div>
+  <div class="reader-body" style="overflow-y:auto;padding:24px 16px;display:flex;justify-content:center;align-items:flex-start">
+    <div id="caminho-root" style="width:100%;max-width:640px"></div>
+  </div>
+</div>
+
 <nav class="nav">
   <div class="nav-inner">
     <div class="brand" onclick="goTo('home')">
@@ -463,6 +473,12 @@ a{color:inherit;text-decoration:none}
         <div class="game-card-title">Quiz Bíblico</div>
         <div class="game-card-desc">Teste seus conhecimentos bíblicos e avance na trilha.</div>
         <button class="game-card-btn" onclick="abrirQuizDoMilhao()">Jogar agora</button>
+      </div>
+      <div class="game-card">
+        <div class="game-card-icon">🕊️</div>
+        <div class="game-card-title">O Caminho</div>
+        <div class="game-card-desc">Administre a Igreja Primitiva entre perseguições, missões e crescimento — dos Atos dos Apóstolos até o ano 70 d.C.</div>
+        <button class="game-card-btn" onclick="abrirCaminho()">Jogar agora</button>
       </div>
     </div>
   </div>
@@ -992,6 +1008,25 @@ function openReader(idx){
 }
 function closeReader(){document.getElementById('revistaReader').classList.remove('open');document.getElementById('readerFrame').src='';document.body.style.overflow='';}
 
+let _caminhoIniciado=false;
+function abrirCaminho(){
+  document.getElementById('caminhoReader').classList.add('open');
+  document.body.style.overflow='hidden';
+  if(!_caminhoIniciado){
+    _caminhoIniciado=true;
+    if(window.ChurchGame){
+      ChurchGame.init(document.getElementById('caminho-root'));
+    }else{
+      document.getElementById('caminho-root').innerHTML='<p style="color:#fff;text-align:center">Não foi possível carregar o jogo. Verifique se church-game.js está incluído na página.</p>';
+    }
+  }
+  trackPage('o_caminho');
+}
+function closeCaminho(){
+  document.getElementById('caminhoReader').classList.remove('open');
+  document.body.style.overflow='';
+}
+
 function renderTimeline(){
   const el=document.getElementById('timelineList');if(!DATA.sobre.length){el.innerHTML='';return;}
   el.innerHTML=DATA.sobre.map(t=>`<div class="tl-item"><div class="tl-year">${escHtml(t.ano)}</div><div class="tl-content"><h4>${escHtml(t.titulo)}</h4><p>${escHtml(t.texto)}</p></div></div>`).join('');
@@ -1007,6 +1042,7 @@ function renderCasa(){
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){
     if(document.getElementById('revistaReader').classList.contains('open')) closeReader();
+    else if(document.getElementById('caminhoReader').classList.contains('open')) closeCaminho();
     else if(document.getElementById('churchModal').classList.contains('open')) closeModal();
   }
 });
@@ -1031,5 +1067,6 @@ async function loadAll(){
 loadAll();
 </script>
 <script src="quiz.js"></script>
+<script src="church-game.js"></script>
 </body>
 </html>
