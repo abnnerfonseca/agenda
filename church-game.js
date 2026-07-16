@@ -28,7 +28,7 @@
   var CONFIG = {
     // Cole aqui os links "Publicar na Web" (TSV) de cada aba do Sheets.
     SHEETS: {
-      config: '', // <-- você ainda não me passou o link desta aba; o jogo usa DEFAULTS abaixo enquanto estiver vazio
+      config: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRJIvqpjlqm5GCLgrbQCtc-BA5w5krliwzcaStKPIPsf-3s9101Rx2NlUHvT9Tis1m93raki4XrHD9R/pub?gid=0&single=true&output=tsv', // <-- você ainda não me passou o link desta aba; o jogo usa DEFAULTS abaixo enquanto estiver vazio
       cidades: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRJIvqpjlqm5GCLgrbQCtc-BA5w5krliwzcaStKPIPsf-3s9101Rx2NlUHvT9Tis1m93raki4XrHD9R/pub?gid=1649394407&single=true&output=tsv',
       personagens: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRJIvqpjlqm5GCLgrbQCtc-BA5w5krliwzcaStKPIPsf-3s9101Rx2NlUHvT9Tis1m93raki4XrHD9R/pub?gid=643844560&single=true&output=tsv',
       eventos: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRJIvqpjlqm5GCLgrbQCtc-BA5w5krliwzcaStKPIPsf-3s9101Rx2NlUHvT9Tis1m93raki4XrHD9R/pub?gid=1733993415&single=true&output=tsv',
