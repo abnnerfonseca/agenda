@@ -1,24 +1,3 @@
-/**
- * ========================================================================
- * IGREJA PRIMITIVA - SIMULADOR (v1)
- * ------------------------------------------------------------------------
- * Motor de gestão da igreja local, ambientado entre 33-70 d.C.
- * Todo o conteúdo (cidades, eventos, decisões, missões, personagens,
- * cartas, história, conquistas, avaliações) vem do Google Sheets, publicado
- * como TSV. O JavaScript é só o motor: aplica efeitos, checa condições,
- * avança turnos e renderiza a interface.
- *
- * Como usar:
- *   1. Preencha os links TSV em CONFIG.SHEETS abaixo.
- *   2. Coloque <div id="church-game-root"></div> onde o jogo deve aparecer.
- *   3. Inclua <script src="church-game.js"></script> antes de </body>.
- *      O jogo se auto-inicializa se encontrar a div. Também é possível
- *      chamar manualmente: ChurchGame.init(document.getElementById('...'))
- *      -- útil se a aba "mais" só monta o conteúdo quando é aberta.
- *
- * Sem build step, sem dependências externas, sem frameworks.
- * ========================================================================
- */
 (function (global) {
   'use strict';
 
@@ -26,9 +5,8 @@
   // 1. CONFIG
   // ======================================================================
   var CONFIG = {
-    // Cole aqui os links "Publicar na Web" (TSV) de cada aba do Sheets.
     SHEETS: {
-      config: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRJIvqpjlqm5GCLgrbQCtc-BA5w5krliwzcaStKPIPsf-3s9101Rx2NlUHvT9Tis1m93raki4XrHD9R/pub?gid=0&single=true&output=tsv', // <-- você ainda não me passou o link desta aba; o jogo usa DEFAULTS abaixo enquanto estiver vazio
+      config: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRJIvqpjlqm5GCLgrbQCtc-BA5w5krliwzcaStKPIPsf-3s9101Rx2NlUHvT9Tis1m93raki4XrHD9R/pub?gid=0&single=true&output=tsv',
       cidades: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRJIvqpjlqm5GCLgrbQCtc-BA5w5krliwzcaStKPIPsf-3s9101Rx2NlUHvT9Tis1m93raki4XrHD9R/pub?gid=1649394407&single=true&output=tsv',
       personagens: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRJIvqpjlqm5GCLgrbQCtc-BA5w5krliwzcaStKPIPsf-3s9101Rx2NlUHvT9Tis1m93raki4XrHD9R/pub?gid=643844560&single=true&output=tsv',
       eventos: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRJIvqpjlqm5GCLgrbQCtc-BA5w5krliwzcaStKPIPsf-3s9101Rx2NlUHvT9Tis1m93raki4XrHD9R/pub?gid=1733993415&single=true&output=tsv',
@@ -45,20 +23,20 @@
 
     // Usado somente enquanto CONFIG.SHEETS.config estiver vazio.
     DEFAULTS: {
-      titulo_jogo: 'Igreja Primitiva - Simulador',
+      titulo_jogo: 'O Caminho',
       ano_inicial: 33,
       ano_final: 70,
       cidade_inicial: 'JER',
       dificuldade_padrao: 'normal',
-      fe_inicial: 70,
-      unidade_inicial: 70,
-      conhecimento_inicial: 40,
-      coragem_inicial: 60,
+      fe_inicial: 30,
+      unidade_inicial: 30,
+      conhecimento_inicial: 10,
+      coragem_inicial: 30,
       recursos_inicial: 50,
-      influencia_inicial: 20,
-      reputacao_inicial: 50,
-      membros_inicial: 120,
-      missionarios_inicial: 12,
+      influencia_inicial: 0,
+      reputacao_inicial: 0,
+      membros_inicial: 10,
+      missionarios_inicial: 0,
       perseguicao_inicial: 10
     },
 
