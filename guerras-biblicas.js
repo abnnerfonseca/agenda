@@ -179,7 +179,7 @@ const GW_CSS = `
 .gw-card.lendario .gw-card-rarity{color:var(--gold,#c9a24a)}
 .gw-card-pos{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:#c9c4b8;margin-bottom:6px}
 .gw-card-name{font-size:17px;font-weight:700;color:#fff;margin-bottom:10px;line-height:1.25}
-.gw-card-overall{font-size:34px;font-weight:800;color:var(--gold,#c9a24a);margin-bottom:10px;line-height:1}
+.gw-card-overall{font-size:34px;font-weight:800;color:var(--gold,#c9a24a);margin-bottom:2px;line-height:1}
 .gw-card-attr{font-size:11px;color:#c9c4b8;margin-bottom:3px}
 .gw-card-attr b{color:#e8e3d8;font-weight:600}
 .gw-card.disabled{opacity:.32;cursor:not-allowed;filter:grayscale(70%)}
@@ -205,6 +205,21 @@ const GW_CSS = `
 .gw-team-row .pos{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:#c9c4b8}
 .gw-team-row .name{font-size:16px;font-weight:700;color:#fff}
 .gw-team-row .overall{font-size:22px;font-weight:800;color:var(--gold,#c9a24a)}
+.gw-team-progress{margin-top:26px;border-top:1px solid rgba(255,255,255,.1);padding-top:18px}
+.gw-team-progress-label{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#c9c4b8;text-align:center;margin-bottom:12px}
+.gw-tp-row{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.gw-tp-chip{border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:10px 14px;min-width:110px;text-align:center;background:rgba(255,255,255,.03)}
+.gw-tp-chip.empty{opacity:.4;border-style:dashed}
+.gw-tp-chip .emoji{font-size:18px;display:block;margin-bottom:4px}
+.gw-tp-chip .pos{font-size:9px;text-transform:uppercase;letter-spacing:.05em;color:#c9c4b8;margin-bottom:2px}
+.gw-tp-chip .name{font-size:12px;font-weight:700;color:#fff}
+.gw-tp-chip .over{font-size:11px;color:var(--gold,#c9a24a);font-weight:700;margin-top:2px}
+.gw-history{margin:22px 0}
+.gw-history-label{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#c9c4b8;text-align:center;margin-bottom:10px}
+.gw-history-list{display:flex;flex-direction:column;gap:6px;max-width:420px;margin:0 auto}
+.gw-history-item{font-size:12px;padding:8px 12px;border-radius:8px;display:flex;justify-content:space-between;gap:10px;border:1px solid rgba(255,255,255,.1)}
+.gw-history-item.win{color:#7fd28e;border-color:rgba(127,210,142,.25);background:rgba(127,210,142,.06)}
+.gw-history-item.lose{color:#e08c8c;border-color:rgba(224,140,140,.25);background:rgba(224,140,140,.06)}
 .gw-war-card{border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:26px 24px;text-align:center;margin-bottom:22px;background:rgba(255,255,255,.03)}
 .gw-war-name{font-size:20px;font-weight:700;color:#fff;margin-bottom:8px}
 .gw-war-meta{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;font-size:12px;color:#c9c4b8;margin-bottom:4px}
@@ -215,6 +230,7 @@ const GW_CSS = `
 .gw-dot.active{background:var(--accent,#7a2e2e);box-shadow:0 0 0 3px rgba(122,46,46,.3)}
 .gw-battle-result{text-align:center;padding:10px 0 20px}
 .gw-battle-emoji{font-size:48px;margin-bottom:10px}
+.gw-battle-title-war{font-size:13px;color:#c9c4b8;letter-spacing:.03em;margin-bottom:4px}
 .gw-battle-title{font-size:20px;font-weight:700;margin-bottom:8px}
 .gw-battle-title.win{color:#7fd28e}
 .gw-battle-title.lose{color:#e08c8c}
@@ -249,6 +265,7 @@ let _gwState = {
   warIndex: 0,
   warsWon: 0,
   lastBattle: null,
+  history: [],             // [{ nome, win }] — sequência de guerras já disputadas nesta campanha
 };
 
 /* ------------------------------ DOM SETUP ----------------------------------- */
@@ -360,6 +377,7 @@ async function gwStart() {
     warIndex: 0,
     warsWon: 0,
     lastBattle: null,
+    history: [],
   };
 
   gwRenderDraftRound();
@@ -379,6 +397,31 @@ function gwDrawGroup(excludeId) {
     empty.some(pos => g[pos])
   );
   return pool.length ? gwPick(pool) : null;
+}
+
+// Mostra o time que está sendo montado até agora (posições preenchidas e vazias),
+// para a pessoa acompanhar as escolhas já feitas durante o draft.
+function gwTeamProgressHtml() {
+  const chips = GW_POSITIONS.map(p => {
+    const c = _gwState.team[p];
+    if (c) {
+      return `<div class="gw-tp-chip">
+        <span class="emoji">${GW_POSITION_LABEL[p].emoji}</span>
+        <div class="pos">${GW_POSITION_LABEL[p].nome}</div>
+        <div class="name">${gwEscHtml(c.nome)}</div>
+        <div class="over">${c.overall}</div>
+      </div>`;
+    }
+    return `<div class="gw-tp-chip empty">
+      <span class="emoji">${GW_POSITION_LABEL[p].emoji}</span>
+      <div class="pos">${GW_POSITION_LABEL[p].nome}</div>
+      <div class="name">—</div>
+    </div>`;
+  }).join('');
+  return `<div class="gw-team-progress">
+    <div class="gw-team-progress-label">Seu time até agora</div>
+    <div class="gw-tp-row">${chips}</div>
+  </div>`;
 }
 
 function gwRenderDraftRound() {
@@ -409,8 +452,6 @@ function gwRenderDraftRound() {
       <div class="gw-card-pos">${GW_POSITION_LABEL[pos].emoji} ${GW_POSITION_LABEL[pos].nome}</div>
       <div class="gw-card-name">${gwEscHtml(card.nome)}</div>
       <div class="gw-card-overall">${card.overall}</div>
-      <div class="gw-card-attr"><b>Especialidade:</b> ${gwEscHtml(card.especialidade) || '—'}</div>
-      <div class="gw-card-attr"><b>Fraqueza:</b> ${gwEscHtml(card.fraqueza) || '—'}</div>
     </div>`;
   }).join('');
 
@@ -423,6 +464,7 @@ function gwRenderDraftRound() {
     <div class="gw-reroll-wrap">
       ${canReroll ? `<button class="gw-btn gw-btn-secondary" onclick="gwRerollGroup()">🎲 Sortear outro grupo (1x por partida)</button>` : ''}
     </div>
+    ${gwTeamProgressHtml()}
   `;
 }
 
@@ -476,7 +518,21 @@ function gwStartCampaign() {
   _gwState.wars = wars;
   _gwState.warIndex = 0;
   _gwState.warsWon = 0;
+  _gwState.history = [];
   gwRenderWar();
+}
+
+// Lista, em sequência, as guerras já disputadas nesta campanha e seus resultados.
+function gwHistoryHtml() {
+  const hist = _gwState.history;
+  if (!hist || !hist.length) return '';
+  const items = hist.map(h => `<div class="gw-history-item ${h.win ? 'win' : 'lose'}">
+    <span>${gwEscHtml(h.nome)}</span><span>${h.win ? 'Vitória' : 'Derrota'}</span>
+  </div>`).join('');
+  return `<div class="gw-history">
+    <div class="gw-history-label">Histórico da campanha</div>
+    <div class="gw-history-list">${items}</div>
+  </div>`;
 }
 
 function gwRenderWar() {
@@ -493,6 +549,7 @@ function gwRenderWar() {
   body.innerHTML = `
     <div class="gw-round-label">Guerra ${st.warIndex + 1} de ${st.wars.length}</div>
     <div class="gw-progress-dots">${dots}</div>
+    ${gwHistoryHtml()}
     <div class="gw-war-card">
       <div class="gw-war-name">${gwEscHtml(war.nome)}</div>
       <div class="gw-war-meta">
@@ -528,12 +585,13 @@ function gwFight() {
 
   if (win) st.warsWon++;
   st.lastBattle = { war, playerPower, enemyPower, diff, win, contributions };
+  st.history.push({ nome: war.nome, win });
 
   gwRenderBattleSimulation();
 }
 
 // Tela de "simulação rodando": só efeito visual, o resultado já foi calculado
-// acima. Fica de 3 a 5s antes de revelar quem venceu.
+// acima. Fica de 2 a 4s antes de revelar quem venceu.
 function gwRenderBattleSimulation() {
   const body = document.getElementById('gwBody');
   body.innerHTML = `
@@ -568,6 +626,7 @@ function gwRenderBattleResult() {
   body.innerHTML = `
     <div class="gw-battle-result">
       <div class="gw-battle-emoji">${b.win ? '🏆' : '💀'}</div>
+      <div class="gw-battle-title-war">${gwEscHtml(b.war.nome)}</div>
       <div class="gw-battle-title ${b.win ? 'win' : 'lose'}">${b.win ? 'Vitória!' : 'Derrota'}</div>
       <div class="gw-battle-diff">Diferença de poder: <b>${b.diff > 0 ? '+' : ''}${b.diff}</b></div>
       <p class="gw-battle-narr">${narrText}</p>
@@ -628,6 +687,7 @@ function gwRenderFinal(reachedPromisedLand) {
       ${isNewRecord ? '<div class="gw-final-newrecord">🎉 Novo recorde!</div>' : ''}
       <p class="gw-final-sub">${sub}</p>
     </div>
+    ${gwHistoryHtml()}
     <div class="gw-team">${teamRows}</div>
     <div class="gw-actions">
       <button class="gw-btn" onclick="gwStart()">Jogar novamente</button>
