@@ -13,6 +13,8 @@ const QZ_PRIZE_STEPS=[
   {value:1000000,nivel:'dificil'},
 ];
 
+const QZ_FULL_BEST_KEY='qzFullBestStreak';
+
 const qzFetchSheet=window.fetchSheet||(async function(url){
   try{
     const r=await fetch(url,{cache:'no-store'});
@@ -68,6 +70,23 @@ function qzBuildSequence(questions){
   return seq;
 }
 
+// Modo Full: todas as perguntas do banco, embaralhadas, sem repetir.
+function qzBuildFullSequence(questions){
+  const shuffled=qzShuffle(questions);
+  return shuffled.map(q=>({question:q,options:qzBuildOptions(q)}));
+}
+
+function qzGetBestStreak(){
+  const v=parseInt(localStorage.getItem(QZ_FULL_BEST_KEY)||'0',10);
+  return isNaN(v)?0:v;
+}
+// Salva se for um novo recorde. Retorna true se bateu o recorde anterior.
+function qzSaveBestStreak(n){
+  const best=qzGetBestStreak();
+  if(n>best){ localStorage.setItem(QZ_FULL_BEST_KEY,String(n)); return true; }
+  return false;
+}
+
 function qzNormKey(k){
   return k.toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().replace(/\s+/g,'_');
 }
@@ -78,7 +97,7 @@ function qzNormalizeRow(row){
 }
 
 let _qzCache=null;
-let _qzState={sequence:[],index:0,lastCorrectValue:0,securedValue:0,usedHelp:false,answered:false};
+let _qzState={mode:'milhao',sequence:[],index:0,lastCorrectValue:0,securedValue:0,correctCount:0,usedHelp:false,answered:false};
 
 const QZ_CSS=`
 .qz-overlay{position:fixed;inset:0;background:rgba(20,18,15,.75);backdrop-filter:blur(6px);z-index:500;display:none;align-items:center;justify-content:center;padding:20px}
@@ -92,13 +111,21 @@ const QZ_CSS=`
 .qz-intro-eyebrow{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold,#a9863a);font-weight:600;margin-bottom:10px}
 .qz-intro-title{font-family:var(--sans,sans-serif);font-size:clamp(26px,4vw,38px);font-weight:700;margin-bottom:14px;color:var(--ink,#1e1e1e)}
 .qz-intro-desc{font-size:14px;color:var(--ink-soft,#5a5d54);font-weight:300;line-height:1.7;max-width:440px;margin:0 auto 26px}
-.qz-ladder-preview{list-style:none;display:flex;flex-direction:column-reverse;gap:6px;max-width:280px;margin:0 auto 30px}
+.qz-mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px;text-align:left}
+@media(max-width:600px){.qz-mode-grid{grid-template-columns:1fr}}
+.qz-mode-card{border:1px solid var(--line,#e2ddd2);border-radius:10px;padding:22px 20px;display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.qz-mode-card-title{font-family:var(--sans,sans-serif);font-weight:700;font-size:16px;color:var(--ink,#1e1e1e)}
+.qz-mode-card-desc{font-size:12px;color:var(--ink-soft,#5a5d54);font-weight:300;line-height:1.6}
+.qz-record-badge{font-size:12px;font-weight:600;color:var(--gold,#a9863a)}
+.qz-new-record{font-size:13px;font-weight:700;color:var(--gold,#a9863a);margin-bottom:6px}
+.qz-ladder-preview{list-style:none;display:flex;flex-direction:column-reverse;gap:6px;max-width:100%;margin:0}
 .qz-ladder-preview li{background:var(--bg,#faf8f4);border:1px solid var(--line,#e2ddd2);border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;color:var(--ink,#1e1e1e)}
 .qz-ladder-preview li:last-child{background:var(--accent,#7a2e2e);color:#fff;border-color:var(--accent,#7a2e2e)}
-.qz-btn-play{background:var(--accent,#7a2e2e);color:#fff;border:none;padding:14px 36px;font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;cursor:pointer;transition:transform .15s,box-shadow .15s;font-family:var(--sans,sans-serif)}
+.qz-btn-play{background:var(--accent,#7a2e2e);color:#fff;border:none;padding:12px 28px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;cursor:pointer;transition:transform .15s,box-shadow .15s;font-family:var(--sans,sans-serif);align-self:stretch}
 .qz-btn-play:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(0,0,0,.18)}
 .qz-loading,.qz-empty-state{text-align:center;padding:60px 20px;color:var(--ink-soft,#5a5d54);font-size:14px}
 .qz-game{display:grid;grid-template-columns:150px 1fr;gap:28px}
+.qz-game.qz-game-full{grid-template-columns:1fr}
 @media(max-width:600px){.qz-game{grid-template-columns:1fr}.qz-game-side{display:none}}
 .qz-ladder-list{list-style:none;display:flex;flex-direction:column-reverse;gap:4px}
 .qz-ladder-item{font-size:11px;font-weight:600;padding:6px 8px;border-radius:6px;color:var(--ink-soft,#5a5d54);white-space:nowrap}
@@ -106,6 +133,7 @@ const QZ_CSS=`
 .qz-ladder-item.done{color:var(--gold,#a9863a)}
 .qz-shield{margin-right:4px}
 .qz-progress-label{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold,#a9863a);font-weight:600;margin-bottom:14px}
+.qz-streak-badge{display:inline-block;background:var(--accent-soft,#f3e9e4);color:var(--accent,#7a2e2e);font-weight:700;font-size:13px;padding:6px 14px;border-radius:999px;margin-bottom:14px}
 .qz-question-text{font-family:var(--sans,sans-serif);font-size:clamp(18px,2.6vw,22px);font-weight:600;line-height:1.4;margin-bottom:22px;color:var(--ink,#1e1e1e)}
 .qz-options{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
 .qz-option{text-align:left;padding:14px 18px;border:1px solid var(--line,#e2ddd2);background:var(--paper,#fff);border-radius:10px;font-family:var(--sans,sans-serif);font-size:14px;font-weight:500;color:var(--ink,#1e1e1e);cursor:pointer;transition:all .15s}
@@ -149,16 +177,30 @@ function qzEnsureDom(){
 function qzRenderIntro(){
   const body=document.getElementById('qzBody');
   const ladderHtml=QZ_PRIZE_STEPS.slice().reverse().map(s=>`<li>${s.checkpoint?'🛡 ':''}${qzBRL(s.value)}</li>`).join('');
+  const best=qzGetBestStreak();
   body.innerHTML=`<div class="qz-intro">
     <div class="qz-intro-eyebrow">Quiz Bíblico</div>
     <h2 class="qz-intro-title">Quiz Bíblico</h2>
-    <p class="qz-intro-desc">Responda às perguntas e avance na trilha. Se errar, você leva os pontos do último estágio de segurança conquistado (🛡).</p>
-    <ul class="qz-ladder-preview">${ladderHtml}</ul>
-    <button class="qz-btn-play" onclick="qzStart()">Jogar agora</button>
+    <p class="qz-intro-desc">Escolha como quer jogar.</p>
+    <div class="qz-mode-grid">
+      <div class="qz-mode-card">
+        <div class="qz-mode-card-title">Show do Crentão</div>
+        <p class="qz-mode-card-desc">Avance na trilha de pontos. Se errar, você leva os pontos do último estágio de segurança conquistado (🛡).</p>
+        <ul class="qz-ladder-preview">${ladderHtml}</ul>
+        <button class="qz-btn-play" onclick="qzStart('milhao')">Jogar</button>
+      </div>
+      <div class="qz-mode-card">
+        <div class="qz-mode-card-title">Modo Sequência</div>
+        <p class="qz-mode-card-desc">Responda o máximo de perguntas seguidas que conseguir, na ordem que vierem. Errar uma encerra o jogo — mas você pode parar quando quiser antes disso.</p>
+        ${best>0?`<div class="qz-record-badge">🏅 Seu recorde: ${best} acerto${best===1?'':'s'}</div>`:''}
+        <button class="qz-btn-play" onclick="qzStart('full')">Jogar</button>
+      </div>
+    </div>
   </div>`;
 }
 
-async function qzStart(){
+async function qzStart(mode){
+  mode = mode || _qzState.mode || 'milhao';
   const body=document.getElementById('qzBody');
   body.innerHTML='<div class="qz-loading">Preparando as perguntas…</div>';
   if(!_qzCache){
@@ -174,10 +216,12 @@ async function qzStart(){
       Veja o console do navegador (F12) para mais detalhes.</div>`;
     return;
   }
-  _qzState.sequence=qzBuildSequence(_qzCache);
+  _qzState.mode=mode;
+  _qzState.sequence= mode==='full' ? qzBuildFullSequence(_qzCache) : qzBuildSequence(_qzCache);
   _qzState.index=0;
   _qzState.lastCorrectValue=0;
   _qzState.securedValue=0;
+  _qzState.correctCount=0;
   _qzState.usedHelp=false;
   _qzState.answered=false;
   qzRenderQuestion();
@@ -186,24 +230,40 @@ async function qzStart(){
 function qzRenderQuestion(){
   const st=_qzState;
   const step=st.sequence[st.index];
-  if(!step){qzRenderResult('topo');return;}
+  if(!step){
+    qzRenderResult(st.mode==='full' ? 'full_topo' : 'topo');
+    return;
+  }
   const total=st.sequence.length;
-  const ladder=st.sequence.slice().reverse().map((s,ri)=>{
-    const i=total-1-ri;
-    const cls=i===st.index?'active':i<st.index?'done':'';
-    return `<li class="qz-ladder-item ${cls}">${s.checkpoint?'<span class="qz-shield">🛡</span>':''}${qzBRL(s.value)}</li>`;
-  }).join('');
+  const isMilhao = st.mode==='milhao';
+  let sideHtml='', streakHtml='', progressText='';
+
+  if(isMilhao){
+    const ladder=st.sequence.slice().reverse().map((s,ri)=>{
+      const i=total-1-ri;
+      const cls=i===st.index?'active':i<st.index?'done':'';
+      return `<li class="qz-ladder-item ${cls}">${s.checkpoint?'<span class="qz-shield">🛡</span>':''}${qzBRL(s.value)}</li>`;
+    }).join('');
+    sideHtml=`<div class="qz-game-side"><ul class="qz-ladder-list">${ladder}</ul></div>`;
+    progressText=`Pergunta ${st.index+1} de ${total} · valendo <b>${qzBRL(step.value)}</b>`;
+  }else{
+    streakHtml=`<div class="qz-streak-badge">🔥 ${st.correctCount} acerto${st.correctCount===1?'':'s'} seguido${st.correctCount===1?'':'s'}</div>`;
+    progressText=`Pergunta ${st.index+1} de ${total}`;
+  }
+
   const optsHtml=step.options.map((opt,i)=>`<button class="qz-option" data-idx="${i}" onclick="qzAnswer(${i})">${qzEscHtml(opt)}</button>`).join('');
+  const stopLabel = isMilhao ? `Parar e levar ${qzBRL(st.lastCorrectValue)}` : `Parar por aqui (${st.correctCount})`;
   const body=document.getElementById('qzBody');
-  body.innerHTML=`<div class="qz-game">
-    <div class="qz-game-side"><ul class="qz-ladder-list">${ladder}</ul></div>
+  body.innerHTML=`<div class="qz-game${isMilhao?'':' qz-game-full'}">
+    ${sideHtml}
     <div class="qz-game-main">
-      <div class="qz-progress-label">Pergunta ${st.index+1} de ${total} · valendo <b>${qzBRL(step.value)}</b></div>
+      <div class="qz-progress-label">${progressText}</div>
+      ${streakHtml}
       <div class="qz-question-text">${qzEscHtml(step.question.pergunta)}</div>
       <div class="qz-options">${optsHtml}</div>
       <div class="qz-actions" id="qzActions">
         <button class="qz-btn-help" id="qzHelpBtn" onclick="qzUseHelp()" ${st.usedHelp?'disabled':''}>🛟 Eliminar uma alternativa</button>
-        ${st.index>0?`<button class="qz-btn-stop" onclick="qzStop()">Parar e levar ${qzBRL(st.lastCorrectValue)}</button>`:''}
+        ${st.index>0?`<button class="qz-btn-stop" onclick="qzStop()">${stopLabel}</button>`:''}
       </div>
     </div>
   </div>`;
@@ -224,13 +284,18 @@ function qzAnswer(idx){
     else if(i===idx) btn.classList.add('wrong');
   });
   if(isCorrect){
-    st.lastCorrectValue=step.value;
-    if(step.checkpoint) st.securedValue=step.value;
+    if(st.mode==='milhao'){
+      st.lastCorrectValue=step.value;
+      if(step.checkpoint) st.securedValue=step.value;
+    }else{
+      st.correctCount++;
+    }
   }
   const comentario=step.question.comentario?`<div class="qz-comentario">${qzEscHtml(step.question.comentario)}</div>`:'';
+  const wrongResultKind = st.mode==='full' ? 'full_erro' : 'erro';
   const feedbackHtml=`<div class="qz-feedback ${isCorrect?'correct':'wrong'}">${isCorrect?'✔ Resposta certa!':'✘ Resposta errada.'}</div>${comentario}
     <div class="qz-actions" style="margin-top:18px">
-      ${isCorrect?'<button class="qz-btn-continue" onclick="qzNext()">Continuar</button>':'<button class="qz-btn-continue" onclick="qzRenderResult(\'erro\')">Ver resultado</button>'}
+      ${isCorrect?'<button class="qz-btn-continue" onclick="qzNext()">Continuar</button>':`<button class="qz-btn-continue" onclick="qzRenderResult('${wrongResultKind}')">Ver resultado</button>`}
     </div>`;
   const actionsEl=document.getElementById('qzActions');
   if(actionsEl) actionsEl.outerHTML=feedbackHtml;
@@ -255,10 +320,42 @@ function qzUseHelp(){
   const helpBtn=document.getElementById('qzHelpBtn');
   if(helpBtn) helpBtn.disabled=true;
 }
-function qzStop(){qzRenderResult('parou');}
+function qzStop(){
+  const st=_qzState;
+  qzRenderResult(st.mode==='full' ? 'full_parou' : 'parou');
+}
 
 function qzRenderResult(kind){
   const st=_qzState;
+  const isFull = kind.indexOf('full')===0;
+
+  if(isFull){
+    const value=st.correctCount;
+    let title,msg,emoji;
+    if(kind==='full_topo'){
+      title='Você zerou o banco de perguntas!';msg='Impressionante — não sobrou nenhuma pergunta para te derrubar.';emoji='🏆';
+    }else if(kind==='full_parou'){
+      title='Você parou por aqui';msg='Uma decisão sábia é sempre uma vitória.';emoji='🙌';
+    }else{
+      title='Sua sequência parou aqui';msg='Tente novamente e tente bater sua marca!';emoji='📖';
+    }
+    const isNewRecord=qzSaveBestStreak(value);
+    const recordHtml=isNewRecord?'<div class="qz-new-record">🎉 Novo recorde!</div>':'';
+    const body=document.getElementById('qzBody');
+    body.innerHTML=`<div class="qz-result">
+      <div class="qz-result-emoji">${emoji}</div>
+      <div class="qz-result-title">${title}</div>
+      ${recordHtml}
+      <div class="qz-result-value">${value} acerto${value===1?'':'s'}</div>
+      <p class="qz-result-msg">${msg}</p>
+      <div class="qz-actions" style="justify-content:center">
+        <button class="qz-btn-again" onclick="qzStart('full')">Jogar novamente</button>
+        <button class="qz-btn-fechar" onclick="qzRenderIntro()">Escolher outro modo</button>
+      </div>
+    </div>`;
+    return;
+  }
+
   let value,title,msg,emoji;
   if(kind==='topo'){
     value=QZ_PRIZE_STEPS[QZ_PRIZE_STEPS.length-1].value;
@@ -276,8 +373,8 @@ function qzRenderResult(kind){
     <div class="qz-result-value">${qzBRL(value)}</div>
     <p class="qz-result-msg">${msg}</p>
     <div class="qz-actions" style="justify-content:center">
-      <button class="qz-btn-again" onclick="qzStart()">Jogar novamente</button>
-      <button class="qz-btn-fechar" onclick="qzClose()">Fechar</button>
+      <button class="qz-btn-again" onclick="qzStart('milhao')">Jogar novamente</button>
+      <button class="qz-btn-fechar" onclick="qzRenderIntro()">Escolher outro modo</button>
     </div>
   </div>`;
 }
