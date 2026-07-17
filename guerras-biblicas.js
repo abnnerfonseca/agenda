@@ -38,8 +38,8 @@ const GW_WAR_COUNT = 5;
 const GW_SPECIALTY_BONUS_PCT = 0.20;   // especialidade bate com tipo_de_batalha -> +20%
 const GW_WEAKNESS_PENALTY_PCT = 0.20;  // fraqueza bate com tipo_de_batalha -> -20%
 const GW_RANDOM_JITTER_PCT = 0.08;     // pequena aleatoriedade: até ±8% no poder final
-const GW_BATTLE_SIM_MIN_MS = 3000;     // duração mínima da animação de batalha
-const GW_BATTLE_SIM_MAX_MS = 5000;     // duração máxima da animação de batalha
+const GW_BATTLE_SIM_MIN_MS = 2000;     // duração mínima da animação de batalha
+const GW_BATTLE_SIM_MAX_MS = 4000;     // duração máxima da animação de batalha
 
 const GW_BEST_KEY = 'gwBestGuerrasVencidas';
 
