@@ -457,14 +457,7 @@ a{color:inherit;text-decoration:none}
 <div class="page" id="page-mais">
   <div class="wrap">
     <div class="sec-head" style="margin-top:50px"><div class="sec-eyebrow">Mais</div><h2 class="sec-title">Diversão e aprendizado</h2><div class="sec-divider"></div></div>
-    <div class="games-grid" id="gamesGrid">
-      <div class="game-card">
-        <div class="game-card-icon">📖</div>
-        <div class="game-card-title">Quiz Bíblico</div>
-        <div class="game-card-desc">Teste seus conhecimentos bíblicos e avance na trilha.</div>
-        <button class="game-card-btn" onclick="abrirQuizDoMilhao()">Jogar agora</button>
-      </div>
-    </div>
+    <div class="games-grid" id="gamesGrid"><div class="empty-state">Carregando…</div></div>
   </div>
 </div>
 
@@ -708,6 +701,8 @@ function applyConfig(){
     if(navEl) navEl.style.display=show?'':'none';
     if(pageEl) pageEl.dataset.active=show?'1':'0';
   });
+
+  renderGames();
 }
 
 const MONTHS=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
@@ -1004,6 +999,35 @@ function renderCasa(){
   el.innerHTML=DATA.casaAtualizacoes.map(u=>{const imgUrl=driveImg(u.foto_url||'');return`<div class="update-item">${imgUrl?`<img class="update-item-img" src="${imgUrl}" alt="" onerror="this.remove()">`:''}<div class="update-date">${escHtml(u.data)}</div><div class="update-title">${escHtml(u.titulo)}</div><div class="update-body">${escHtml(u.texto)}</div></div>`;}).join('');
 }
 
+// ---------------------------------------------------------------
+// JOGOS ("Mais") — controlados pelas chaves da aba Config:
+//   game_quiz   -> "Sim"/"Não": ativa/desativa o Quiz Bíblico
+//   game_guerra -> "Sim"/"Não": ativa/desativa Guerras Bíblicas
+// ---------------------------------------------------------------
+const GAMES = [
+  {
+    key:'game_quiz',
+    icon:'📖',
+    title:'Quiz Bíblico',
+    desc:'Teste seus conhecimentos bíblicos e avance na trilha.',
+    action:'abrirQuizDoMilhao()'
+  },
+  {
+    key:'game_guerra',
+    icon:'⚔️',
+    title:'Guerras Bíblicas',
+    desc:'Reviva as grandes batalhas da Bíblia em um jogo de estratégia.',
+    action:'abrirGuerrasBiblicas()'
+  }
+];
+function renderGames(){
+  const el=document.getElementById('gamesGrid');
+  if(!el) return;
+  const enabled=GAMES.filter(g=>cfgBool(g.key,true));
+  if(!enabled.length){el.innerHTML='<div class="empty-state">Nenhum jogo disponível no momento.</div>';return;}
+  el.innerHTML=enabled.map(g=>`<div class="game-card"><div class="game-card-icon">${g.icon}</div><div class="game-card-title">${escHtml(g.title)}</div><div class="game-card-desc">${escHtml(g.desc)}</div><button class="game-card-btn" onclick="${g.action}">Jogar agora</button></div>`).join('');
+}
+
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){
     if(document.getElementById('revistaReader').classList.contains('open')) closeReader();
@@ -1031,5 +1055,6 @@ async function loadAll(){
 loadAll();
 </script>
 <script src="quiz.js"></script>
+<script src="guerras-biblicas.js"></script>
 </body>
 </html>
