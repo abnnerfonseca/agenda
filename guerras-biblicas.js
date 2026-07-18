@@ -43,6 +43,9 @@ const GW_BATTLE_SIM_MAX_MS = 3000;     // duração máxima da animação de bat
 
 const GW_BEST_KEY = 'gwBestGuerrasVencidas';
 
+// Site exibido no rodapé da imagem compartilhável e usado no convite do WhatsApp.
+const GW_SHARE_SITE_URL = 'adbelembarueri.com.br';
+
 /* Textos de relato — únicos dados "fixos" no código, conforme o combinado. */
 const GW_NARRATIVE = {
   vitoriaMeio: [
@@ -161,10 +164,11 @@ const GW_CSS = `
 .gw-btn{background:var(--accent,#7a2e2e);color:#fff;border:none;padding:13px 30px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;cursor:pointer;transition:transform .15s,box-shadow .15s;font-family:var(--sans,sans-serif);display:block;margin:0 auto}
 .gw-btn:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(0,0,0,.4)}
 .gw-btn-secondary{background:rgba(255,255,255,.06);color:#e8e3d8;border:1px solid rgba(255,255,255,.16)}
+.gw-btn:disabled{opacity:.5;cursor:not-allowed}
 .gw-loading,.gw-empty{text-align:center;padding:60px 20px;color:#c9c4b8;font-size:14px}
 .gw-round-label{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold,#c9a24a);font-weight:600;text-align:center;margin-bottom:6px}
 .gw-round-sub{font-size:13px;color:#c9c4b8;text-align:center;margin-bottom:24px}
-.gw-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.gw-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:26px}
 @media(max-width:640px){.gw-cards{grid-template-columns:1fr}}
 .gw-card{border-radius:14px;padding:18px 16px;cursor:pointer;text-align:left;transition:transform .15s,box-shadow .15s;border:1px solid rgba(255,255,255,.14);background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.01));position:relative;overflow:hidden}
 .gw-card:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(0,0,0,.4)}
@@ -185,6 +189,11 @@ const GW_CSS = `
 .gw-card.disabled{opacity:.32;cursor:not-allowed;filter:grayscale(70%)}
 .gw-card.disabled:hover{transform:none;box-shadow:none}
 .gw-card-filled-badge{position:absolute;top:10px;right:10px;font-size:8px;text-transform:uppercase;letter-spacing:.05em;background:rgba(0,0,0,.55);color:#e8e3d8;padding:3px 8px;border-radius:6px}
+.gw-card-rolling{cursor:default;pointer-events:none;animation:gwRollFlicker .16s ease-in-out infinite}
+.gw-card-rolling:hover{transform:none;box-shadow:none}
+.gw-card-static{cursor:default}
+.gw-card-static:hover{transform:none;box-shadow:none}
+@keyframes gwRollFlicker{0%{opacity:.7}50%{opacity:1}100%{opacity:.7}}
 .gw-group-label{text-align:center;font-size:12px;color:#c9c4b8;margin-bottom:20px}
 .gw-group-label b{color:var(--gold,#c9a24a)}
 .gw-reroll-wrap{text-align:center;margin-top:18px}
@@ -198,13 +207,6 @@ const GW_CSS = `
 @keyframes gwArmyPlayer{from{width:44%}to{width:59%}}
 @keyframes gwArmyEnemy{from{width:44%}to{width:59%}}
 @keyframes gwClash{from{left:43%}to{left:59%}}
-.gw-team{display:flex;flex-direction:column;gap:12px;margin-bottom:26px}
-.gw-team-row{display:flex;align-items:center;gap:14px;border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:14px 18px;background:rgba(255,255,255,.03)}
-.gw-team-row .emoji{font-size:26px}
-.gw-team-row .info{flex:1}
-.gw-team-row .pos{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:#c9c4b8}
-.gw-team-row .name{font-size:16px;font-weight:700;color:#fff}
-.gw-team-row .overall{font-size:22px;font-weight:800;color:var(--gold,#c9a24a)}
 .gw-team-progress{margin-top:26px;border-top:1px solid rgba(255,255,255,.1);padding-top:18px}
 .gw-team-progress-label{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#c9c4b8;text-align:center;margin-bottom:12px}
 .gw-tp-row{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
@@ -267,6 +269,8 @@ let _gwState = {
   lastBattle: null,
   history: [],             // [{ nome, win }] — sequência de guerras já disputadas nesta campanha
 };
+
+let _gwRollTimer = null; // interval id da animação de "sorteando" no draft
 
 /* ------------------------------ DOM SETUP ----------------------------------- */
 
@@ -428,8 +432,10 @@ function gwRenderDraftRound() {
   const empty = gwEmptyPositions();
   if (!empty.length) { gwRenderTeamSummary(); return; }
 
+  let isNewDraw = false;
   if (!_gwState.currentGroup) {
     _gwState.currentGroup = gwDrawGroup();
+    isNewDraw = true;
   }
   const group = _gwState.currentGroup;
 
@@ -441,6 +447,69 @@ function gwRenderDraftRound() {
   }
 
   const roundNum = GW_POSITIONS.length - empty.length + 1;
+
+  // Toda vez que um grupo NOVO é sorteado (não em re-renders do mesmo grupo),
+  // mostra o efeito de "sorteando" antes de revelar as cartas de verdade.
+  if (isNewDraw) {
+    gwPlayDraftRollAnimation(group, roundNum);
+  } else {
+    gwRenderDraftCards(group, roundNum);
+  }
+}
+
+// Efeito visual de sorteio: troca nome/overall/raridade das 3 cartas rapidamente
+// (como um caça-níquel) por ~1.2-1.5s antes de assentar no grupo real sorteado.
+function gwPlayDraftRollAnimation(group, roundNum) {
+  const body = document.getElementById('gwBody');
+  const pool = _gwCache.personagens;
+
+  const cardsHtml = GW_POSITIONS.map((pos, i) => {
+    const c = gwPick(pool);
+    const rarity = gwRarity(c.overall);
+    return `<div class="gw-card gw-card-rolling ${rarity.cls}" id="gwRollCard-${i}">
+      <span class="gw-card-rarity">${rarity.label}</span>
+      <div class="gw-card-pos">${GW_POSITION_LABEL[pos].emoji} ${GW_POSITION_LABEL[pos].nome}</div>
+      <div class="gw-card-name">${gwEscHtml(c.nome)}</div>
+      <div class="gw-card-overall">${c.overall}</div>
+    </div>`;
+  }).join('');
+
+  body.innerHTML = `
+    <div class="gw-round-label">Rodada ${roundNum} de ${GW_POSITIONS.length}</div>
+    <div class="gw-group-label">🎲 Sorteando grupo…</div>
+    <div class="gw-cards">${cardsHtml}</div>
+    ${gwTeamProgressHtml()}
+  `;
+
+  if (_gwRollTimer) clearInterval(_gwRollTimer);
+  const duration = 1200 + Math.random() * 300; // 1.2–1.5s
+  const tickMs = 80;
+  const startedAt = Date.now();
+
+  _gwRollTimer = setInterval(() => {
+    GW_POSITIONS.forEach((pos, i) => {
+      const el = document.getElementById(`gwRollCard-${i}`);
+      if (!el) return;
+      const c = gwPick(pool);
+      const rarity = gwRarity(c.overall);
+      el.className = `gw-card gw-card-rolling ${rarity.cls}`;
+      const nameEl = el.querySelector('.gw-card-name');
+      const overallEl = el.querySelector('.gw-card-overall');
+      const rarityEl = el.querySelector('.gw-card-rarity');
+      if (nameEl) nameEl.textContent = c.nome;
+      if (overallEl) overallEl.textContent = c.overall;
+      if (rarityEl) rarityEl.textContent = rarity.label;
+    });
+    if (Date.now() - startedAt >= duration) {
+      clearInterval(_gwRollTimer);
+      _gwRollTimer = null;
+      gwRenderDraftCards(group, roundNum);
+    }
+  }, tickMs);
+}
+
+// Versão "assentada": mostra as 3 cartas reais do grupo sorteado, clicáveis.
+function gwRenderDraftCards(group, roundNum) {
   const cardsHtml = GW_POSITIONS.map(pos => {
     const card = group[pos];
     const filled = !!_gwState.team[pos];
@@ -483,30 +552,42 @@ function gwRerollGroup() {
   if (_gwState.rerollUsed || !_gwState.currentGroup) return;
   _gwState.rerollUsed = true;
   const prevId = _gwState.currentGroup.id;
-  _gwState.currentGroup = gwDrawGroup(prevId);
-  gwRenderDraftRound();
+  const empty = gwEmptyPositions();
+  const roundNum = GW_POSITIONS.length - empty.length + 1;
+  const newGroup = gwDrawGroup(prevId);
+  _gwState.currentGroup = newGroup;
+  if (newGroup) {
+    gwPlayDraftRollAnimation(newGroup, roundNum);
+  } else {
+    _gwState.currentGroup = null;
+    gwRenderDraftRound();
+  }
 }
 
 /* ------------------------------ TEAM SUMMARY ----------------------------------- */
 
-function gwRenderTeamSummary() {
-  const rows = GW_POSITIONS.map(p => {
-    const c = _gwState.team[p];
-    return `<div class="gw-team-row">
-      <span class="emoji">${GW_POSITION_LABEL[p].emoji}</span>
-      <div class="info">
-        <div class="pos">${GW_POSITION_LABEL[p].nome}</div>
-        <div class="name">${gwEscHtml(c.nome)}</div>
-      </div>
-      <div class="overall">${c.overall}</div>
+// Renderiza o time (general/guerreiro/exército) no mesmo estilo compacto de
+// caixas usado no draft — reaproveitado no resumo pré-campanha e na tela final.
+function gwTeamCardsHtml(team) {
+  const cards = GW_POSITIONS.map(pos => {
+    const c = team[pos];
+    const rarity = gwRarity(c.overall);
+    return `<div class="gw-card gw-card-static ${rarity.cls}">
+      <span class="gw-card-rarity">${rarity.label}</span>
+      <div class="gw-card-pos">${GW_POSITION_LABEL[pos].emoji} ${GW_POSITION_LABEL[pos].nome}</div>
+      <div class="gw-card-name">${gwEscHtml(c.nome)}</div>
+      <div class="gw-card-overall">${c.overall}</div>
     </div>`;
   }).join('');
+  return `<div class="gw-cards">${cards}</div>`;
+}
 
+function gwRenderTeamSummary() {
   const body = document.getElementById('gwBody');
   body.innerHTML = `
     <div class="gw-eyebrow">Time montado</div>
     <h2 class="gw-title">Pronto para a campanha</h2>
-    <div class="gw-team">${rows}</div>
+    ${gwTeamCardsHtml(_gwState.team)}
     <button class="gw-btn" onclick="gwStartCampaign()">Começar Campanha</button>
   `;
 }
@@ -667,20 +748,9 @@ function gwRenderFinal(reachedPromisedLand) {
     ? `Time invicto: ${st.warsWon} de ${st.wars.length} guerras vencidas.`
     : `${st.warsWon} de ${st.wars.length} guerras vencidas antes da derrota.`;
 
-  const teamRows = GW_POSITIONS.map(p => {
-    const c = st.team[p];
-    return `<div class="gw-team-row">
-      <span class="emoji">${GW_POSITION_LABEL[p].emoji}</span>
-      <div class="info">
-        <div class="pos">${GW_POSITION_LABEL[p].nome}</div>
-        <div class="name">${gwEscHtml(c.nome)}</div>
-      </div>
-      <div class="overall">${c.overall}</div>
-    </div>`;
-  }).join('');
-
   const body = document.getElementById('gwBody');
   body.innerHTML = `
+    <div class="gw-eyebrow">Guerras Bíblicas</div>
     <div class="gw-final">
       <div class="gw-final-emoji">${emoji}</div>
       <div class="gw-final-title">${title}</div>
@@ -688,12 +758,192 @@ function gwRenderFinal(reachedPromisedLand) {
       <p class="gw-final-sub">${sub}</p>
     </div>
     ${gwHistoryHtml()}
-    <div class="gw-team">${teamRows}</div>
+    ${gwTeamCardsHtml(st.team)}
     <div class="gw-actions">
       <button class="gw-btn" onclick="gwStart()">Jogar novamente</button>
+      <button class="gw-btn gw-btn-secondary" id="gwShareImgBtn" onclick="gwShareImage(this)">📸 Compartilhar como imagem</button>
+      <button class="gw-btn gw-btn-secondary" onclick="gwShareWhatsApp()">💬 Convidar no WhatsApp</button>
       <button class="gw-btn gw-btn-secondary" onclick="gwRenderIntro()">Voltar ao início</button>
     </div>
   `;
+}
+
+/* ------------------------------ COMPARTILHAMENTO ---------------------------------- */
+
+// Desenha um retângulo com cantos arredondados (sem depender de ctx.roundRect,
+// que nem todo navegador suporta ainda).
+function gwRoundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+
+// Escreve texto centralizado quebrando em até 2 linhas dentro de maxWidth.
+function gwWrapFillText(ctx, text, cx, y, maxWidth, lineHeight) {
+  const words = String(text).split(' ');
+  const lines = [];
+  let line = '';
+  words.forEach(w => {
+    const test = line ? line + ' ' + w : w;
+    if (ctx.measureText(test).width > maxWidth && line) {
+      lines.push(line);
+      line = w;
+    } else {
+      line = test;
+    }
+  });
+  if (line) lines.push(line);
+  let finalLines = lines.slice(0, 2);
+  if (lines.length > 2) finalLines[1] = finalLines[1].replace(/.{0,3}$/, '') + '…';
+  const totalH = finalLines.length * lineHeight;
+  const startY = y - (totalH - lineHeight) / 2;
+  finalLines.forEach((l, i) => ctx.fillText(l, cx, startY + i * lineHeight));
+}
+
+// Monta a imagem do card de resultado num <canvas> — sem libs externas.
+// Time em caixas (estilo do draft); lendários aparecem em dourado e sem o overall.
+function gwBuildShareCanvas() {
+  const st = _gwState;
+  const W = 1080, H = 1350;
+  const canvas = document.createElement('canvas');
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  const gold = '#c9a24a';
+  const white = '#f5f1e6';
+  const muted = '#b9b2a2';
+
+  const grad = ctx.createLinearGradient(0, 0, 0, H);
+  grad.addColorStop(0, '#221f1b');
+  grad.addColorStop(1, '#0c0b09');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, W, H);
+
+  ctx.strokeStyle = 'rgba(201,162,74,0.35)';
+  ctx.lineWidth = 4;
+  ctx.strokeRect(20, 20, W - 40, H - 40);
+
+  ctx.textAlign = 'center';
+
+  ctx.fillStyle = gold;
+  ctx.font = '600 28px Montserrat, sans-serif';
+  ctx.fillText('DRAFT BÍBLICO', W / 2, 140);
+
+  ctx.fillStyle = white;
+  ctx.font = '700 74px Montserrat, sans-serif';
+  ctx.fillText('GUERRAS BÍBLICAS', W / 2, 230);
+
+  const reachedPromisedLand = st.warsWon === st.wars.length;
+  ctx.font = '700 38px Montserrat, sans-serif';
+  ctx.fillStyle = reachedPromisedLand ? gold : white;
+  ctx.fillText(reachedPromisedLand ? 'CHEGOU À TERRA PROMETIDA!' : 'CAMPANHA ENCERRADA', W / 2, 320);
+
+  ctx.font = '700 128px Montserrat, sans-serif';
+  ctx.fillStyle = gold;
+  ctx.fillText(`${st.warsWon}/${st.wars.length}`, W / 2, 470);
+
+  ctx.font = '400 32px Montserrat, sans-serif';
+  ctx.fillStyle = muted;
+  ctx.fillText('guerras vencidas', W / 2, 520);
+
+  const boxW = 300, boxH = 420, gap = 30;
+  const totalW = boxW * 3 + gap * 2;
+  const startX = (W - totalW) / 2;
+  const boxY = 600;
+
+  GW_POSITIONS.forEach((pos, i) => {
+    const card = st.team[pos];
+    const rarity = gwRarity(card.overall);
+    const isLegendary = rarity.cls === 'lendario';
+    const x = startX + i * (boxW + gap);
+
+    ctx.fillStyle = isLegendary ? 'rgba(201,162,74,0.12)' : 'rgba(255,255,255,0.04)';
+    ctx.strokeStyle = isLegendary ? gold : 'rgba(255,255,255,0.18)';
+    ctx.lineWidth = isLegendary ? 3 : 2;
+    gwRoundRect(ctx, x, boxY, boxW, boxH, 18);
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.font = '700 22px Montserrat, sans-serif';
+    ctx.fillStyle = isLegendary ? gold : muted;
+    ctx.fillText(rarity.label.toUpperCase(), x + boxW / 2, boxY + 50);
+
+    ctx.font = '54px sans-serif';
+    ctx.fillStyle = white;
+    ctx.fillText(GW_POSITION_LABEL[pos].emoji, x + boxW / 2, boxY + 130);
+
+    ctx.font = '600 22px Montserrat, sans-serif';
+    ctx.fillStyle = muted;
+    ctx.fillText(GW_POSITION_LABEL[pos].nome.toUpperCase(), x + boxW / 2, boxY + 165);
+
+    ctx.font = '700 30px Montserrat, sans-serif';
+    ctx.fillStyle = isLegendary ? gold : white;
+    gwWrapFillText(ctx, card.nome, x + boxW / 2, boxY + 230, boxW - 30, 34);
+
+    if (isLegendary) {
+      ctx.font = '700 22px Montserrat, sans-serif';
+      ctx.fillStyle = gold;
+      ctx.fillText('★ LENDÁRIO ★', x + boxW / 2, boxY + boxH - 40);
+    } else {
+      ctx.font = '700 44px Montserrat, sans-serif';
+      ctx.fillStyle = gold;
+      ctx.fillText(String(card.overall), x + boxW / 2, boxY + boxH - 40);
+    }
+  });
+
+  ctx.font = '600 30px Montserrat, sans-serif';
+  ctx.fillStyle = gold;
+  ctx.fillText(GW_SHARE_SITE_URL, W / 2, H - 60);
+
+  return canvas;
+}
+
+async function gwGenerateShareImageBlob() {
+  if (document.fonts && document.fonts.ready) {
+    try { await document.fonts.ready; } catch (e) {}
+  }
+  const canvas = gwBuildShareCanvas();
+  return new Promise(resolve => canvas.toBlob(resolve, 'image/png', 0.95));
+}
+
+function gwShareText() {
+  const st = _gwState;
+  return `Venci ${st.warsWon} de ${st.wars.length} guerras em Guerras Bíblicas! Vem jogar também 👉 ${GW_SHARE_SITE_URL}`;
+}
+
+// Compartilha a imagem via Web Share API (celular) ou baixa o arquivo (desktop).
+async function gwShareImage(btnEl) {
+  const originalLabel = btnEl ? btnEl.textContent : '';
+  if (btnEl) { btnEl.disabled = true; btnEl.textContent = 'Gerando imagem…'; }
+  try {
+    const blob = await gwGenerateShareImageBlob();
+    const file = new File([blob], 'guerras-biblicas-resultado.png', { type: 'image/png' });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({ files: [file], title: 'Guerras Bíblicas', text: gwShareText() });
+    } else {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'guerras-biblicas-resultado.png';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 4000);
+    }
+  } catch (e) {
+    console.error('[Guerras Bíblicas] erro ao compartilhar imagem:', e);
+  } finally {
+    if (btnEl) { btnEl.disabled = false; btnEl.textContent = originalLabel || '📸 Compartilhar como imagem'; }
+  }
+}
+
+// Convite por texto no WhatsApp (sem imagem — o wa.me só suporta texto/link).
+function gwShareWhatsApp() {
+  window.open(`https://wa.me/?text=${encodeURIComponent(gwShareText())}`, '_blank');
 }
 
 /* ------------------------------ OPEN / CLOSE ------------------------------------- */
@@ -708,6 +958,7 @@ function gwClose() {
   const ov = document.getElementById('gwOverlay');
   if (ov) ov.classList.remove('open');
   document.body.style.overflow = '';
+  if (_gwRollTimer) { clearInterval(_gwRollTimer); _gwRollTimer = null; }
 }
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
