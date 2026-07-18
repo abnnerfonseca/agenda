@@ -175,15 +175,10 @@ const GW_CSS = `
 .gw-group-label b{color:var(--gold,#c9a24a)}
 .gw-reroll-wrap{text-align:center;margin-top:18px}
 .gw-battle-sim{text-align:center;padding:36px 0 16px}
-.gw-battle-sim-label{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#c9c4b8;margin-bottom:26px}
-.gw-battlefield{position:relative;height:64px;border-radius:10px;overflow:hidden;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12)}
-.gw-army{position:absolute;top:0;bottom:0}
-.gw-army.player{left:0;background:linear-gradient(90deg,rgba(201,162,74,.18),rgba(201,162,74,.6));animation:gwArmyPlayer 1.05s ease-in-out infinite alternate}
-.gw-army.enemy{right:0;background:linear-gradient(270deg,rgba(122,46,46,.22),rgba(122,46,46,.65));animation:gwArmyEnemy 1.05s ease-in-out infinite alternate}
-.gw-clash-line{position:absolute;top:0;bottom:0;width:3px;background:#fff;box-shadow:0 0 14px rgba(255,255,255,.65);animation:gwClash 1.05s ease-in-out infinite alternate}
-@keyframes gwArmyPlayer{from{width:44%}to{width:59%}}
-@keyframes gwArmyEnemy{from{width:44%}to{width:59%}}
-@keyframes gwClash{from{left:43%}to{left:59%}}
+.gw-battle-sim-label{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#c9c4b8;margin-bottom:4px}
+.gw-battle-sim-type{font-size:11px;color:var(--gold,#c9a24a);font-weight:600;margin-bottom:16px;text-transform:capitalize}
+.gw-battle-canvas-wrap{border-radius:10px;overflow:hidden;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12)}
+.gw-battle-canvas-wrap canvas{display:block;width:100%;height:auto;image-rendering:pixelated}
 .gw-team-progress{margin-top:16px;border-top:1px solid rgba(255,255,255,.1);padding-top:12px}
 .gw-team-progress-label{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:#c9c4b8;text-align:center;margin-bottom:8px}
 .gw-tp-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
@@ -621,20 +616,192 @@ function gwFight() {
 }
 
 function gwRenderBattleSimulation() {
+  const st = _gwState;
+  const war = st.wars[st.warIndex];
   const body = document.getElementById('gwBody');
   body.innerHTML = `
     <div class="gw-battle-sim">
       <div class="gw-battle-sim-label">⚔️ Simulando a batalha…</div>
-      <div class="gw-battlefield">
-        <div class="gw-army player"></div>
-        <div class="gw-clash-line"></div>
-        <div class="gw-army enemy"></div>
-      </div>
+      <div class="gw-battle-sim-type">${gwEscHtml(war.tipo_de_batalha) || 'Campo Aberto'}</div>
+      <div class="gw-battle-canvas-wrap"><canvas id="gwBattleCanvas" width="640" height="240"></canvas></div>
     </div>
   `;
   const duration = GW_BATTLE_SIM_MIN_MS + Math.random() * (GW_BATTLE_SIM_MAX_MS - GW_BATTLE_SIM_MIN_MS);
-  setTimeout(gwRenderBattleResult, duration);
+  gwRunBattleAnimation(gwBattleType(war.tipo_de_batalha), duration);
 }
+
+function gwBattleType(raw) {
+  const s = gwStrip(raw);
+  if (s.includes('cerco')) return 'cerco';
+  if (s.includes('emboscada')) return 'emboscada';
+  if (s.includes('duelo')) return 'duelo';
+  if (s.includes('defesa')) return 'defesa';
+  if (s.includes('inspiracao')) return 'inspiracao';
+  if (s.includes('guerrilha')) return 'guerrilha';
+  return 'campoAberto';
+}
+
+function gwRunBattleAnimation(type, duration) {
+  const patternFn = GW_BATTLE_PATTERNS[type] || GW_BATTLE_PATTERNS.campoAberto;
+  const startedAt = performance.now();
+
+  function frame(now) {
+    const canvas = document.getElementById('gwBattleCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const t = Math.min(1, (now - startedAt) / duration);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    patternFn(ctx, canvas.width, canvas.height, t);
+    if (t < 1) requestAnimationFrame(frame);
+    else gwRenderBattleResult();
+  }
+  requestAnimationFrame(frame);
+}
+
+const GW_BATTLE_GOLD = '#c9a24a';
+const GW_BATTLE_GOLD_BRIGHT = '#ecd28a';
+const GW_BATTLE_RED = '#a5433f';
+const GW_BATTLE_DOT_N = 22;
+
+function gwSeededRand(i, salt) {
+  const x = Math.sin(i * 12.9898 + salt * 78.233) * 43758.5453;
+  return x - Math.floor(x);
+}
+function gwLerp(a, b, t) { return a + (b - a) * t; }
+function gwEaseOut(t) { return 1 - Math.pow(1 - t, 2); }
+function gwEaseIn(t) { return t * t; }
+function gwDrawPixelDot(ctx, x, y, size, color, alpha) {
+  ctx.globalAlpha = alpha === undefined ? 1 : alpha;
+  ctx.fillStyle = color;
+  ctx.fillRect(Math.round(x - size / 2), Math.round(y - size / 2), size, size);
+  ctx.globalAlpha = 1;
+}
+
+const GW_BATTLE_PATTERNS = {
+  // Campo Aberto — também o padrão-coringa para tipos não reconhecidos.
+  campoAberto(ctx, W, H, t) {
+    const marchT = gwEaseOut(Math.min(1, t / 0.6));
+    const jitterT = Math.max(0, t - 0.6);
+    for (let i = 0; i < GW_BATTLE_DOT_N; i++) {
+      const baseY = 20 + gwSeededRand(i, 1) * (H - 40);
+      const px = gwLerp(30 + gwSeededRand(i, 2) * 100, W / 2 - 10 + gwSeededRand(i, 3) * 20, marchT) + Math.sin(jitterT * 40 + i) * 3 * (jitterT > 0 ? 1 : 0);
+      gwDrawPixelDot(ctx, px, baseY, 6, GW_BATTLE_GOLD);
+      const ex = gwLerp(W - 30 - gwSeededRand(i, 4) * 100, W / 2 + 10 - gwSeededRand(i, 5) * 20, marchT) + Math.cos(jitterT * 40 + i) * 3 * (jitterT > 0 ? 1 : 0);
+      gwDrawPixelDot(ctx, ex, baseY, 6, GW_BATTLE_RED);
+    }
+  },
+
+  // Cerco — o inimigo se agrupa numa fortaleza central; o jogador fecha o cerco em anel.
+  cerco(ctx, W, H, t) {
+    const cx = W / 2, cy = H / 2;
+    ctx.fillStyle = '#3a332b';
+    ctx.fillRect(cx - 16, cy - 14, 32, 28);
+    for (let i = 0; i < GW_BATTLE_DOT_N; i++) {
+      const angle = gwSeededRand(i, 1) * Math.PI * 2;
+      const r = 8 + gwSeededRand(i, 2) * 16;
+      gwDrawPixelDot(ctx, cx + Math.cos(angle) * r, cy + Math.sin(angle) * r * 0.6, 6, GW_BATTLE_RED);
+    }
+    const outerR = Math.min(W, H) / 2 - 16, innerR = 44;
+    for (let i = 0; i < GW_BATTLE_DOT_N; i++) {
+      const baseAngle = (i / GW_BATTLE_DOT_N) * Math.PI * 2 + gwSeededRand(i, 3) * 0.3;
+      const angle = baseAngle + t * 1.3;
+      const r = gwLerp(outerR, innerR, gwEaseIn(t));
+      gwDrawPixelDot(ctx, cx + Math.cos(angle) * r, cy + Math.sin(angle) * r * 0.75, 6, GW_BATTLE_GOLD);
+    }
+  },
+
+  // Emboscada — o jogador marcha em linha; o inimigo salta escondido das bordas.
+  emboscada(ctx, W, H, t) {
+    for (let i = 0; i < GW_BATTLE_DOT_N; i++) {
+      const y = 30 + (i % 6) * ((H - 60) / 6) + gwSeededRand(i, 1) * 6;
+      const x = gwLerp(20, W - 20, t);
+      gwDrawPixelDot(ctx, x, y, 6, GW_BATTLE_GOLD);
+    }
+    const trigger = 0.45;
+    const corners = [[20, 20], [W - 20, 20], [20, H - 20], [W - 20, H - 20]];
+    for (let i = 0; i < GW_BATTLE_DOT_N; i++) {
+      const [hx, hy] = corners[i % 4];
+      if (t < trigger) {
+        gwDrawPixelDot(ctx, hx, hy, 3, GW_BATTLE_RED, 0.3);
+      } else {
+        const localT = gwEaseOut((t - trigger) / (1 - trigger));
+        const tx = W / 2 + (gwSeededRand(i, 5) - 0.5) * 160;
+        const ty = H / 2 + (gwSeededRand(i, 6) - 0.5) * 100;
+        gwDrawPixelDot(ctx, gwLerp(hx, tx, localT), gwLerp(hy, ty, localT), 6, GW_BATTLE_RED);
+      }
+    }
+  },
+
+  // Duelo — poucos "campeões" avançam em ritmo de troca de golpes.
+  duelo(ctx, W, H, t) {
+    const M = 5, cx = W / 2, cy = H / 2;
+    for (let i = 0; i < M; i++) {
+      const laneY = cy - (M - 1) * 10 + i * 20;
+      const phase = i * 0.5;
+      const stepOffset = Math.sin(t * Math.PI * 6 + phase) * 14;
+      const approach = t * 40;
+      gwDrawPixelDot(ctx, cx - 90 + approach + stepOffset, laneY, 8, GW_BATTLE_GOLD);
+      gwDrawPixelDot(ctx, cx + 90 - approach - stepOffset, laneY, 8, GW_BATTLE_RED);
+    }
+  },
+
+  // Defesa — o jogador segura uma formação fixa; o inimigo avança e recua em ondas.
+  defesa(ctx, W, H, t) {
+    for (let i = 0; i < GW_BATTLE_DOT_N; i++) {
+      const col = i % 6, row = Math.floor(i / 6);
+      gwDrawPixelDot(ctx, 60 + col * 14 + gwSeededRand(i, 1) * 2, 40 + row * 14, 6, GW_BATTLE_GOLD);
+    }
+    const waveCount = 3;
+    const wavePhase = (t * waveCount) % 1;
+    const waveProgress = wavePhase < 0.6 ? wavePhase / 0.6 : 1 - (wavePhase - 0.6) / 0.4;
+    for (let i = 0; i < GW_BATTLE_DOT_N; i++) {
+      const row = i % 8;
+      const laneY = 30 + row * ((H - 60) / 8);
+      const x = gwLerp(W - 40, 220, waveProgress) + gwSeededRand(i, 2) * 10;
+      gwDrawPixelDot(ctx, x, laneY, 6, GW_BATTLE_RED);
+    }
+  },
+
+  // Inspiração — o jogador irradia luz em ondas; o inimigo se dispersa e esmaece.
+  inspiracao(ctx, W, H, t) {
+    const cx = W * 0.35, cy = H / 2, maxR = Math.min(W, H) / 2 - 10;
+    for (let i = 0; i < GW_BATTLE_DOT_N; i++) {
+      const angle = (i / GW_BATTLE_DOT_N) * Math.PI * 2;
+      const radius = ((t * 1.4 + i * 0.05) % 1) * maxR;
+      const alpha = 1 - radius / maxR;
+      gwDrawPixelDot(ctx, cx + Math.cos(angle) * radius, cy + Math.sin(angle) * radius * 0.7, 6, GW_BATTLE_GOLD_BRIGHT, alpha);
+    }
+    for (let i = 0; i < GW_BATTLE_DOT_N; i++) {
+      const baseX = W * 0.75 + gwSeededRand(i, 1) * 60 - 30;
+      const baseY = H / 2 + gwSeededRand(i, 2) * 80 - 40;
+      const x = baseX + t * gwSeededRand(i, 3) * 40;
+      const y = baseY + (gwSeededRand(i, 4) - 0.5) * t * 60;
+      gwDrawPixelDot(ctx, x, y, 6, GW_BATTLE_RED, Math.max(0, 1 - t * 0.9));
+    }
+  },
+
+  // Guerrilha — o jogador ataca de surpresa em posições espalhadas; o inimigo reage nervoso.
+  guerrilha(ctx, W, H, t) {
+    for (let i = 0; i < GW_BATTLE_DOT_N; i++) {
+      const baseX = W * 0.62 + gwSeededRand(i, 1) * 150;
+      const baseY = 30 + gwSeededRand(i, 2) * (H - 60);
+      const jitter = Math.sin(t * 20 + i) * 2;
+      gwDrawPixelDot(ctx, baseX + jitter, baseY, 6, GW_BATTLE_RED);
+    }
+    for (let i = 0; i < GW_BATTLE_DOT_N; i++) {
+      const cycleLen = 0.25 + gwSeededRand(i, 3) * 0.15;
+      const cyclePos = (t / cycleLen + gwSeededRand(i, 4)) % 1;
+      if (cyclePos >= 0.5) continue;
+      const localT = cyclePos / 0.5;
+      const homeX = gwSeededRand(i, 5) * (W * 0.5);
+      const homeY = 20 + gwSeededRand(i, 6) * (H - 40);
+      const targetX = W * 0.62 + gwSeededRand(i, 1) * 150;
+      const targetY = 30 + gwSeededRand(i, 2) * (H - 60);
+      const dartT = localT < 0.5 ? gwEaseOut(localT * 2) : gwEaseOut((1 - localT) * 2);
+      gwDrawPixelDot(ctx, gwLerp(homeX, targetX, dartT), gwLerp(homeY, targetY, dartT), 6, GW_BATTLE_GOLD);
+    }
+  },
+};
 
 function gwRenderBattleResult() {
   const st = _gwState;
