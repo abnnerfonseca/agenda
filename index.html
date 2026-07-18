@@ -38,9 +38,26 @@ a{color:inherit;text-decoration:none}
 .nav-social svg{width:15px;height:15px}
 .nav-toggle{display:none;background:none;border:none;font-size:22px;cursor:pointer;color:var(--ink);flex-shrink:0}
 @media(max-width:1000px){
-  .nav-links{position:fixed;top:62px;left:0;right:0;bottom:0;background:var(--paper);flex-direction:column;padding:32px 24px;gap:20px;transform:translateX(100%);transition:transform .3s;overflow-y:auto;z-index:99;flex-wrap:nowrap}
+  .nav-links{
+    position:fixed;
+    inset:0;
+    height:100dvh;
+    background:var(--paper);
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    gap:26px;
+    padding:32px 24px;
+    transform:translateX(100%);
+    transition:transform .3s ease;
+    overflow-y:auto;
+    z-index:150;
+    flex-wrap:nowrap;
+  }
   .nav-links.open{transform:translateX(0)}
-  .nav-toggle{display:block}
+  .nav-links a{font-size:16px;letter-spacing:.06em;padding:6px 0}
+  .nav-toggle{display:block;font-size:24px;z-index:160;position:relative}
+  body.menu-open{overflow:hidden}
 }
 @media(max-width:600px){.nav-social{display:none}}
 .page{display:none;animation:fadeIn .35s ease}
@@ -739,10 +756,29 @@ function goTo(page){
   pageEl.classList.add('active');
   document.querySelectorAll('.nav-links a').forEach(a=>a.classList.toggle('active',a.dataset.page===page));
   document.getElementById('navLinks').classList.remove('open');
+  document.body.classList.remove('menu-open');
+  const navToggleBtn=document.querySelector('.nav-toggle'); if(navToggleBtn) navToggleBtn.textContent='☰';
   window.scrollTo({top:0,behavior:'smooth'});
   trackPage(page);
+  const hash = page==='home' ? '' : '#'+page;
+  if(location.hash.replace('#','') !== page){
+    history.pushState({page}, '', hash || location.pathname);
+  }
 }
-function toggleMenu(){document.getElementById('navLinks').classList.toggle('open');}
+
+function routeFromHash(){
+  const page = location.hash.replace('#','') || 'home';
+  goTo(page);
+}
+window.addEventListener('popstate', routeFromHash);
+
+function toggleMenu(){
+  const nav=document.getElementById('navLinks');
+  const btn=document.querySelector('.nav-toggle');
+  const isOpen=nav.classList.toggle('open');
+  document.body.classList.toggle('menu-open', isOpen);
+  if(btn) btn.textContent = isOpen ? '✕' : '☰';
+}
 
 const WEEKDAY_ALIASES={domingo:0,segunda:1,'segunda-feira':1,terca:2,'terca-feira':2,quarta:3,'quarta-feira':3,quinta:4,'quinta-feira':4,sexta:5,'sexta-feira':5,sabado:6,'sabado-feira':6};
 function normDay(s){return(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();}
@@ -1050,7 +1086,7 @@ async function loadAll(){
   renderCarousel();renderFixedSchedule();renderSpecialsGrid();
   renderNotices();renderAgendaFilters();renderAgenda();renderChurches();
   renderSermons();renderRevista();renderTimeline();renderCasa();
-  trackPage('home');
+  routeFromHash();
 }
 loadAll();
 </script>
