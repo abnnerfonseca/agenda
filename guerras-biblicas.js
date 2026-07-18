@@ -23,7 +23,7 @@ const GW_BATTLE_SIM_MAX_MS = 3000;
 
 const GW_BEST_KEY = 'gwBestGuerrasVencidas';
 
-const GW_SHARE_SITE_URL = 'adbelembarueri.com.br';
+const GW_SHARE_SITE_URL = 'adbelembarueri.com.br/#mais';
 
 const GW_NARRATIVE = {
   vitoriaMeio: [
