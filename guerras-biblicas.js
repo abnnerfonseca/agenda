@@ -15,9 +15,9 @@ const GW_POSITION_LABEL = {
 };
 
 const GW_WAR_COUNT = 5;
-const GW_SPECIALTY_BONUS_PCT = 0.20;
-const GW_WEAKNESS_PENALTY_PCT = 0.20;
-const GW_RANDOM_JITTER_PCT = 0.08;
+const GW_SPECIALTY_BONUS_PCT = 0.18;
+const GW_WEAKNESS_PENALTY_PCT = 0.17;
+const GW_RANDOM_JITTER_PCT = 0.07;
 const GW_BATTLE_SIM_MIN_MS = 2000;
 const GW_BATTLE_SIM_MAX_MS = 3000;
 
@@ -44,8 +44,8 @@ const GW_NARRATIVE = {
     'O exército inimigo foi forte demais desta vez.',
     'Não foi possível superar essa guerra.',
   ],
-  terraPrometida: 'A campanha foi vencida — o time chegou à Terra Prometida!',
-  imbativel: 'Nenhuma guerra restou para enfrentar — esse time é IMBATÍVEL!',
+  terraPrometida: 'A campanha foi vencida! O esquadrão chegou à Terra Prometida!',
+  imbativel: 'Nenhuma guerra restou para enfrentar... esse esquadrão é IMBATÍVEL!',
 };
 
 const gwFetchSheet = window.fetchSheet || (async function (url) {
@@ -329,7 +329,7 @@ function gwRenderIntro() {
   body.innerHTML = `
     <div class="gw-eyebrow">Draft Bíblico</div>
     <h2 class="gw-title">Guerras Bíblicas</h2>
-    <p class="gw-desc">Escolha o modo de jogo e depois monte seu time sorteando grupos de 3 heróis (general, guerreiro e exército).</p>
+    <p class="gw-desc">Escolha o modo de jogo e depois monte seu time sorteando grupos de 3 heróis.</p>
     <div class="gw-positions-preview">${chips}</div>
     ${bestCampanha > 0 ? `<div class="gw-record">🏅 Recorde Campanha: ${bestCampanha} guerra${bestCampanha === 1 ? '' : 's'} vencida${bestCampanha === 1 ? '' : 's'}</div>` : ''}
     ${bestSobrevivencia > 0 ? `<div class="gw-record">🔥 Recorde Sobrevivência: ${bestSobrevivencia} guerra${bestSobrevivencia === 1 ? '' : 's'} vencida${bestSobrevivencia === 1 ? '' : 's'} em sequência</div>` : ''}
@@ -405,8 +405,8 @@ async function gwStart(mode) {
 
   if (!data.personagens.length || !data.guerras.length || !data.groups.length) {
     body.innerHTML = `<div class="gw-empty">Não foi possível carregar os dados.<br><br>
-      Verifique se as abas <b>personagens</b> (colunas: nome, categoria, overall, especialidade, fraqueza, grupo)
-      e <b>guerras</b> (colunas: nome, dificuldade, tipo_de_batalha, overall) estão publicadas na web,
+      Verifique se as bases <b>personagens</b> (colunas: nome, categoria, overall, especialidade, fraqueza, grupo)
+      e <b>guerras</b> (colunas: nome, dificuldade, tipo_de_batalha, overall) estão publicadas,
       e se cada <b>grupo</b> tem exatamente 1 general, 1 guerreiro e 1 exército.
       Veja o console (F12) para detalhes.</div>`;
     return;
@@ -800,7 +800,7 @@ function gwRenderFinal(reachedAll) {
     if (reachedAll) {
       title = 'Imbatível!';
       emoji = '👑';
-      sub = `Seu time venceu todas as ${st.wars.length} guerras disponíveis em sequência. Ninguém pode com vocês!`;
+      sub = `Seu esquadrão venceu todas as ${st.wars.length} guerras disponíveis em sequência. Ninguém pode com vocês!`;
     } else {
       title = 'Fim da sequência';
       emoji = '📖';
