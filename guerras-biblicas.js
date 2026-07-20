@@ -200,7 +200,7 @@ const GW_CSS = `
 .gw-round-sub{font-size:13px;color:#c9c4b8;text-align:center;margin-bottom:24px}
 .gw-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
 @media(max-width:640px){.gw-cards{grid-template-columns:1fr}}
-.gw-card{border-radius:12px;padding:14px 12px;cursor:pointer;text-align:left;transition:transform .15s,box-shadow .15s;border:1px solid rgba(255,255,255,.14);background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.01));position:relative;overflow:hidden;height:150px;display:flex;flex-direction:column;justify-content:flex-start;box-sizing:border-box}
+.gw-card{border-radius:12px;padding:14px 12px;cursor:pointer;text-align:center;transition:transform .15s,box-shadow .15s;border:1px solid rgba(255,255,255,.14);background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.01));position:relative;overflow:hidden;height:150px;display:flex;flex-direction:column;justify-content:flex-start;box-sizing:border-box}
 .gw-card:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(0,0,0,.4)}
 .gw-card.normal{border-color:rgba(255,255,255,.14)}
 .gw-card.lendario{border-color:var(--gold,#c9a24a);box-shadow:0 0 24px rgba(201,162,74,.35)}
@@ -211,7 +211,7 @@ const GW_CSS = `
 .gw-card-pos{font-size:9px;text-transform:uppercase;letter-spacing:.05em;color:#c9c4b8;margin-bottom:4px}
 .gw-card-name{font-size:15px;font-weight:700;color:#fff;margin-bottom:6px;line-height:1.25;min-height:37.5px}
 .gw-card-overall{font-size:28px;font-weight:800;color:var(--gold,#c9a24a);margin-bottom:2px;line-height:1}
-.gw-cards.compact .gw-card{padding:10px 10px;height:112px}
+.gw-cards.compact .gw-card{padding:10px 10px;height:auto;min-height:112px}
 .gw-cards.compact .gw-card-name{font-size:13px;margin-bottom:3px}
 .gw-cards.compact .gw-card-overall{font-size:20px}
 .gw-card-attr{font-size:11px;color:#c9c4b8;margin-bottom:3px}
@@ -873,10 +873,16 @@ function gwBuildShareCanvas() {
   const W = 1080, H = 1920; // formato retrato de celular (9:16)
   const displayHistory = gwBuildImageHistory(st.history);
   const rows = displayHistory.length;
-  const historyTop = 460;
   const rowH = 56, rowGap = 12;
-  const teamTop = historyTop + 36 + rows * (rowH + rowGap) - rowGap + 24;
   const boxH = 300;
+
+  // O bloco "histórico + esquadrão" é centralizado no espaço restante da imagem,
+  // em vez de ficar colado logo abaixo do título/placar.
+  const contentTop = 430;   // logo após o placar
+  const contentBottom = 1820; // deixa espaço para o site travado no rodapé
+  const blockHeight = 36 + rows * (rowH + rowGap) - rowGap + 24 + boxH; // label + linhas + gap + equipe
+  const historyTop = contentTop + Math.max(0, (contentBottom - contentTop - blockHeight) / 2);
+  const teamTop = historyTop + 36 + rows * (rowH + rowGap) - rowGap + 24;
 
   const canvas = document.createElement('canvas');
   canvas.width = W; canvas.height = H;
