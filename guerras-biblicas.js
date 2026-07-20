@@ -148,7 +148,7 @@ function gwRarityCls(overall) {
 
 // Selo mostrado nos cards de draft (rolando ou escolhendo grupo): só aparece para lendários.
 function gwDraftBadgeHtml(card) {
-  return gwIsLegendary(card.overall) ? '<span class="gw-card-rarity lendario">★ Lendário</span>' : '';
+  return gwIsLegendary(card.overall) ? '<span class="gw-card-rarity lendario">★ Lendário</span>' : '<span class="gw-card-rarity"></span>';
 }
 // Selo mostrado nos "cards finais" (resumo do time / resultado final): o grupo do
 // personagem sempre aparece; lendários também recebem a estrelinha, além do grupo.
@@ -190,7 +190,7 @@ const GW_CSS = `
 .gw-btn:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(0,0,0,.4)}
 .gw-btn-secondary{background:rgba(255,255,255,.06);color:#e8e3d8;border:1px solid rgba(255,255,255,.16)}
 .gw-btn:disabled{opacity:.5;cursor:not-allowed}
-.gw-mode-choice{display:flex;flex-direction:column;gap:12px;max-width:340px;margin:0 auto}
+.gw-mode-choice{display:flex;flex-direction:column;gap:12px;max-width:340px;margin:0 auto 26px}
 .gw-mode-btn{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:16px 18px;cursor:pointer;text-align:left;transition:transform .15s,box-shadow .15s,border-color .15s;font-family:var(--sans,sans-serif);color:#f1ece1}
 .gw-mode-btn:hover{transform:translateY(-2px);border-color:var(--gold,#c9a24a);box-shadow:0 10px 26px rgba(0,0,0,.35)}
 .gw-mode-btn .gw-mode-title{font-size:15px;font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:8px}
@@ -200,17 +200,18 @@ const GW_CSS = `
 .gw-round-sub{font-size:13px;color:#c9c4b8;text-align:center;margin-bottom:24px}
 .gw-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
 @media(max-width:640px){.gw-cards{grid-template-columns:1fr}}
-.gw-card{border-radius:12px;padding:14px 12px;cursor:pointer;text-align:left;transition:transform .15s,box-shadow .15s;border:1px solid rgba(255,255,255,.14);background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.01));position:relative;overflow:hidden}
+.gw-card{border-radius:12px;padding:14px 12px;cursor:pointer;text-align:left;transition:transform .15s,box-shadow .15s;border:1px solid rgba(255,255,255,.14);background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.01));position:relative;overflow:hidden;height:150px;display:flex;flex-direction:column;justify-content:flex-start;box-sizing:border-box}
 .gw-card:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(0,0,0,.4)}
 .gw-card.normal{border-color:rgba(255,255,255,.14)}
 .gw-card.lendario{border-color:var(--gold,#c9a24a);box-shadow:0 0 24px rgba(201,162,74,.35)}
-.gw-card-rarity{font-size:9px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;margin-bottom:6px;display:inline-block}
+.gw-card-rarity{font-size:9px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;margin-bottom:6px;display:inline-block;min-height:12px}
+.gw-card-rarity:empty{visibility:hidden}
 .gw-card-rarity.lendario{color:var(--gold,#c9a24a)}
 .gw-card-group{font-size:9px;letter-spacing:.05em;text-transform:uppercase;color:#c9c4b8;margin-bottom:6px;display:block;font-weight:600}
 .gw-card-pos{font-size:9px;text-transform:uppercase;letter-spacing:.05em;color:#c9c4b8;margin-bottom:4px}
-.gw-card-name{font-size:15px;font-weight:700;color:#fff;margin-bottom:6px;line-height:1.25}
+.gw-card-name{font-size:15px;font-weight:700;color:#fff;margin-bottom:6px;line-height:1.25;min-height:37.5px}
 .gw-card-overall{font-size:28px;font-weight:800;color:var(--gold,#c9a24a);margin-bottom:2px;line-height:1}
-.gw-cards.compact .gw-card{padding:10px 10px}
+.gw-cards.compact .gw-card{padding:10px 10px;height:112px}
 .gw-cards.compact .gw-card-name{font-size:13px;margin-bottom:3px}
 .gw-cards.compact .gw-card-overall{font-size:20px}
 .gw-card-attr{font-size:11px;color:#c9c4b8;margin-bottom:3px}
@@ -657,7 +658,7 @@ function gwRenderWar() {
 
   const body = document.getElementById('gwBody');
   body.innerHTML = `
-    <div class="gw-round-label">Guerra ${st.warIndex + 1} de ${st.wars.length}</div>
+    <div class="gw-round-label">${st.mode === 'sobrevivencia' ? `Guerra ${st.warIndex + 1}` : `Guerra ${st.warIndex + 1} de ${st.wars.length}`}</div>
     ${dotsHtml}
     ${gwHistoryHtml()}
     <div class="gw-war-card">
@@ -872,12 +873,10 @@ function gwBuildShareCanvas() {
   const W = 1080, H = 1920; // formato retrato de celular (9:16)
   const displayHistory = gwBuildImageHistory(st.history);
   const rows = displayHistory.length;
-  const historyTop = 520;
+  const historyTop = 460;
   const rowH = 56, rowGap = 12;
   const teamTop = historyTop + 36 + rows * (rowH + rowGap) - rowGap + 24;
   const boxH = 300;
-  const contentH = teamTop + boxH + 140;
-  const yOffset = Math.max(20, (H - contentH) / 2);
 
   const canvas = document.createElement('canvas');
   canvas.width = W; canvas.height = H;
@@ -895,21 +894,21 @@ function gwBuildShareCanvas() {
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, W, H);
 
+  // Moldura dupla: duas linhas concêntricas com a mesma espessura.
   ctx.strokeStyle = 'rgba(201,162,74,0.35)';
   ctx.lineWidth = 4;
   ctx.strokeRect(20, 20, W - 40, H - 40);
+  ctx.strokeRect(34, 34, W - 68, H - 68);
 
-  ctx.save();
-  ctx.translate(0, yOffset);
   ctx.textAlign = 'center';
 
   ctx.fillStyle = gold;
-  ctx.font = '600 28px Montserrat, sans-serif';
-  ctx.fillText('DRAFT BÍBLICO', W / 2, 130);
+  ctx.font = '600 26px Montserrat, sans-serif';
+  ctx.fillText('DRAFT BÍBLICO', W / 2, 88);
 
   ctx.fillStyle = white;
-  ctx.font = '700 72px Montserrat, sans-serif';
-  ctx.fillText('GUERRAS BÍBLICAS', W / 2, 215);
+  ctx.font = '700 66px Montserrat, sans-serif';
+  ctx.fillText('GUERRAS BÍBLICAS', W / 2, 168);
 
   const allWon = st.warsWon === st.wars.length;
   let statusText;
@@ -918,17 +917,17 @@ function gwBuildShareCanvas() {
   } else {
     statusText = allWon ? 'CHEGOU À TERRA PROMETIDA!' : 'CAMPANHA ENCERRADA';
   }
-  ctx.font = '700 36px Montserrat, sans-serif';
-  ctx.fillStyle = (isSurvival ? allWon : allWon) ? gold : white;
-  ctx.fillText(statusText, W / 2, 285);
+  ctx.font = '700 34px Montserrat, sans-serif';
+  ctx.fillStyle = allWon ? gold : white;
+  ctx.fillText(statusText, W / 2, 234);
 
-  ctx.font = '700 110px Montserrat, sans-serif';
+  ctx.font = '700 104px Montserrat, sans-serif';
   ctx.fillStyle = gold;
-  ctx.fillText(isSurvival ? `${st.warsWon}` : `${st.warsWon}/${st.wars.length}`, W / 2, 410);
+  ctx.fillText(isSurvival ? `${st.warsWon}` : `${st.warsWon}/${st.wars.length}`, W / 2, 352);
 
-  ctx.font = '400 30px Montserrat, sans-serif';
+  ctx.font = '400 28px Montserrat, sans-serif';
   ctx.fillStyle = muted;
-  ctx.fillText(isSurvival ? 'guerras vencidas em sequência' : 'guerras vencidas', W / 2, 450);
+  ctx.fillText(isSurvival ? 'guerras vencidas em sequência' : 'guerras vencidas', W / 2, 390);
 
   let y = historyTop;
   ctx.font = '600 22px Montserrat, sans-serif';
@@ -986,25 +985,17 @@ function gwBuildShareCanvas() {
     const isLegendary = gwIsLegendary(card.overall);
     const x = startX + i * (boxW + gap);
 
-    ctx.fillStyle = isLegendary ? 'rgba(201,162,74,0.12)' : 'rgba(255,255,255,0.04)';
+    // Fundo igual para todos — lendário só se distingue pelo contorno dourado, sem preenchimento colorido.
+    ctx.fillStyle = 'rgba(255,255,255,0.04)';
     ctx.strokeStyle = isLegendary ? gold : 'rgba(255,255,255,0.18)';
     ctx.lineWidth = isLegendary ? 3 : 2;
     gwRoundRect(ctx, x, boxY, boxW, boxH, 18);
     ctx.fill();
     ctx.stroke();
 
-    if (isLegendary) {
-      ctx.font = '700 18px Montserrat, sans-serif';
-      ctx.fillStyle = gold;
-      ctx.fillText('★ LENDÁRIO', x + boxW / 2, boxY + 32);
-      ctx.font = '600 16px Montserrat, sans-serif';
-      ctx.fillStyle = muted;
-      gwWrapFillText(ctx, (card.grupo || '').toUpperCase(), x + boxW / 2, boxY + 54, boxW - 30, 20);
-    } else {
-      ctx.font = '600 18px Montserrat, sans-serif';
-      ctx.fillStyle = muted;
-      gwWrapFillText(ctx, (card.grupo || '').toUpperCase(), x + boxW / 2, boxY + 40, boxW - 30, 22);
-    }
+    ctx.font = '600 18px Montserrat, sans-serif';
+    ctx.fillStyle = muted;
+    gwWrapFillText(ctx, (card.grupo || '').toUpperCase(), x + boxW / 2, boxY + 40, boxW - 30, 22);
 
     ctx.font = '50px sans-serif';
     ctx.fillStyle = white;
@@ -1025,11 +1016,10 @@ function gwBuildShareCanvas() {
     }
   });
 
+  // Site sempre travado no canto de baixo, independente da altura do conteúdo acima.
   ctx.font = '600 30px Montserrat, sans-serif';
   ctx.fillStyle = gold;
-  ctx.fillText(GW_SHARE_SITE_URL, W / 2, contentH - 50);
-
-  ctx.restore();
+  ctx.fillText(GW_SHARE_SITE_URL, W / 2, H - 60);
 
   return canvas;
 }
