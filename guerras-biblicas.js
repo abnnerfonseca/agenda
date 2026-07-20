@@ -150,11 +150,14 @@ function gwRarityCls(overall) {
 function gwDraftBadgeHtml(card) {
   return gwIsLegendary(card.overall) ? '<span class="gw-card-rarity lendario">★ Lendário</span>' : '';
 }
-// Selo mostrado nos "cards finais" (resumo do time / resultado final): lendário mantém a
-// estrelinha; os demais mostram o grupo ao qual o personagem pertence.
+// Selo mostrado nos "cards finais" (resumo do time / resultado final): o grupo do
+// personagem sempre aparece; lendários também recebem a estrelinha, além do grupo.
 function gwFinalBadgeHtml(card) {
-  if (gwIsLegendary(card.overall)) return '<span class="gw-card-rarity lendario">★ Lendário</span>';
-  return `<span class="gw-card-group">${gwEscHtml(card.grupo || '')}</span>`;
+  const groupHtml = `<span class="gw-card-group">${gwEscHtml(card.grupo || '')}</span>`;
+  if (gwIsLegendary(card.overall)) {
+    return `<span class="gw-card-rarity lendario">★ Lendário</span>${groupHtml}`;
+  }
+  return groupHtml;
 }
 
 function gwGetBest(key) {
@@ -320,12 +323,21 @@ function gwRenderIntro() {
   body.innerHTML = `
     <div class="gw-eyebrow">Draft Bíblico</div>
     <h2 class="gw-title">Guerras Bíblicas</h2>
-    <p class="gw-desc">Monte seu time sorteando grupos de 3 heróis (general, guerreiro e exército) e depois escolha o modo de jogo: Campanha ou Sobrevivência.</p>
+    <p class="gw-desc">Escolha o modo de jogo e depois monte seu time sorteando grupos de 3 heróis (general, guerreiro e exército).</p>
     <div class="gw-positions-preview">${chips}</div>
     ${bestCampanha > 0 ? `<div class="gw-record">🏅 Recorde Campanha: ${bestCampanha} guerra${bestCampanha === 1 ? '' : 's'} vencida${bestCampanha === 1 ? '' : 's'}</div>` : ''}
     ${bestSobrevivencia > 0 ? `<div class="gw-record">🔥 Recorde Sobrevivência: ${bestSobrevivencia} guerra${bestSobrevivencia === 1 ? '' : 's'} vencida${bestSobrevivencia === 1 ? '' : 's'} em sequência</div>` : ''}
     <div style="height:8px"></div>
-    <button class="gw-btn" onclick="gwStart()">Iniciar Draft</button>
+    <div class="gw-mode-choice">
+      <button class="gw-mode-btn" onclick="gwStart('campanha')">
+        <div class="gw-mode-title">🗺️ Modo Campanha</div>
+        <div class="gw-mode-desc">Enfrente ${GW_WAR_COUNT} guerras sorteadas. Vença todas para chegar à Terra Prometida.</div>
+      </button>
+      <button class="gw-mode-btn" onclick="gwStart('sobrevivencia')">
+        <div class="gw-mode-title">🔥 Modo Sobrevivência</div>
+        <div class="gw-mode-desc">Guerreie sem parar até perder. Vença todas as guerras disponíveis e seja imbatível.</div>
+      </button>
+    </div>
   `;
 }
 
@@ -379,7 +391,7 @@ function gwBuildGroups(personagens) {
   return complete;
 }
 
-async function gwStart() {
+async function gwStart(mode) {
   const body = document.getElementById('gwBody');
   body.innerHTML = '<div class="gw-loading">Convocando os personagens…</div>';
   const data = await gwLoadData();
@@ -398,7 +410,7 @@ async function gwStart() {
     usedGroupIds: new Set(),
     currentGroup: null,
     rerollUsed: false,
-    mode: null,
+    mode: mode || 'campanha',
     wars: [],
     warIndex: 0,
     warsWon: 0,
@@ -587,25 +599,27 @@ function gwTeamCardsHtml(team) {
 
 function gwRenderTeamSummary() {
   const body = document.getElementById('gwBody');
+  const isSurvival = _gwState.mode === 'sobrevivencia';
+  const modeLabel = isSurvival ? '🔥 Modo Sobrevivência' : '🗺️ Modo Campanha';
+  const modeDesc = isSurvival
+    ? 'Guerreie sem parar até perder. Vença todas as guerras disponíveis e seja imbatível.'
+    : `Enfrente ${GW_WAR_COUNT} guerras sorteadas. Vença todas para chegar à Terra Prometida.`;
   body.innerHTML = `
     <div class="gw-eyebrow">Time montado</div>
-    <h2 class="gw-title">Escolha o modo de jogo</h2>
+    <h2 class="gw-title">Pronto para a batalha</h2>
     ${gwTeamCardsHtml(_gwState.team)}
     <div class="gw-mode-choice">
-      <button class="gw-mode-btn" onclick="gwStartCampaign('campanha')">
-        <div class="gw-mode-title">🗺️ Modo Campanha</div>
-        <div class="gw-mode-desc">Enfrente ${GW_WAR_COUNT} guerras sorteadas. Vença todas para chegar à Terra Prometida.</div>
-      </button>
-      <button class="gw-mode-btn" onclick="gwStartCampaign('sobrevivencia')">
-        <div class="gw-mode-title">🔥 Modo Sobrevivência</div>
-        <div class="gw-mode-desc">Guerreie sem parar até perder. Vença todas as guerras disponíveis e seja imbatível.</div>
-      </button>
+      <div class="gw-mode-btn" style="cursor:default;pointer-events:none">
+        <div class="gw-mode-title">${modeLabel}</div>
+        <div class="gw-mode-desc">${modeDesc}</div>
+      </div>
     </div>
+    <button class="gw-btn" onclick="gwStartCampaign()">Começar</button>
   `;
 }
 
-function gwStartCampaign(mode) {
-  _gwState.mode = mode;
+function gwStartCampaign() {
+  const mode = _gwState.mode || 'campanha';
   const pool = _gwCache.guerras;
   const count = mode === 'sobrevivencia' ? pool.length : Math.min(GW_WAR_COUNT, pool.length);
   const wars = gwBuildWeightedWarSequence(pool, count);
@@ -682,7 +696,7 @@ function gwFight() {
 
   if (win) st.warsWon++;
   st.lastBattle = { war, playerPower, enemyPower, diff, win, contributions };
-  st.history.push({ nome: war.nome, win, diff });
+  st.history.push({ nome: war.nome, win, diff, dificuldade: war.dificuldade });
 
   gwRenderBattleSimulation();
 }
@@ -787,9 +801,8 @@ function gwRenderFinal(reachedAll) {
     ${gwHistoryHtml()}
     ${gwTeamCardsHtml(st.team)}
     <div class="gw-actions">
-      <button class="gw-btn" onclick="gwStart()">Jogar novamente</button>
+      <button class="gw-btn" onclick="gwRenderIntro()">Jogar novamente</button>
       <button class="gw-btn gw-btn-secondary" id="gwShareImgBtn" onclick="gwShareImage(this)">📸 Compartilhar como imagem</button>
-      <button class="gw-btn gw-btn-secondary" onclick="gwRenderIntro()">Voltar ao início</button>
     </div>
   `;
 }
@@ -825,11 +838,40 @@ function gwWrapFillText(ctx, text, cx, y, maxWidth, lineHeight) {
   finalLines.forEach((l, i) => ctx.fillText(l, cx, startY + i * lineHeight));
 }
 
+// Quando o histórico é muito grande (modo Sobrevivência), a imagem não lista todas as
+// guerras: mostra as mais difíceis, um resumo "+ N guerras" para o restante, e sempre
+// mantém a última entrada (o fim da sequência) visível.
+const GW_IMAGE_MAX_HISTORY_ROWS = 10;
+function gwBuildImageHistory(history) {
+  if (history.length <= GW_IMAGE_MAX_HISTORY_ROWS) return history.map(h => ({ ...h }));
+
+  const diffRank = { dificil: 3, medio: 2, facil: 1 };
+  const lastEntry = history[history.length - 1];
+  const lastIsLoss = !lastEntry.win;
+  const body = lastIsLoss ? history.slice(0, -1) : history.slice();
+
+  const reservedForLast = lastIsLoss ? 1 : 0;
+  const keepSlots = Math.max(0, GW_IMAGE_MAX_HISTORY_ROWS - 1 - reservedForLast);
+
+  const ranked = body
+    .map((h, i) => ({ ...h, _i: i }))
+    .sort((a, b) => (diffRank[b.dificuldade] || 0) - (diffRank[a.dificuldade] || 0) || a._i - b._i);
+
+  const shown = ranked.slice(0, keepSlots).sort((a, b) => a._i - b._i);
+  const hiddenCount = body.length - shown.length;
+
+  const rowsOut = shown.map(({ _i, ...rest }) => rest);
+  if (hiddenCount > 0) rowsOut.push({ summary: true, count: hiddenCount });
+  if (lastIsLoss) rowsOut.push(lastEntry);
+  return rowsOut;
+}
+
 function gwBuildShareCanvas() {
   const st = _gwState;
   const isSurvival = st.mode === 'sobrevivencia';
   const W = 1080, H = 1920; // formato retrato de celular (9:16)
-  const rows = st.history.length;
+  const displayHistory = gwBuildImageHistory(st.history);
+  const rows = displayHistory.length;
   const historyTop = 520;
   const rowH = 56, rowGap = 12;
   const teamTop = historyTop + 36 + rows * (rowH + rowGap) - rowGap + 24;
@@ -895,7 +937,24 @@ function gwBuildShareCanvas() {
   y += 36;
 
   const rowW = 900, rowX = (W - rowW) / 2;
-  st.history.forEach(h => {
+  displayHistory.forEach(h => {
+    if (h.summary) {
+      ctx.fillStyle = 'rgba(255,255,255,0.04)';
+      ctx.strokeStyle = 'rgba(255,255,255,0.16)';
+      ctx.lineWidth = 2;
+      gwRoundRect(ctx, rowX, y, rowW, rowH, 10);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.textAlign = 'center';
+      ctx.font = '700 22px Montserrat, sans-serif';
+      ctx.fillStyle = muted;
+      ctx.fillText(`+ ${h.count} guerra${h.count === 1 ? '' : 's'} vencida${h.count === 1 ? '' : 's'}`, rowX + rowW / 2, y + rowH / 2 + 8);
+
+      y += rowH + rowGap;
+      return;
+    }
+
     ctx.fillStyle = h.win ? 'rgba(127,210,142,0.08)' : 'rgba(224,140,140,0.08)';
     ctx.strokeStyle = h.win ? 'rgba(127,210,142,0.3)' : 'rgba(224,140,140,0.3)';
     ctx.lineWidth = 2;
@@ -935,9 +994,12 @@ function gwBuildShareCanvas() {
     ctx.stroke();
 
     if (isLegendary) {
-      ctx.font = '700 20px Montserrat, sans-serif';
+      ctx.font = '700 18px Montserrat, sans-serif';
       ctx.fillStyle = gold;
-      ctx.fillText('★ LENDÁRIO', x + boxW / 2, boxY + 44);
+      ctx.fillText('★ LENDÁRIO', x + boxW / 2, boxY + 32);
+      ctx.font = '600 16px Montserrat, sans-serif';
+      ctx.fillStyle = muted;
+      gwWrapFillText(ctx, (card.grupo || '').toUpperCase(), x + boxW / 2, boxY + 54, boxW - 30, 20);
     } else {
       ctx.font = '600 18px Montserrat, sans-serif';
       ctx.fillStyle = muted;
