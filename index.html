@@ -825,7 +825,8 @@ function copyPix(type,btn){
 
 let carIdx=0,carSlides=[];
 function buildCarSlides(){
-  const especiais=DATA.eventos.filter(isEspecial).slice(0,2);
+  const now=new Date();
+  const especiais=DATA.eventos.filter(e=>isEspecial(e)&&e.data).map(e=>({...e,_dt:new Date(e.data+'T'+(e.hora||'00:00'))})).filter(e=>e._dt>now).sort((a,b)=>a._dt-b._dt).slice(0,2);
   const avisos=DATA.avisos.slice(0,2);
   const slides=[];const maxLen=Math.max(especiais.length,avisos.length);
   for(let i=0;i<maxLen;i++){if(i<avisos.length)slides.push({kind:'aviso',data:avisos[i]});if(i<especiais.length)slides.push({kind:'evento',data:especiais[i]});}
