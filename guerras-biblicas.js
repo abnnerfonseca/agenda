@@ -261,6 +261,11 @@ const GW_CSS = `
 .gw-dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.15)}
 .gw-dot.done{background:var(--gold,#c9a24a)}
 .gw-dot.active{background:var(--accent,#7a2e2e);box-shadow:0 0 0 3px rgba(122,46,46,.3)}
+.gw-cards.final .gw-card{overflow:visible}
+.gw-info-btn{position:absolute;top:8px;right:8px;width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.35);color:#f1ece1;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:6;line-height:1;padding:0;font-family:var(--sans,sans-serif)}
+.gw-info-btn:hover,.gw-info-btn.open{background:var(--gold,#c9a24a);border-color:var(--gold,#c9a24a);color:#1c1a17}
+.gw-info-tooltip{display:none;position:absolute;top:26px;left:50%;transform:translateX(-50%);width:min(220px,80vw);background:#1c1a17;border:1px solid rgba(201,162,74,.45);border-radius:8px;padding:10px 12px;font-size:11px;font-weight:400;line-height:1.55;color:#e8e3d8;text-align:left;box-shadow:0 12px 28px rgba(0,0,0,.45);z-index:30;white-space:normal}
+.gw-info-btn:hover .gw-info-tooltip,.gw-info-btn.open .gw-info-tooltip{display:block}
 .gw-streak-label{text-align:center;font-size:12px;color:var(--gold,#c9a24a);font-weight:600;margin-bottom:16px}
 .gw-battle-result{text-align:center;padding:6px 0 14px}
 .gw-battle-emoji{font-size:42px;margin-bottom:8px}
@@ -357,6 +362,7 @@ async function gwLoadData() {
       especialidade: r.especialidade || '',
       fraqueza: r.fraqueza || '',
       grupo: (r.grupo || '').trim(),
+      comentario: r.comentario || '',
     }))
     .filter(c => c.nome && c.categoria && c.grupo);
 
@@ -585,18 +591,36 @@ function gwRerollGroup() {
   }
 }
 
-function gwTeamCardsHtml(team) {
+function gwTeamCardsHtml(team, opts) {
+  const showInfo = !!(opts && opts.showInfo);
   const cards = GW_POSITIONS.map(pos => {
     const c = team[pos];
+    const infoHtml = (showInfo && c.comentario)
+      ? `<button type="button" class="gw-info-btn" onclick="event.stopPropagation();gwToggleInfo(this)" aria-label="Sobre ${gwEscHtml(c.nome)}">?
+          <span class="gw-info-tooltip">${gwEscHtml(c.comentario)}</span>
+        </button>`
+      : '';
     return `<div class="gw-card gw-card-static ${gwRarityCls(c.overall)}">
+      ${infoHtml}
       ${gwFinalBadgeHtml(c)}
       <div class="gw-card-pos">${GW_POSITION_LABEL[pos].emoji} ${GW_POSITION_LABEL[pos].nome}</div>
       <div class="gw-card-name">${gwEscHtml(c.nome)}</div>
       <div class="gw-card-overall">${c.overall}</div>
     </div>`;
   }).join('');
-  return `<div class="gw-cards compact">${cards}</div>`;
+  return `<div class="gw-cards compact${showInfo ? ' final' : ''}">${cards}</div>`;
 }
+
+function gwToggleInfo(btn) {
+  const wasOpen = btn.classList.contains('open');
+  document.querySelectorAll('.gw-info-btn.open').forEach(b => b.classList.remove('open'));
+  if (!wasOpen) btn.classList.add('open');
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.gw-info-btn')) {
+    document.querySelectorAll('.gw-info-btn.open').forEach(b => b.classList.remove('open'));
+  }
+});
 
 function gwRenderTeamSummary() {
   const body = document.getElementById('gwBody');
@@ -654,7 +678,7 @@ function gwRenderWar() {
         const cls = i < st.warIndex ? 'done' : i === st.warIndex ? 'active' : '';
         return `<span class="gw-dot ${cls}"></span>`;
       }).join('')}</div>`
-    : `<div class="gw-streak-label">🔥 Sequência atual: ${st.warsWon} vitória${st.warsWon === 1 ? '' : 's'}</div>`;
+    : '';
 
   const body = document.getElementById('gwBody');
   body.innerHTML = `
@@ -800,7 +824,7 @@ function gwRenderFinal(reachedAll) {
       <p class="gw-final-sub">${sub}</p>
     </div>
     ${gwHistoryHtml()}
-    ${gwTeamCardsHtml(st.team)}
+    ${gwTeamCardsHtml(st.team, { showInfo: true })}
     <div class="gw-actions">
       <button class="gw-btn" onclick="gwRenderIntro()">Jogar novamente</button>
       <button class="gw-btn gw-btn-secondary" id="gwShareImgBtn" onclick="gwShareImage(this)">📸 Compartilhar como imagem</button>
@@ -875,13 +899,7 @@ function gwBuildShareCanvas() {
   const rows = displayHistory.length;
   const rowH = 56, rowGap = 12;
   const boxH = 300;
-
-  // O bloco "histórico + esquadrão" é centralizado no espaço restante da imagem,
-  // em vez de ficar colado logo abaixo do título/placar.
-  const contentTop = 430;   // logo após o placar
-  const contentBottom = 1820; // deixa espaço para o site travado no rodapé
-  const blockHeight = 36 + rows * (rowH + rowGap) - rowGap + 24 + boxH; // label + linhas + gap + equipe
-  const historyTop = contentTop + Math.max(0, (contentBottom - contentTop - blockHeight) / 2);
+  const historyTop = 460; // colado logo abaixo do placar
   const teamTop = historyTop + 36 + rows * (rowH + rowGap) - rowGap + 24;
 
   const canvas = document.createElement('canvas');
