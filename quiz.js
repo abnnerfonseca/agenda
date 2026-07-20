@@ -113,7 +113,7 @@ const QZ_CSS=`
 .qz-intro-desc{font-size:14px;color:var(--ink-soft,#5a5d54);font-weight:300;line-height:1.7;max-width:440px;margin:0 auto 26px}
 .qz-mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px;text-align:left}
 @media(max-width:600px){.qz-mode-grid{grid-template-columns:1fr}}
-.qz-mode-card{border:1px solid var(--line,#e2ddd2);border-radius:10px;padding:22px 20px;display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.qz-mode-card{border:1px solid var(--line,#e2ddd2);border-radius:10px;padding:22px 20px;display:flex;flex-direction:column;gap:12px;align-items:flex-start;height:100%}
 .qz-mode-card-title{font-family:var(--sans,sans-serif);font-weight:700;font-size:16px;color:var(--ink,#1e1e1e)}
 .qz-mode-card-desc{font-size:12px;color:var(--ink-soft,#5a5d54);font-weight:300;line-height:1.6}
 .qz-record-badge{font-size:12px;font-weight:600;color:var(--gold,#a9863a)}
@@ -121,7 +121,7 @@ const QZ_CSS=`
 .qz-ladder-preview{list-style:none;display:flex;flex-direction:column-reverse;gap:6px;max-width:100%;margin:0}
 .qz-ladder-preview li{background:var(--bg,#faf8f4);border:1px solid var(--line,#e2ddd2);border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;color:var(--ink,#1e1e1e)}
 .qz-ladder-preview li:last-child{background:var(--accent,#7a2e2e);color:#fff;border-color:var(--accent,#7a2e2e)}
-.qz-btn-play{background:var(--accent,#7a2e2e);color:#fff;border:none;padding:12px 28px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;cursor:pointer;transition:transform .15s,box-shadow .15s;font-family:var(--sans,sans-serif);align-self:stretch}
+.qz-btn-play{background:var(--accent,#7a2e2e);color:#fff;border:none;padding:12px 28px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;cursor:pointer;transition:transform .15s,box-shadow .15s;font-family:var(--sans,sans-serif);align-self:stretch;margin-top:auto}
 .qz-btn-play:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(0,0,0,.18)}
 .qz-loading,.qz-empty-state{text-align:center;padding:60px 20px;color:var(--ink-soft,#5a5d54);font-size:14px}
 .qz-game{display:grid;grid-template-columns:150px 1fr;gap:28px}
