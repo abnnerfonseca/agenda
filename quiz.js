@@ -159,6 +159,8 @@ const QZ_CSS=`
 .qz-result-title{font-family:var(--sans,sans-serif);font-size:22px;font-weight:700;margin-bottom:10px;color:var(--ink,#1e1e1e)}
 .qz-result-value{font-family:var(--sans,sans-serif);font-size:clamp(32px,6vw,48px);font-weight:700;color:var(--accent,#7a2e2e);margin-bottom:14px}
 .qz-result-msg{font-size:13px;color:var(--ink-soft,#5a5d54);font-weight:300;margin-bottom:26px;max-width:400px;margin-left:auto;margin-right:auto}
+.qz-back-link{background:none;border:none;color:var(--ink-soft,#5a5d54);font-family:var(--sans,sans-serif);font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;margin-bottom:18px;padding:0}
+.qz-back-link:hover{color:var(--accent,#7a2e2e)}
 `;
 
 function qzEnsureDom(){
@@ -176,7 +178,6 @@ function qzEnsureDom(){
 
 function qzRenderIntro(){
   const body=document.getElementById('qzBody');
-  const ladderHtml=QZ_PRIZE_STEPS.slice().reverse().map(s=>`<li>${s.checkpoint?'🛡 ':''}${qzBRL(s.value)}</li>`).join('');
   const best=qzGetBestStreak();
   body.innerHTML=`<div class="qz-intro">
     <div class="qz-intro-eyebrow">Quiz Bíblico</div>
@@ -186,8 +187,7 @@ function qzRenderIntro(){
       <div class="qz-mode-card">
         <div class="qz-mode-card-title">Show do Crentão</div>
         <p class="qz-mode-card-desc">Avance na trilha de pontos. Se errar, você leva os pontos do último estágio de segurança conquistado (🛡).</p>
-        <ul class="qz-ladder-preview">${ladderHtml}</ul>
-        <button class="qz-btn-play" onclick="qzStart('milhao')">Jogar</button>
+        <button class="qz-btn-play" onclick="qzRenderMilhaoPreview()">Jogar</button>
       </div>
       <div class="qz-mode-card">
         <div class="qz-mode-card-title">Modo Sequência</div>
@@ -196,6 +196,19 @@ function qzRenderIntro(){
         <button class="qz-btn-play" onclick="qzStart('full')">Jogar</button>
       </div>
     </div>
+  </div>`;
+}
+
+function qzRenderMilhaoPreview(){
+  const body=document.getElementById('qzBody');
+  const ladderHtml=QZ_PRIZE_STEPS.slice().reverse().map(s=>`<li>${s.checkpoint?'🛡 ':''}${qzBRL(s.value)}</li>`).join('');
+  body.innerHTML=`<div class="qz-intro">
+    <button class="qz-back-link" onclick="qzRenderIntro()">← Voltar</button>
+    <div class="qz-intro-eyebrow">Show do Crentão</div>
+    <h2 class="qz-intro-title">A trilha de pontos</h2>
+    <p class="qz-intro-desc">Suba a escada respondendo corretamente. Os estágios com 🛡 são pontos de segurança: se errar depois deles, você não perde tudo.</p>
+    <ul class="qz-ladder-preview">${ladderHtml}</ul>
+    <button class="qz-btn-play" style="margin-top:22px" onclick="qzStart('milhao')">Começar</button>
   </div>`;
 }
 
