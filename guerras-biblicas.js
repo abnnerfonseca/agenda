@@ -195,10 +195,10 @@ function gwMemoryDotsHtml(queue) {
 const GW_CSS = `
 .gw-overlay{position:fixed;inset:0;background:rgba(10,9,7,.85);backdrop-filter:blur(6px);z-index:500;display:none;align-items:center;justify-content:center;padding:20px}
 .gw-overlay.open{display:flex}
-.gw-box{background:linear-gradient(180deg,#1c1a17,#100f0d);width:100%;max-width:800px;max-height:94vh;overflow-y:auto;border-radius:14px;position:relative;box-shadow:0 24px 70px rgba(0,0,0,.55);border:1px solid rgba(169,134,58,.25)}
+.gw-box{background:linear-gradient(180deg,#1c1a17,#100f0d);width:100%;max-width:800px;height:min(720px,88vh);display:flex;flex-direction:column;border-radius:14px;position:relative;box-shadow:0 24px 70px rgba(0,0,0,.55);border:1px solid rgba(169,134,58,.25)}
 .gw-close{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;border:none;background:rgba(255,255,255,.08);color:#f1ece1;font-size:16px;cursor:pointer;z-index:5}
 .gw-close:hover{background:rgba(255,255,255,.16)}
-.gw-body{padding:36px 30px 28px;color:#f1ece1;font-family:var(--sans,sans-serif)}
+.gw-body{padding:36px 30px 28px;color:#f1ece1;font-family:var(--sans,sans-serif);flex:1 1 auto;min-height:0;overflow-y:auto;display:flex;flex-direction:column;justify-content:center}
 @media(max-width:600px){.gw-body{padding:44px 16px 20px}}
 .gw-eyebrow{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold,#c9a24a);font-weight:600;margin-bottom:10px;text-align:center}
 .gw-title{font-size:clamp(24px,4vw,36px);font-weight:700;margin-bottom:12px;text-align:center;color:#fff}
@@ -260,14 +260,14 @@ const GW_CSS = `
 @keyframes gwArmyEnemy{from{width:44%}to{width:59%}}
 @keyframes gwClash{from{left:43%}to{left:59%}}
 .gw-war-comentario{font-size:12px;color:#c9c4b8;font-weight:300;font-style:italic;line-height:1.6;max-width:460px;margin:0 auto 16px}
-.gw-team-progress{margin-top:16px;border-top:1px solid rgba(255,255,255,.1);padding-top:12px}
+.gw-team-progress{margin:16px 0 22px;border-top:1px solid rgba(255,255,255,.1);padding-top:12px}
 .gw-team-progress-label{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:#c9c4b8;text-align:center;margin-bottom:8px}
 .gw-tp-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
-.gw-tp-chip{border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:8px 12px;min-width:100px;text-align:center;background:rgba(255,255,255,.03)}
+.gw-tp-chip{border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:8px 10px;width:108px;box-sizing:border-box;text-align:center;background:rgba(255,255,255,.03);display:flex;flex-direction:column;align-items:center}
 .gw-tp-chip.empty{opacity:.4;border-style:dashed}
 .gw-tp-chip .emoji{font-size:16px;display:block;margin-bottom:3px}
 .gw-tp-chip .pos{font-size:9px;text-transform:uppercase;letter-spacing:.05em;color:#c9c4b8;margin-bottom:2px}
-.gw-tp-chip .name{font-size:12px;font-weight:700;color:#fff}
+.gw-tp-chip .name{font-size:12px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .gw-tp-chip .over{font-size:11px;color:var(--gold,#c9a24a);font-weight:700;margin-top:2px}
 .gw-tp-chip .gw-memory-dots{margin-top:5px;justify-content:center}
 .gw-history{margin:14px 0}
@@ -374,7 +374,7 @@ function gwRenderIntro() {
       </button>
       <button class="gw-mode-btn" onclick="gwStart('sobrevivencia')">
         <div class="gw-mode-title">🔥 Modo Sobrevivência</div>
-        <div class="gw-mode-desc">Guerreie sem parar até perder. Vença todas as guerras disponíveis e seja imbatível. O General acumula memória de combate a cada 2 vitórias no mesmo tipo de batalha.</div>
+        <div class="gw-mode-desc">Guerreie sem parar até perder. Vença todas as guerras disponíveis e seja imbatível.</div>
       </button>
     </div>
   `;
@@ -689,7 +689,7 @@ function gwRenderTeamSummary() {
   const isSurvival = _gwState.mode === 'sobrevivencia';
   const modeLabel = isSurvival ? '🔥 Modo Sobrevivência' : '🗺️ Modo Campanha';
   const modeDesc = isSurvival
-    ? 'Guerreie sem parar até perder. Vença todas as guerras disponíveis e seja imbatível. O General acumula memória de combate a cada 2 vitórias no mesmo tipo de batalha.'
+    ? 'Guerreie sem parar até perder. Vença todas as guerras disponíveis e seja imbatível.'
     : `Enfrente ${GW_WAR_COUNT} guerras sorteadas. Vença todas para chegar à Terra Prometida.`;
   body.innerHTML = `
     <div class="gw-eyebrow">Time montado</div>
@@ -870,8 +870,8 @@ function gwRenderBattleResult() {
     : 'Ver resultado final';
 
   let memoryMsgHtml = '';
-  if (b.memoryUsed) memoryMsgHtml += `<div class="gw-memory-msg">🧠 O General usou a memória de <b>${gwEscHtml(b.memoryUsed.label)}</b> nesta batalha!</div>`;
-  if (b.memoryGained) memoryMsgHtml += `<div class="gw-memory-msg gained">🧠 O General guardou uma nova memória: <b>${gwEscHtml(b.memoryGained.label)}</b>!</div>`;
+  if (b.memoryUsed) memoryMsgHtml += `<div class="gw-memory-msg">🧠 O General usou a experiência de <b>${gwEscHtml(b.memoryUsed.label)}</b> nesta batalha!</div>`;
+  if (b.memoryGained) memoryMsgHtml += `<div class="gw-memory-msg gained">🧠 O General aprendeu um novo tipo de batalha: <b>${gwEscHtml(b.memoryGained.label)}</b>!</div>`;
 
   const body = document.getElementById('gwBody');
   body.innerHTML = `
