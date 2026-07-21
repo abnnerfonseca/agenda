@@ -21,10 +21,8 @@ const GW_RANDOM_JITTER_PCT = 0.07;
 const GW_BATTLE_SIM_MIN_MS = 2000;
 const GW_BATTLE_SIM_MAX_MS = 3000;
 
-// Peso de dificuldade "dificil" nas primeiras rodadas (0 = índice da guerra, ou seja,
-// guerra 1 e guerra 2). A partir da guerra 3 (índice 2) o peso volta ao normal.
 const GW_HARD_EARLY_ROUND_WEIGHT = 0.2;
-const GW_HARD_EARLY_ROUNDS = 2; // quantidade de rodadas iniciais com peso reduzido
+const GW_HARD_EARLY_ROUNDS = 2;
 
 const GW_LEGENDARY_THRESHOLD = 90;
 
@@ -32,6 +30,10 @@ const GW_BEST_KEY = 'gwBestGuerrasVencidas';
 const GW_BEST_SURVIVAL_KEY = 'gwBestGuerrasSobrevivencia';
 
 const GW_SHARE_SITE_URL = 'adbelembarueri.com.br/#mais';
+
+const GW_MEMORY_SLOTS = 3;
+const GW_MEMORY_WINS_TO_LEARN = 2;
+const GW_MEMORY_COLORS = ['#c9a24a', '#7fd28e', '#e08c8c', '#8ab4e0', '#c98ae0', '#e0c98a', '#8ae0d0', '#e08ac9'];
 
 const GW_NARRATIVE = {
   vitoriaMeio: [
@@ -111,8 +113,6 @@ function gwShuffle(arr) {
 }
 function gwPick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 
-// Sorteia uma sequência de guerras sem repetição, dando menos peso a guerras
-// "dificil" nas primeiras GW_HARD_EARLY_ROUNDS rodadas (não é impossível, só menos provável).
 function gwBuildWeightedWarSequence(pool, count) {
   const remaining = pool.slice();
   const seq = [];
@@ -138,7 +138,6 @@ function gwBuildWeightedWarSequence(pool, count) {
   return seq;
 }
 
-// Apenas "Lendário" (90+) é uma classificação especial. Os demais não recebem selo.
 function gwIsLegendary(overall) {
   return overall >= GW_LEGENDARY_THRESHOLD;
 }
@@ -146,12 +145,9 @@ function gwRarityCls(overall) {
   return gwIsLegendary(overall) ? 'lendario' : 'normal';
 }
 
-// Selo mostrado nos cards de draft (rolando ou escolhendo grupo): só aparece para lendários.
 function gwDraftBadgeHtml(card) {
   return gwIsLegendary(card.overall) ? '<span class="gw-card-rarity lendario">★ Lendário</span>' : '<span class="gw-card-rarity"></span>';
 }
-// Selo mostrado nos "cards finais" (resumo do time / resultado final): o grupo do
-// personagem sempre aparece; lendários também recebem a estrelinha, além do grupo.
 function gwFinalBadgeHtml(card) {
   const groupHtml = `<span class="gw-card-group">${gwEscHtml(card.grupo || '')}</span>`;
   if (gwIsLegendary(card.overall)) {
@@ -168,6 +164,32 @@ function gwSaveBest(key, n) {
   const best = gwGetBest(key);
   if (n > best) { localStorage.setItem(key, String(n)); return true; }
   return false;
+}
+
+function gwMemoryTypeKey(warType) {
+  const k = gwStrip(warType);
+  return k || null;
+}
+function gwMemoryColorForKey(key) {
+  let hash = 0;
+  for (let i = 0; i < key.length; i++) hash = (hash * 31 + key.charCodeAt(i)) >>> 0;
+  return GW_MEMORY_COLORS[hash % GW_MEMORY_COLORS.length];
+}
+function gwNewGeneralMemory() {
+  return { counts: {}, queue: [] };
+}
+function gwMemoryDotsHtml(queue) {
+  const dots = [];
+  for (let i = 0; i < GW_MEMORY_SLOTS; i++) {
+    const item = queue[i];
+    if (item) {
+      const color = gwMemoryColorForKey(item.key);
+      dots.push(`<span class="gw-memory-dot filled" style="background:${color}" title="${gwEscHtml(item.label)}"></span>`);
+    } else {
+      dots.push('<span class="gw-memory-dot"></span>');
+    }
+  }
+  return `<div class="gw-memory-dots">${dots.join('')}</div>`;
 }
 
 const GW_CSS = `
@@ -247,6 +269,7 @@ const GW_CSS = `
 .gw-tp-chip .pos{font-size:9px;text-transform:uppercase;letter-spacing:.05em;color:#c9c4b8;margin-bottom:2px}
 .gw-tp-chip .name{font-size:12px;font-weight:700;color:#fff}
 .gw-tp-chip .over{font-size:11px;color:var(--gold,#c9a24a);font-weight:700;margin-top:2px}
+.gw-tp-chip .gw-memory-dots{margin-top:5px;justify-content:center}
 .gw-history{margin:14px 0}
 .gw-history-label{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:#c9c4b8;text-align:center;margin-bottom:8px}
 .gw-history-list{display:flex;flex-direction:column;gap:5px;max-width:420px;margin:0 auto;max-height:180px;overflow-y:auto}
@@ -289,6 +312,15 @@ const GW_CSS = `
 .gw-final-sub{font-size:12px;color:#c9c4b8;font-weight:300;margin-bottom:14px}
 .gw-final-newrecord{font-size:12px;font-weight:700;color:var(--gold,#c9a24a);margin-bottom:8px}
 .gw-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:6px}
+.gw-memory-block{text-align:center;margin-bottom:16px}
+.gw-memory-label{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:#c9c4b8;margin-bottom:6px}
+.gw-memory-dots{display:flex;justify-content:center;gap:7px}
+.gw-memory-dot{width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,.06);border:1px dashed rgba(255,255,255,.28);box-sizing:border-box}
+.gw-memory-dot.filled{border-style:solid;border-color:transparent}
+.gw-memory-ready{font-size:12px;color:var(--gold,#c9a24a);font-weight:700;text-align:center;margin-bottom:10px}
+.gw-memory-msg{font-size:12px;color:#c9c4b8;font-weight:300;margin-bottom:4px}
+.gw-memory-msg.gained{color:var(--gold,#c9a24a);font-weight:600}
+.gw-card-memory{margin-top:6px}
 `;
 
 let _gwCache = null;
@@ -298,12 +330,13 @@ let _gwState = {
   usedGroupIds: new Set(),
   currentGroup: null,
   rerollUsed: false,
-  mode: null, // 'campanha' | 'sobrevivencia'
+  mode: null,
   wars: [],
   warIndex: 0,
   warsWon: 0,
   lastBattle: null,
   history: [],
+  generalMemory: gwNewGeneralMemory(),
 };
 
 let _gwRollTimer = null;
@@ -341,7 +374,7 @@ function gwRenderIntro() {
       </button>
       <button class="gw-mode-btn" onclick="gwStart('sobrevivencia')">
         <div class="gw-mode-title">🔥 Modo Sobrevivência</div>
-        <div class="gw-mode-desc">Guerreie sem parar até perder. Vença todas as guerras disponíveis e seja imbatível.</div>
+        <div class="gw-mode-desc">Guerreie sem parar até perder. Vença todas as guerras disponíveis e seja imbatível. O General acumula memória de combate a cada 2 vitórias no mesmo tipo de batalha.</div>
       </button>
     </div>
   `;
@@ -423,6 +456,7 @@ async function gwStart(mode) {
     warsWon: 0,
     lastBattle: null,
     history: [],
+    generalMemory: gwNewGeneralMemory(),
   };
 
   gwRenderDraftRound();
@@ -461,6 +495,30 @@ function gwTeamProgressHtml() {
   }).join('');
   return `<div class="gw-team-progress">
     <div class="gw-team-progress-label">Seu time até agora</div>
+    <div class="gw-tp-row">${chips}</div>
+  </div>`;
+}
+
+// Resumo compacto do esquadrão já montado, usado durante as guerras (antes de lutar e no
+// resultado de cada batalha) — assim a pessoa sempre sabe quem está no time, e o General
+// mostra as bolinhas de memória acumuladas (Modo Sobrevivência).
+function gwMiniTeamHtml() {
+  const st = _gwState;
+  const isSurvival = st.mode === 'sobrevivencia';
+  const chips = GW_POSITIONS.map(p => {
+    const c = st.team[p];
+    if (!c) return '';
+    const memHtml = (p === 'general' && isSurvival) ? gwMemoryDotsHtml(st.generalMemory.queue) : '';
+    return `<div class="gw-tp-chip">
+      <span class="emoji">${GW_POSITION_LABEL[p].emoji}</span>
+      <div class="pos">${GW_POSITION_LABEL[p].nome}</div>
+      <div class="name">${gwEscHtml(c.nome)}</div>
+      <div class="over">${c.overall}</div>
+      ${memHtml}
+    </div>`;
+  }).join('');
+  return `<div class="gw-team-progress">
+    <div class="gw-team-progress-label">Seu esquadrão</div>
     <div class="gw-tp-row">${chips}</div>
   </div>`;
 }
@@ -558,7 +616,7 @@ function gwRenderDraftCards(group, roundNum) {
     <div class="gw-group-label">Grupo sorteado: <b>${gwEscHtml(group.id)}</b></div>
     <div class="gw-cards">${cardsHtml}</div>
     <div class="gw-reroll-wrap">
-      ${canReroll ? `<button class="gw-btn gw-btn-secondary" onclick="gwRerollGroup()">🎲 Sortear outro grupo (1x por partida)</button>` : ''}
+      ${canReroll ? `<button class="gw-btn gw-btn-secondary" onclick="gwRerollGroup()">🎲 Sortear outro grupo (1x por rodada)</button>` : ''}
     </div>
     ${gwTeamProgressHtml()}
   `;
@@ -572,6 +630,7 @@ function gwPickCard(pos) {
   _gwState.team[pos] = card;
   _gwState.usedGroupIds.add(group.id);
   _gwState.currentGroup = null;
+  _gwState.rerollUsed = false;
   gwRenderDraftRound();
 }
 
@@ -593,6 +652,7 @@ function gwRerollGroup() {
 
 function gwTeamCardsHtml(team, opts) {
   const showInfo = !!(opts && opts.showInfo);
+  const memoryQueue = opts && opts.memoryQueue;
   const cards = GW_POSITIONS.map(pos => {
     const c = team[pos];
     const infoHtml = (showInfo && c.comentario)
@@ -600,12 +660,14 @@ function gwTeamCardsHtml(team, opts) {
           <span class="gw-info-tooltip">${gwEscHtml(c.comentario)}</span>
         </button>`
       : '';
+    const memoryHtml = (pos === 'general' && memoryQueue) ? `<div class="gw-card-memory">${gwMemoryDotsHtml(memoryQueue)}</div>` : '';
     return `<div class="gw-card gw-card-static ${gwRarityCls(c.overall)}">
       ${infoHtml}
       ${gwFinalBadgeHtml(c)}
       <div class="gw-card-pos">${GW_POSITION_LABEL[pos].emoji} ${GW_POSITION_LABEL[pos].nome}</div>
       <div class="gw-card-name">${gwEscHtml(c.nome)}</div>
       <div class="gw-card-overall">${c.overall}</div>
+      ${memoryHtml}
     </div>`;
   }).join('');
   return `<div class="gw-cards compact${showInfo ? ' final' : ''}">${cards}</div>`;
@@ -627,7 +689,7 @@ function gwRenderTeamSummary() {
   const isSurvival = _gwState.mode === 'sobrevivencia';
   const modeLabel = isSurvival ? '🔥 Modo Sobrevivência' : '🗺️ Modo Campanha';
   const modeDesc = isSurvival
-    ? 'Guerreie sem parar até perder. Vença todas as guerras disponíveis e seja imbatível.'
+    ? 'Guerreie sem parar até perder. Vença todas as guerras disponíveis e seja imbatível. O General acumula memória de combate a cada 2 vitórias no mesmo tipo de batalha.'
     : `Enfrente ${GW_WAR_COUNT} guerras sorteadas. Vença todas para chegar à Terra Prometida.`;
   body.innerHTML = `
     <div class="gw-eyebrow">Time montado</div>
@@ -652,6 +714,7 @@ function gwStartCampaign() {
   _gwState.warIndex = 0;
   _gwState.warsWon = 0;
   _gwState.history = [];
+  _gwState.generalMemory = gwNewGeneralMemory();
   gwRenderWar();
 }
 
@@ -672,6 +735,7 @@ function gwRenderWar() {
   const war = st.wars[st.warIndex];
   if (!war) { gwRenderFinal(true); return; }
 
+  const isSurvival = st.mode === 'sobrevivencia';
   const showDots = st.wars.length <= 12;
   const dotsHtml = showDots
     ? `<div class="gw-progress-dots">${st.wars.map((w, i) => {
@@ -679,6 +743,13 @@ function gwRenderWar() {
         return `<span class="gw-dot ${cls}"></span>`;
       }).join('')}</div>`
     : '';
+
+  let memoryReadyHtml = '';
+  if (isSurvival) {
+    const key = gwMemoryTypeKey(war.tipo_de_batalha);
+    const ready = key && st.generalMemory.queue.some(q => q.key === key);
+    if (ready) memoryReadyHtml = '<div class="gw-memory-ready">🧠 Vantagem do General pronta para uso nesta guerra!</div>';
+  }
 
   const body = document.getElementById('gwBody');
   body.innerHTML = `
@@ -693,6 +764,8 @@ function gwRenderWar() {
       </div>
     </div>
     ${war.comentario ? `<p class="gw-war-comentario">${gwEscHtml(war.comentario)}</p>` : ''}
+    ${memoryReadyHtml}
+    ${gwMiniTeamHtml()}
     <button class="gw-btn" onclick="gwFight()">⚔️ Lutar</button>
   `;
 }
@@ -707,8 +780,26 @@ function gwCardContribution(card, war) {
 function gwFight() {
   const st = _gwState;
   const war = st.wars[st.warIndex];
+  const isSurvival = st.mode === 'sobrevivencia';
 
-  const contributions = GW_POSITIONS.map(p => gwCardContribution(st.team[p], war));
+  let memoryUsed = null;
+  if (isSurvival) {
+    const key = gwMemoryTypeKey(war.tipo_de_batalha);
+    if (key) {
+      const idx = st.generalMemory.queue.findIndex(q => q.key === key);
+      if (idx !== -1) {
+        memoryUsed = st.generalMemory.queue[idx];
+        st.generalMemory.queue.splice(idx, 1);
+      }
+    }
+  }
+
+  const contributions = GW_POSITIONS.map(p => {
+    const card = st.team[p];
+    let val = gwCardContribution(card, war);
+    if (p === 'general' && memoryUsed) val += card.overall * GW_SPECIALTY_BONUS_PCT;
+    return val;
+  });
   const basePower = contributions.reduce((a, b) => a + b, 0);
   const playerJitter = 1 + (Math.random() * 2 - 1) * GW_RANDOM_JITTER_PCT;
   const playerPower = Math.round(basePower * playerJitter);
@@ -719,8 +810,30 @@ function gwFight() {
   const win = playerPower > enemyPower;
   const diff = playerPower - enemyPower;
 
-  if (win) st.warsWon++;
-  st.lastBattle = { war, playerPower, enemyPower, diff, win, contributions };
+  let memoryGained = null;
+  if (win) {
+    st.warsWon++;
+    if (isSurvival) {
+      const key = gwMemoryTypeKey(war.tipo_de_batalha);
+      if (key) {
+        const mem = st.generalMemory;
+        const alreadyQueued = mem.queue.some(q => q.key === key);
+        if (!alreadyQueued) {
+          if (!mem.counts[key]) mem.counts[key] = { count: 0, label: war.tipo_de_batalha };
+          mem.counts[key].count++;
+          if (mem.counts[key].count >= GW_MEMORY_WINS_TO_LEARN) {
+            const learned = { key, label: war.tipo_de_batalha };
+            mem.queue.push(learned);
+            if (mem.queue.length > GW_MEMORY_SLOTS) mem.queue.shift();
+            delete mem.counts[key];
+            memoryGained = learned;
+          }
+        }
+      }
+    }
+  }
+
+  st.lastBattle = { war, playerPower, enemyPower, diff, win, contributions, memoryUsed, memoryGained };
   st.history.push({ nome: war.nome, win, diff, dificuldade: war.dificuldade });
 
   gwRenderBattleSimulation();
@@ -756,6 +869,10 @@ function gwRenderBattleResult() {
     ? (isLastWar ? 'Ver resultado final' : 'Próxima guerra')
     : 'Ver resultado final';
 
+  let memoryMsgHtml = '';
+  if (b.memoryUsed) memoryMsgHtml += `<div class="gw-memory-msg">🧠 O General usou a memória de <b>${gwEscHtml(b.memoryUsed.label)}</b> nesta batalha!</div>`;
+  if (b.memoryGained) memoryMsgHtml += `<div class="gw-memory-msg gained">🧠 O General guardou uma nova memória: <b>${gwEscHtml(b.memoryGained.label)}</b>!</div>`;
+
   const body = document.getElementById('gwBody');
   body.innerHTML = `
     <div class="gw-battle-result">
@@ -764,6 +881,7 @@ function gwRenderBattleResult() {
       <div class="gw-battle-title ${b.win ? 'win' : 'lose'}">${b.win ? 'Vitória!' : 'Derrota'}</div>
       <div class="gw-battle-diff">Diferença de poder: <b>${b.diff > 0 ? '+' : ''}${b.diff}</b></div>
       <p class="gw-battle-narr">${narrText}</p>
+      ${memoryMsgHtml}
       <div class="gw-power-bars">
         <div class="gw-power-row">
           <span class="lbl">Seu time</span>
@@ -776,6 +894,7 @@ function gwRenderBattleResult() {
           <span class="gw-power-val">${b.enemyPower}</span>
         </div>
       </div>
+      ${gwMiniTeamHtml()}
       <button class="gw-btn" onclick="gwAfterBattle()">${nextLabel}</button>
     </div>
   `;
@@ -824,7 +943,7 @@ function gwRenderFinal(reachedAll) {
       <p class="gw-final-sub">${sub}</p>
     </div>
     ${gwHistoryHtml()}
-    ${gwTeamCardsHtml(st.team, { showInfo: true })}
+    ${gwTeamCardsHtml(st.team, { showInfo: true, memoryQueue: isSurvival ? st.generalMemory.queue : null })}
     <div class="gw-actions">
       <button class="gw-btn" onclick="gwRenderIntro()">Jogar novamente</button>
       <button class="gw-btn gw-btn-secondary" id="gwShareImgBtn" onclick="gwShareImage(this)">📸 Compartilhar como imagem</button>
@@ -863,9 +982,6 @@ function gwWrapFillText(ctx, text, cx, y, maxWidth, lineHeight) {
   finalLines.forEach((l, i) => ctx.fillText(l, cx, startY + i * lineHeight));
 }
 
-// Quando o histórico é muito grande (modo Sobrevivência), a imagem não lista todas as
-// guerras: mostra as mais difíceis, um resumo "+ N guerras" para o restante, e sempre
-// mantém a última entrada (o fim da sequência) visível.
 const GW_IMAGE_MAX_HISTORY_ROWS = 10;
 function gwBuildImageHistory(history) {
   if (history.length <= GW_IMAGE_MAX_HISTORY_ROWS) return history.map(h => ({ ...h }));
@@ -894,12 +1010,12 @@ function gwBuildImageHistory(history) {
 function gwBuildShareCanvas() {
   const st = _gwState;
   const isSurvival = st.mode === 'sobrevivencia';
-  const W = 1080, H = 1920; // formato retrato de celular (9:16)
+  const W = 1080, H = 1920;
   const displayHistory = gwBuildImageHistory(st.history);
   const rows = displayHistory.length;
   const rowH = 56, rowGap = 12;
   const boxH = 300;
-  const historyTop = 460; // colado logo abaixo do placar
+  const historyTop = 460;
   const teamTop = historyTop + 36 + rows * (rowH + rowGap) - rowGap + 24;
 
   const canvas = document.createElement('canvas');
@@ -918,7 +1034,6 @@ function gwBuildShareCanvas() {
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, W, H);
 
-  // Moldura dupla: duas linhas concêntricas com a mesma espessura.
   ctx.strokeStyle = 'rgba(201,162,74,0.35)';
   ctx.lineWidth = 4;
   ctx.strokeRect(20, 20, W - 40, H - 40);
@@ -1009,7 +1124,6 @@ function gwBuildShareCanvas() {
     const isLegendary = gwIsLegendary(card.overall);
     const x = startX + i * (boxW + gap);
 
-    // Fundo igual para todos — lendário só se distingue pelo contorno dourado, sem preenchimento colorido.
     ctx.fillStyle = 'rgba(255,255,255,0.04)';
     ctx.strokeStyle = isLegendary ? gold : 'rgba(255,255,255,0.18)';
     ctx.lineWidth = isLegendary ? 3 : 2;
@@ -1040,7 +1154,6 @@ function gwBuildShareCanvas() {
     }
   });
 
-  // Site sempre travado no canto de baixo, independente da altura do conteúdo acima.
   ctx.font = '600 30px Montserrat, sans-serif';
   ctx.fillStyle = gold;
   ctx.fillText(GW_SHARE_SITE_URL, W / 2, H - 60);
