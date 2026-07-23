@@ -1,4 +1,4 @@
-/* Guerras Bíblicas: draft + campanha/sobrevivência bíblica, dados via Google Sheets (TSV).
+/* Guerras Bíblicas: draft + campanha/sobrevivência/online bíblica, dados via Google Sheets (TSV).
    Inclua este arquivo no site e chame window.abrirGuerrasBiblicas() para abrir. */
 
 const GW_SHEET_PERSONAGENS_URL =
@@ -321,6 +321,24 @@ const GW_CSS = `
 .gw-memory-msg{font-size:12px;color:#c9c4b8;font-weight:300;margin-bottom:4px}
 .gw-memory-msg.gained{color:var(--gold,#c9a24a);font-weight:600}
 .gw-card-memory{margin-top:6px}
+.gw-input{width:100%;max-width:320px;display:block;margin:0 auto 14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.18);border-radius:10px;padding:12px 14px;color:#f1ece1;font-family:var(--sans,sans-serif);font-size:14px;text-align:center;box-sizing:border-box}
+.gw-input:focus{outline:none;border-color:var(--gold,#c9a24a)}
+.gw-input.code{text-transform:uppercase;letter-spacing:.3em;font-weight:700;font-size:18px}
+.gw-room-code{font-size:38px;font-weight:800;letter-spacing:.18em;color:var(--gold,#c9a24a);text-align:center;margin:10px 0 6px;font-family:var(--sans,sans-serif)}
+.gw-room-code-label{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#c9c4b8;text-align:center;margin-bottom:4px}
+.gw-online-status{font-size:13px;color:#c9c4b8;text-align:center;margin:14px 0;font-weight:300}
+.gw-spinner{width:26px;height:26px;border-radius:50%;border:3px solid rgba(255,255,255,.15);border-top-color:var(--gold,#c9a24a);margin:0 auto 14px;animation:gwSpin .8s linear infinite}
+@keyframes gwSpin{to{transform:rotate(360deg)}}
+.gw-vs-row{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:18px}
+.gw-vs-name{font-size:15px;font-weight:700;color:#fff;text-align:center;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gw-vs-badge{font-size:11px;color:var(--gold,#c9a24a);font-weight:700}
+.gw-score-row{display:flex;align-items:center;justify-content:center;gap:22px;margin-bottom:18px}
+.gw-score-side{text-align:center}
+.gw-score-num{font-size:40px;font-weight:800;color:var(--gold,#c9a24a);line-height:1}
+.gw-score-name{font-size:11px;color:#c9c4b8;margin-top:4px;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gw-injury-card{border:1px solid rgba(224,140,140,.35);background:rgba(224,140,140,.06);border-radius:12px;padding:16px 18px;text-align:center;margin-bottom:18px}
+.gw-injury-card b{color:#fff}
+.gw-online-disconnected{color:#e08c8c;font-weight:700;text-align:center;margin-bottom:14px}
 `;
 
 let _gwCache = null;
@@ -375,6 +393,10 @@ function gwRenderIntro() {
       <button class="gw-mode-btn" onclick="gwStart('sobrevivencia')">
         <div class="gw-mode-title">🔥 Modo Sobrevivência</div>
         <div class="gw-mode-desc">Guerreie sem parar até perder. Vença todas as guerras disponíveis e seja imbatível.</div>
+      </button>
+      <button class="gw-mode-btn" onclick="gwOnlineRenderNickname()">
+        <div class="gw-mode-title">🌐 Modo Online</div>
+        <div class="gw-mode-desc">Desafie outro jogador em tempo real. Melhor de 5 guerras, vence quem fizer 3 vitórias.</div>
       </button>
     </div>
   `;
@@ -499,9 +521,6 @@ function gwTeamProgressHtml() {
   </div>`;
 }
 
-// Resumo compacto do esquadrão já montado, usado durante as guerras (antes de lutar e no
-// resultado de cada batalha) — assim a pessoa sempre sabe quem está no time, e o General
-// mostra as bolinhas de memória acumuladas (Modo Sobrevivência).
 function gwMiniTeamHtml() {
   const st = _gwState;
   const isSurvival = st.mode === 'sobrevivencia';
@@ -1218,6 +1237,639 @@ async function gwShareImage(btnEl) {
   }
 }
 
+/* ============================== MODO ONLINE ============================== */
+
+const GW_FIREBASE_CONFIG = {
+  apiKey: "AIzaSyCMUYuQuxo9mijMtAUTm-QvuDHFOmMMX5Q",
+  authDomain: "guerras-biblicas.firebaseapp.com",
+  databaseURL: "https://guerras-biblicas-default-rtdb.firebaseio.com",
+  projectId: "guerras-biblicas",
+  storageBucket: "guerras-biblicas.firebasestorage.app",
+  messagingSenderId: "367452222555",
+  appId: "1:367452222555:web:59beff2a6e424387717b7e",
+};
+
+const GW_ONLINE_TIPOS = ['campo aberto', 'cerco', 'emboscada', 'duelo', 'defesa', 'inspiração', 'guerrilha'];
+const GW_ONLINE_ROUNDS = 5;
+const GW_ONLINE_WINS_NEEDED = 3;
+const GW_ROOM_CODE_ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789'; // sem 0/O/1/I/L
+
+let _gwFbLoadPromise = null;
+function gwOnlineLoadSdk() {
+  if (_gwFbLoadPromise) return _gwFbLoadPromise;
+  _gwFbLoadPromise = new Promise((resolve, reject) => {
+    const s1 = document.createElement('script');
+    s1.src = 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js';
+    s1.onload = () => {
+      const s2 = document.createElement('script');
+      s2.src = 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js';
+      s2.onload = () => {
+        try {
+          if (!firebase.apps.length) firebase.initializeApp(GW_FIREBASE_CONFIG);
+          resolve(firebase.database());
+        } catch (e) { reject(e); }
+      };
+      s2.onerror = () => reject(new Error('Falha ao carregar Firebase Database SDK'));
+      document.head.appendChild(s2);
+    };
+    s1.onerror = () => reject(new Error('Falha ao carregar Firebase App SDK'));
+    document.head.appendChild(s1);
+  });
+  return _gwFbLoadPromise;
+}
+
+function gwOnlineGenCode() {
+  let out = '';
+  for (let i = 0; i < 6; i++) out += GW_ROOM_CODE_ALPHABET[Math.floor(Math.random() * GW_ROOM_CODE_ALPHABET.length)];
+  return out;
+}
+
+function gwOnlineFreshState() {
+  return {
+    db: null, codigo: null, meuSlot: null, apelido: '',
+    roomRef: null, listener: null,
+    team: {}, usedGroupIds: new Set(), currentGroup: null, rerollUsed: false,
+    injuryHandled: {}, _roundIdxShown: -1, _pendingInjuryGroup: null,
+  };
+}
+let _gwOnline = gwOnlineFreshState();
+
+function gwOnlineRenderNickname() {
+  const body = document.getElementById('gwBody');
+  body.innerHTML = `
+    <div class="gw-eyebrow">Modo Online</div>
+    <h2 class="gw-title">Como podemos te chamar?</h2>
+    <input id="gwNickInput" class="gw-input" maxlength="16" placeholder="Seu apelido" />
+    <div class="gw-mode-choice">
+      <button class="gw-btn" onclick="gwOnlineCreateRoom()">Criar Sala</button>
+      <button class="gw-btn gw-btn-secondary" onclick="gwOnlineRenderJoin()">Entrar em Sala</button>
+      <button class="gw-btn gw-btn-secondary" onclick="gwRenderIntro()">Voltar</button>
+    </div>
+  `;
+  const input = document.getElementById('gwNickInput');
+  if (input) input.focus();
+}
+
+function gwOnlineGetNick() {
+  const el = document.getElementById('gwNickInput');
+  const v = el ? el.value.trim().slice(0, 16) : '';
+  return v || 'Jogador';
+}
+
+function gwOnlineRenderJoin() {
+  const nick = gwOnlineGetNick();
+  const body = document.getElementById('gwBody');
+  body.innerHTML = `
+    <div class="gw-eyebrow">Modo Online</div>
+    <h2 class="gw-title">Entrar em Sala</h2>
+    <input id="gwNickInput" class="gw-input" maxlength="16" placeholder="Seu apelido" value="${gwEscHtml(nick)}" />
+    <input id="gwCodeInput" class="gw-input code" maxlength="6" placeholder="CÓDIGO" />
+    <div class="gw-mode-choice">
+      <button class="gw-btn" onclick="gwOnlineJoinRoom()">Entrar</button>
+      <button class="gw-btn gw-btn-secondary" onclick="gwOnlineRenderNickname()">Voltar</button>
+    </div>
+  `;
+}
+
+async function gwOnlineCreateRoom() {
+  const apelido = gwOnlineGetNick();
+  const body = document.getElementById('gwBody');
+  body.innerHTML = '<div class="gw-spinner"></div><div class="gw-online-status">Criando sala…</div>';
+  try {
+    if (!_gwCache) await gwLoadData();
+    const db = await gwOnlineLoadSdk();
+    const codigo = gwOnlineGenCode();
+    const tiposRodadas = [];
+    for (let i = 0; i < GW_ONLINE_ROUNDS; i++) tiposRodadas.push(gwPick(GW_ONLINE_TIPOS));
+
+    await db.ref('salas/' + codigo).set({
+      criadaEm: firebase.database.ServerValue.TIMESTAMP,
+      status: 'aguardando',
+      placar: { p1: 0, p2: 0 },
+      rodadaAtual: 0,
+      tiposRodadas,
+      jogadores: { p1: { apelido, pronto: false, time: null, conectado: true } },
+      rodadas: {},
+    });
+
+    _gwOnline = gwOnlineFreshState();
+    _gwOnline.db = db;
+    _gwOnline.codigo = codigo;
+    _gwOnline.meuSlot = 'p1';
+    _gwOnline.apelido = apelido;
+    db.ref(`salas/${codigo}/jogadores/p1`).onDisconnect().update({ conectado: false });
+    gwOnlineAttachListener();
+  } catch (e) {
+    console.error('[Guerras Bíblicas Online] erro ao criar sala:', e);
+    body.innerHTML = '<div class="gw-empty">Não foi possível conectar ao servidor online. Verifique sua internet e tente novamente.</div><button class="gw-btn gw-btn-secondary" onclick="gwRenderIntro()">Voltar</button>';
+  }
+}
+
+async function gwOnlineJoinRoom() {
+  const apelido = gwOnlineGetNick();
+  const codeEl = document.getElementById('gwCodeInput');
+  const codigo = codeEl ? codeEl.value.trim().toUpperCase() : '';
+  if (!codigo) return;
+  const body = document.getElementById('gwBody');
+  body.innerHTML = '<div class="gw-spinner"></div><div class="gw-online-status">Entrando na sala…</div>';
+  try {
+    if (!_gwCache) await gwLoadData();
+    const db = await gwOnlineLoadSdk();
+    const snap = await db.ref('salas/' + codigo).once('value');
+    if (!snap.exists()) {
+      body.innerHTML = '<div class="gw-empty">Sala não encontrada. Confira o código.</div><button class="gw-btn gw-btn-secondary" onclick="gwOnlineRenderJoin()">Tentar de novo</button>';
+      return;
+    }
+    const sala = snap.val();
+    if (sala.jogadores && sala.jogadores.p2) {
+      body.innerHTML = '<div class="gw-empty">Essa sala já está cheia.</div><button class="gw-btn gw-btn-secondary" onclick="gwOnlineRenderJoin()">Tentar outro código</button>';
+      return;
+    }
+
+    await db.ref(`salas/${codigo}/jogadores/p2`).set({ apelido, pronto: false, time: null, conectado: true });
+    await db.ref(`salas/${codigo}/status`).set('draft');
+
+    _gwOnline = gwOnlineFreshState();
+    _gwOnline.db = db;
+    _gwOnline.codigo = codigo;
+    _gwOnline.meuSlot = 'p2';
+    _gwOnline.apelido = apelido;
+    db.ref(`salas/${codigo}/jogadores/p2`).onDisconnect().update({ conectado: false });
+    gwOnlineAttachListener();
+  } catch (e) {
+    console.error('[Guerras Bíblicas Online] erro ao entrar na sala:', e);
+    body.innerHTML = '<div class="gw-empty">Não foi possível conectar ao servidor online. Verifique sua internet e tente novamente.</div><button class="gw-btn gw-btn-secondary" onclick="gwRenderIntro()">Voltar</button>';
+  }
+}
+
+function gwOnlineAttachListener() {
+  const { db, codigo } = _gwOnline;
+  const ref = db.ref('salas/' + codigo);
+  _gwOnline.roomRef = ref;
+  const cb = snap => {
+    const sala = snap.val();
+    if (!sala) { gwOnlineRenderError('Essa sala foi encerrada.'); return; }
+    gwOnlineRenderFromState(sala);
+  };
+  ref.on('value', cb);
+  _gwOnline.listener = cb;
+}
+
+function gwOnlineLeaveRoom() {
+  if (_gwOnline.roomRef && _gwOnline.listener) {
+    _gwOnline.roomRef.off('value', _gwOnline.listener);
+  }
+  if (_gwOnline.db && _gwOnline.codigo && _gwOnline.meuSlot) {
+    _gwOnline.db.ref(`salas/${_gwOnline.codigo}/jogadores/${_gwOnline.meuSlot}`).update({ conectado: false }).catch(() => {});
+  }
+  _gwOnline = gwOnlineFreshState();
+}
+
+function gwOnlineCancelRoom() {
+  if (_gwOnline.db && _gwOnline.codigo) {
+    _gwOnline.db.ref('salas/' + _gwOnline.codigo).remove().catch(() => {});
+  }
+  gwOnlineLeaveRoom();
+  gwRenderIntro();
+}
+
+function gwOnlineRenderError(msg) {
+  gwOnlineLeaveRoom();
+  const body = document.getElementById('gwBody');
+  if (body) body.innerHTML = `<div class="gw-empty">${gwEscHtml(msg)}</div><button class="gw-btn gw-btn-secondary" onclick="gwRenderIntro()">Voltar</button>`;
+}
+
+function gwOnlineRenderFromState(sala) {
+  const meuSlot = _gwOnline.meuSlot;
+  if (!meuSlot) return;
+  const oponenteSlot = meuSlot === 'p1' ? 'p2' : 'p1';
+  const eu = sala.jogadores && sala.jogadores[meuSlot];
+  const oponente = sala.jogadores && sala.jogadores[oponenteSlot];
+
+  if (sala.status !== 'finalizada' && oponente && oponente.conectado === false) {
+    gwOnlineRenderDisconnected(oponente);
+    return;
+  }
+
+  if (sala.status === 'aguardando') { gwOnlineRenderWaiting(); return; }
+
+  if (sala.status === 'draft') {
+    if (!eu || !eu.pronto) {
+      gwOnlineRenderDraft();
+    } else {
+      gwOnlineRenderWaitingOpponentDraft(oponente);
+      if (oponente && oponente.pronto && meuSlot === 'p1') {
+        _gwOnline.db.ref(`salas/${_gwOnline.codigo}/status`).set('batalha').catch(() => {});
+      }
+    }
+    return;
+  }
+
+  if (sala.status === 'batalha') { gwOnlineRenderBattlePhase(sala); return; }
+  if (sala.status === 'finalizada') { gwOnlineRenderFinal(sala); }
+}
+
+function gwOnlineRenderWaiting() {
+  const body = document.getElementById('gwBody');
+  body.innerHTML = `
+    <div class="gw-eyebrow">Modo Online</div>
+    <h2 class="gw-title">Aguardando oponente…</h2>
+    <div class="gw-room-code-label">Compartilhe este código</div>
+    <div class="gw-room-code">${_gwOnline.codigo}</div>
+    <div class="gw-spinner"></div>
+    <p class="gw-desc">Assim que alguém entrar com esse código, o duelo começa automaticamente.</p>
+    <button class="gw-btn gw-btn-secondary" onclick="gwOnlineCancelRoom()">Cancelar</button>
+  `;
+}
+
+function gwOnlineRenderWaitingOpponentDraft(oponente) {
+  const body = document.getElementById('gwBody');
+  body.innerHTML = `
+    <div class="gw-eyebrow">Time confirmado</div>
+    <h2 class="gw-title">Aguardando ${gwEscHtml(oponente ? oponente.apelido : 'oponente')}…</h2>
+    ${gwTeamCardsHtml(_gwOnline.team)}
+    <div class="gw-spinner"></div>
+  `;
+}
+
+function gwOnlineEmptyPositions() {
+  return GW_POSITIONS.filter(p => !_gwOnline.team[p]);
+}
+function gwOnlineDrawGroup(excludeId) {
+  const empty = gwOnlineEmptyPositions();
+  const pool = _gwCache.groups.filter(g =>
+    !_gwOnline.usedGroupIds.has(g.id) && g.id !== excludeId && empty.some(pos => g[pos])
+  );
+  return pool.length ? gwPick(pool) : null;
+}
+function gwOnlineDrawAnyGroupWithPos(pos) {
+  const pool = _gwCache.groups.filter(g => g[pos]);
+  return pool.length ? gwPick(pool) : null;
+}
+
+function gwOnlineRenderDraft() {
+  const empty = gwOnlineEmptyPositions();
+  if (!empty.length) { gwOnlineRenderReadyCheck(); return; }
+
+  let isNewDraw = false;
+  if (!_gwOnline.currentGroup) {
+    _gwOnline.currentGroup = gwOnlineDrawGroup();
+    isNewDraw = true;
+  }
+  const group = _gwOnline.currentGroup;
+  if (!group) {
+    document.getElementById('gwBody').innerHTML = '<div class="gw-empty">Não há mais grupos disponíveis para completar o time.</div>';
+    return;
+  }
+  const roundNum = GW_POSITIONS.length - empty.length + 1;
+  if (isNewDraw) gwOnlinePlayDraftRoll(group, roundNum);
+  else gwOnlineRenderDraftCards(group, roundNum);
+}
+
+function gwOnlinePlayDraftRoll(group, roundNum) {
+  const body = document.getElementById('gwBody');
+  const pool = _gwCache.personagens;
+  const cardsHtml = GW_POSITIONS.map((pos, i) => {
+    const c = gwPick(pool);
+    return `<div class="gw-card gw-card-rolling ${gwRarityCls(c.overall)}" id="gwOnlineRollCard-${i}">
+      ${gwDraftBadgeHtml(c)}
+      <div class="gw-card-pos">${GW_POSITION_LABEL[pos].emoji} ${GW_POSITION_LABEL[pos].nome}</div>
+      <div class="gw-card-name">${gwEscHtml(c.nome)}</div>
+      <div class="gw-card-overall">${c.overall}</div>
+    </div>`;
+  }).join('');
+  body.innerHTML = `
+    <div class="gw-round-label">Seu time (privado) — Rodada ${roundNum} de ${GW_POSITIONS.length}</div>
+    <div class="gw-group-label">🎲 Sorteando grupo…</div>
+    <div class="gw-cards">${cardsHtml}</div>
+  `;
+  if (_gwRollTimer) clearInterval(_gwRollTimer);
+  const duration = 1200 + Math.random() * 300;
+  const startedAt = Date.now();
+  _gwRollTimer = setInterval(() => {
+    GW_POSITIONS.forEach((pos, i) => {
+      const el = document.getElementById(`gwOnlineRollCard-${i}`);
+      if (!el) return;
+      const c = gwPick(pool);
+      el.className = `gw-card gw-card-rolling ${gwRarityCls(c.overall)}`;
+      el.innerHTML = `${gwDraftBadgeHtml(c)}
+        <div class="gw-card-pos">${GW_POSITION_LABEL[pos].emoji} ${GW_POSITION_LABEL[pos].nome}</div>
+        <div class="gw-card-name">${gwEscHtml(c.nome)}</div>
+        <div class="gw-card-overall">${c.overall}</div>`;
+    });
+    if (Date.now() - startedAt >= duration) {
+      clearInterval(_gwRollTimer);
+      _gwRollTimer = null;
+      gwOnlineRenderDraftCards(group, roundNum);
+    }
+  }, 80);
+}
+
+function gwOnlineRenderDraftCards(group, roundNum) {
+  const cardsHtml = GW_POSITIONS.map(pos => {
+    const card = group[pos];
+    const filled = !!_gwOnline.team[pos];
+    const clickAttr = filled ? '' : ` onclick="gwOnlinePickCard('${pos}')"`;
+    return `<div class="gw-card ${gwRarityCls(card.overall)}${filled ? ' disabled' : ''}"${clickAttr}>
+      ${filled ? '<div class="gw-card-filled-badge">Posição já preenchida</div>' : ''}
+      ${gwDraftBadgeHtml(card)}
+      <div class="gw-card-pos">${GW_POSITION_LABEL[pos].emoji} ${GW_POSITION_LABEL[pos].nome}</div>
+      <div class="gw-card-name">${gwEscHtml(card.nome)}</div>
+      <div class="gw-card-overall">${card.overall}</div>
+    </div>`;
+  }).join('');
+  const canReroll = !_gwOnline.rerollUsed;
+  document.getElementById('gwBody').innerHTML = `
+    <div class="gw-round-label">Seu time (privado) — Rodada ${roundNum} de ${GW_POSITIONS.length}</div>
+    <div class="gw-group-label">Grupo sorteado: <b>${gwEscHtml(group.id)}</b></div>
+    <div class="gw-cards">${cardsHtml}</div>
+    <div class="gw-reroll-wrap">
+      ${canReroll ? `<button class="gw-btn gw-btn-secondary" onclick="gwOnlineRerollGroup()">🎲 Sortear outro grupo (1x por rodada)</button>` : ''}
+    </div>
+  `;
+}
+
+function gwOnlinePickCard(pos) {
+  const group = _gwOnline.currentGroup;
+  if (!group) return;
+  const card = group[pos];
+  if (!card || _gwOnline.team[pos]) return;
+  _gwOnline.team[pos] = card;
+  _gwOnline.usedGroupIds.add(group.id);
+  _gwOnline.currentGroup = null;
+  _gwOnline.rerollUsed = false;
+  gwOnlineRenderDraft();
+}
+
+function gwOnlineRerollGroup() {
+  if (_gwOnline.rerollUsed || !_gwOnline.currentGroup) return;
+  _gwOnline.rerollUsed = true;
+  const prevId = _gwOnline.currentGroup.id;
+  const empty = gwOnlineEmptyPositions();
+  const roundNum = GW_POSITIONS.length - empty.length + 1;
+  const newGroup = gwOnlineDrawGroup(prevId);
+  _gwOnline.currentGroup = newGroup;
+  if (newGroup) gwOnlinePlayDraftRoll(newGroup, roundNum);
+  else { _gwOnline.currentGroup = null; gwOnlineRenderDraft(); }
+}
+
+function gwOnlineRenderReadyCheck() {
+  const body = document.getElementById('gwBody');
+  body.innerHTML = `
+    <div class="gw-eyebrow">Time pronto</div>
+    <h2 class="gw-title">Seu esquadrão está montado</h2>
+    ${gwTeamCardsHtml(_gwOnline.team)}
+    <p class="gw-desc">O time do seu oponente fica em segredo até os dois confirmarem.</p>
+    <button class="gw-btn" onclick="gwOnlineConfirmReady()">Confirmar e aguardar oponente</button>
+  `;
+}
+async function gwOnlineConfirmReady() {
+  const { db, codigo, meuSlot, team } = _gwOnline;
+  await db.ref(`salas/${codigo}/jogadores/${meuSlot}`).update({ time: team, pronto: true });
+}
+
+function gwOnlineScoreRowHtml(sala) {
+  const meuSlot = _gwOnline.meuSlot;
+  const opSlot = meuSlot === 'p1' ? 'p2' : 'p1';
+  const meuNome = sala.jogadores[meuSlot] ? sala.jogadores[meuSlot].apelido : 'Você';
+  const opNome = sala.jogadores[opSlot] ? sala.jogadores[opSlot].apelido : 'Oponente';
+  return `<div class="gw-score-row">
+    <div class="gw-score-side"><div class="gw-score-num">${sala.placar[meuSlot] || 0}</div><div class="gw-score-name">${gwEscHtml(meuNome)}</div></div>
+    <div class="gw-vs-badge">×</div>
+    <div class="gw-score-side"><div class="gw-score-num">${sala.placar[opSlot] || 0}</div><div class="gw-score-name">${gwEscHtml(opNome)}</div></div>
+  </div>`;
+}
+
+function gwOnlineMyPowerForRound(sala) {
+  const idx = sala.rodadaAtual;
+  const tipo = sala.tiposRodadas[idx];
+  const fakeWar = { tipo_de_batalha: tipo };
+  const contributions = GW_POSITIONS.map(p => gwCardContribution(_gwOnline.team[p], fakeWar));
+  const basePower = contributions.reduce((a, b) => a + b, 0);
+  const jitter = 1 + (Math.random() * 2 - 1) * GW_RANDOM_JITTER_PCT;
+  return Math.round(basePower * jitter);
+}
+
+function gwOnlineComputeRoundWinner(sala, rodada) {
+  const p1 = rodada.poderP1, p2 = rodada.poderP2;
+  if (p1 !== p2) return p1 > p2 ? 'p1' : 'p2';
+  const g1 = (sala.jogadores.p1.time && sala.jogadores.p1.time.general && sala.jogadores.p1.time.general.overall) || 0;
+  const g2 = (sala.jogadores.p2.time && sala.jogadores.p2.time.general && sala.jogadores.p2.time.general.overall) || 0;
+  if (g1 !== g2) return g1 > g2 ? 'p1' : 'p2';
+  return Math.random() < 0.5 ? 'p1' : 'p2';
+}
+
+async function gwOnlineFinalizeRound(sala, idx, vencedor) {
+  const db = _gwOnline.db, codigo = _gwOnline.codigo;
+  const novoPlacarVencedor = (sala.placar[vencedor] || 0) + 1;
+  const perdedor = vencedor === 'p1' ? 'p2' : 'p1';
+  const updates = {};
+  updates[`rodadas/${idx}/vencedor`] = vencedor;
+  updates[`placar/${vencedor}`] = novoPlacarVencedor;
+
+  const matchAcabou = novoPlacarVencedor >= GW_ONLINE_WINS_NEEDED || idx + 1 >= sala.tiposRodadas.length;
+  if (matchAcabou) {
+    updates['status'] = 'finalizada';
+    updates['vencedorPartida'] = novoPlacarVencedor >= GW_ONLINE_WINS_NEEDED
+      ? vencedor
+      : (novoPlacarVencedor >= (sala.placar[perdedor] || 0) ? vencedor : perdedor);
+  }
+  await db.ref('salas/' + codigo).update(updates);
+}
+
+async function gwOnlineRenderBattlePhase(sala) {
+  const idx = sala.rodadaAtual;
+  const meuSlot = _gwOnline.meuSlot;
+  const oponenteSlot = meuSlot === 'p1' ? 'p2' : 'p1';
+  const rodada = (sala.rodadas && sala.rodadas[idx]) || {};
+  const meuPoderKey = meuSlot === 'p1' ? 'poderP1' : 'poderP2';
+  const opPoderKey = oponenteSlot === 'p1' ? 'poderP1' : 'poderP2';
+
+  if (rodada[meuPoderKey] === undefined || rodada[meuPoderKey] === null) {
+    const poder = gwOnlineMyPowerForRound(sala);
+    await _gwOnline.db.ref(`salas/${_gwOnline.codigo}/rodadas/${idx}/${meuPoderKey}`).set(poder);
+    gwOnlineRenderBattleWaiting(sala);
+    return;
+  }
+
+  if (rodada[opPoderKey] === undefined || rodada[opPoderKey] === null) {
+    gwOnlineRenderBattleWaiting(sala);
+    return;
+  }
+
+  if (!rodada.vencedor) {
+    const vencedor = gwOnlineComputeRoundWinner(sala, rodada);
+    await gwOnlineFinalizeRound(sala, idx, vencedor);
+    return;
+  }
+
+  const bothReady = rodada.prontoP1 && rodada.prontoP2;
+  if (bothReady) {
+    if (meuSlot === 'p1') {
+      _gwOnline.db.ref(`salas/${_gwOnline.codigo}/rodadaAtual`).set(idx + 1).catch(() => {});
+    }
+    document.getElementById('gwBody').innerHTML = '<div class="gw-spinner"></div><div class="gw-online-status">Preparando próxima rodada…</div>';
+    return;
+  }
+
+  gwOnlineRenderRoundResult(sala, rodada);
+}
+
+function gwOnlineRenderBattleWaiting(sala) {
+  const idx = sala.rodadaAtual;
+  const tipo = sala.tiposRodadas[idx];
+  document.getElementById('gwBody').innerHTML = `
+    <div class="gw-round-label">Rodada ${idx + 1} de ${sala.tiposRodadas.length}</div>
+    ${gwOnlineScoreRowHtml(sala)}
+    <div class="gw-war-card"><div class="gw-war-name">Tipo de batalha: ${gwEscHtml(tipo)}</div></div>
+    <div class="gw-battle-sim-label">⚔️ Calculando o poder dos exércitos…</div>
+    <div class="gw-spinner"></div>
+  `;
+}
+
+function gwOnlineWeakestPos() {
+  const team = _gwOnline.team;
+  let weakest = GW_POSITIONS[0];
+  GW_POSITIONS.forEach(p => { if (team[p].overall < team[weakest].overall) weakest = p; });
+  return weakest;
+}
+
+function gwOnlineRenderRoundResult(sala, rodada) {
+  const idx = sala.rodadaAtual;
+  _gwOnline._roundIdxShown = idx;
+  const meuSlot = _gwOnline.meuSlot;
+  const euVenci = rodada.vencedor === meuSlot;
+  const tipo = sala.tiposRodadas[idx];
+  const meuPoder = meuSlot === 'p1' ? rodada.poderP1 : rodada.poderP2;
+  const opPoder = meuSlot === 'p1' ? rodada.poderP2 : rodada.poderP1;
+  const maxPower = Math.max(meuPoder, opPoder, 1);
+  const handled = _gwOnline.injuryHandled[idx];
+
+  document.getElementById('gwBody').innerHTML = `
+    <div class="gw-battle-result">
+      <div class="gw-battle-emoji">${euVenci ? '🏆' : '💀'}</div>
+      <div class="gw-battle-title-war">Tipo de batalha: ${gwEscHtml(tipo)}</div>
+      <div class="gw-battle-title ${euVenci ? 'win' : 'lose'}">${euVenci ? 'Vitória!' : 'Derrota'}</div>
+      <div class="gw-power-bars">
+        <div class="gw-power-row">
+          <span class="lbl">Você</span>
+          <div class="gw-power-track"><div class="gw-power-fill player" style="width:${Math.round(meuPoder / maxPower * 100)}%"></div></div>
+          <span class="gw-power-val">${meuPoder}</span>
+        </div>
+        <div class="gw-power-row">
+          <span class="lbl">Oponente</span>
+          <div class="gw-power-track"><div class="gw-power-fill enemy" style="width:${Math.round(opPoder / maxPower * 100)}%"></div></div>
+          <span class="gw-power-val">${opPoder}</span>
+        </div>
+      </div>
+      ${gwOnlineScoreRowHtml(sala)}
+      ${(!euVenci && !handled) ? gwOnlineInjuryPromptHtml(idx) : ''}
+      ${(euVenci || handled) ? `<button class="gw-btn" onclick="gwOnlineContinueAfterRound()">Continuar</button>` : ''}
+    </div>
+  `;
+}
+
+function gwOnlineInjuryPromptHtml(idx) {
+  const pos = gwOnlineWeakestPos();
+  const card = _gwOnline.team[pos];
+  return `<div class="gw-injury-card">
+    <b>${gwEscHtml(card.nome)}</b> se feriu durante a batalha!<br>Substituir ou deixá-lo se recuperar?
+    <div class="gw-actions" style="margin-top:12px">
+      <button class="gw-btn" onclick="gwOnlineStartInjuryReroll('${pos}', ${idx})">🔁 Substituir</button>
+      <button class="gw-btn gw-btn-secondary" onclick="gwOnlineDeclineInjury(${idx})">🩹 Deixar se recuperar</button>
+    </div>
+  </div>`;
+}
+
+function gwOnlineDeclineInjury(idx) {
+  _gwOnline.injuryHandled[idx] = true;
+  gwOnlineContinueAfterRound();
+}
+
+function gwOnlineStartInjuryReroll(pos, idx) {
+  _gwOnline.injuryHandled[idx] = true;
+  const group = gwOnlineDrawAnyGroupWithPos(pos);
+  if (!group || !group[pos]) { gwOnlineContinueAfterRound(); return; }
+  gwOnlineRenderInjuryGroup(group, pos);
+}
+
+function gwOnlineRenderInjuryGroup(group, pos) {
+  const card = group[pos];
+  _gwOnline._pendingInjuryGroup = group;
+  document.getElementById('gwBody').innerHTML = `
+    <div class="gw-eyebrow">Substituição</div>
+    <h2 class="gw-title">Novo ${GW_POSITION_LABEL[pos].nome} disponível</h2>
+    <div class="gw-cards" style="max-width:260px;margin-left:auto;margin-right:auto">
+      <div class="gw-card ${gwRarityCls(card.overall)}" onclick="gwOnlineConfirmInjurySwap('${pos}')">
+        ${gwDraftBadgeHtml(card)}
+        <div class="gw-card-pos">${GW_POSITION_LABEL[pos].emoji} ${GW_POSITION_LABEL[pos].nome}</div>
+        <div class="gw-card-name">${gwEscHtml(card.nome)}</div>
+        <div class="gw-card-overall">${card.overall}</div>
+      </div>
+    </div>
+    <div class="gw-actions">
+      <button class="gw-btn gw-btn-secondary" onclick="gwOnlineContinueAfterRound()">Manter ${gwEscHtml(_gwOnline.team[pos].nome)}</button>
+    </div>
+  `;
+}
+
+function gwOnlineConfirmInjurySwap(pos) {
+  const group = _gwOnline._pendingInjuryGroup;
+  if (!group) return;
+  _gwOnline.team[pos] = group[pos];
+  _gwOnline._pendingInjuryGroup = null;
+  gwOnlineContinueAfterRound();
+}
+
+async function gwOnlineContinueAfterRound() {
+  const { db, codigo, meuSlot } = _gwOnline;
+  const idx = _gwOnline._roundIdxShown;
+  const updates = {};
+  updates[`rodadas/${idx}/pronto${meuSlot === 'p1' ? 'P1' : 'P2'}`] = true;
+  await db.ref(`salas/${codigo}`).update(updates);
+  await db.ref(`salas/${codigo}/jogadores/${meuSlot}/time`).set(_gwOnline.team);
+  document.getElementById('gwBody').innerHTML = '<div class="gw-spinner"></div><div class="gw-online-status">Aguardando o oponente…</div>';
+}
+
+function gwOnlineRenderFinal(sala) {
+  const meuSlot = _gwOnline.meuSlot;
+  const opSlot = meuSlot === 'p1' ? 'p2' : 'p1';
+  const euGanhei = sala.vencedorPartida === meuSlot;
+  document.getElementById('gwBody').innerHTML = `
+    <div class="gw-eyebrow">Guerras Bíblicas — Online</div>
+    <div class="gw-final">
+      <div class="gw-final-emoji">${euGanhei ? '🏆' : '📖'}</div>
+      <div class="gw-final-title">${euGanhei ? 'Vitória!' : 'Derrota'}</div>
+      <p class="gw-final-sub">Placar final: ${sala.placar[meuSlot] || 0} × ${sala.placar[opSlot] || 0}</p>
+    </div>
+    ${gwOnlineScoreRowHtml(sala)}
+    ${gwTeamCardsHtml(_gwOnline.team, { showInfo: true })}
+    <div class="gw-actions">
+      <button class="gw-btn" onclick="gwOnlineRematch()">Jogar novamente</button>
+      <button class="gw-btn gw-btn-secondary" onclick="gwRenderIntro()">Voltar ao início</button>
+    </div>
+  `;
+}
+
+function gwOnlineRematch() {
+  gwOnlineLeaveRoom();
+  gwOnlineRenderNickname();
+}
+
+function gwOnlineRenderDisconnected(oponente) {
+  document.getElementById('gwBody').innerHTML = `
+    <div class="gw-eyebrow">Modo Online</div>
+    <div class="gw-online-disconnected">⚠️ ${gwEscHtml(oponente && oponente.apelido ? oponente.apelido : 'O oponente')} desconectou.</div>
+    <p class="gw-desc">A partida não pode continuar sem os dois jogadores.</p>
+    <div class="gw-actions">
+      <button class="gw-btn" onclick="gwOnlineRenderNickname()">Nova partida</button>
+      <button class="gw-btn gw-btn-secondary" onclick="gwRenderIntro()">Voltar ao início</button>
+    </div>
+  `;
+}
+
+/* ============================================================================ */
+
 function gwOpen() {
   gwEnsureDom();
   document.getElementById('gwOverlay').classList.add('open');
@@ -1229,6 +1881,7 @@ function gwClose() {
   if (ov) ov.classList.remove('open');
   document.body.style.overflow = '';
   if (_gwRollTimer) { clearInterval(_gwRollTimer); _gwRollTimer = null; }
+  gwOnlineLeaveRoom();
 }
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
