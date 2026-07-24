@@ -339,6 +339,9 @@ const GW_CSS = `
 .gw-injury-card{border:1px solid rgba(224,140,140,.35);background:rgba(224,140,140,.06);border-radius:12px;padding:16px 18px;text-align:center;margin-bottom:18px}
 .gw-injury-card b{color:#fff}
 .gw-online-disconnected{color:#e08c8c;font-weight:700;text-align:center;margin-bottom:14px}
+.gw-online-teams{display:flex;flex-direction:column;gap:6px;margin-bottom:6px}
+.gw-online-team-label{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold,#c9a24a);font-weight:700;text-align:center;margin-bottom:6px}
+.gw-online-team-col .gw-cards{margin-bottom:14px}
 `;
 
 let _gwCache = null;
@@ -1459,7 +1462,7 @@ function gwOnlineRenderFromState(sala) {
       gwOnlineRenderDraft();
     } else {
       gwOnlineRenderWaitingOpponentDraft(oponente);
-      if (oponente && oponente.pronto && meuSlot === 'p1') {
+      if (oponente && oponente.pronto) {
         _gwOnline.db.ref(`salas/${_gwOnline.codigo}/status`).set('batalha').catch(() => {});
       }
     }
@@ -1641,6 +1644,22 @@ function gwOnlineScoreRowHtml(sala) {
   </div>`;
 }
 
+// Mostra os dois esquadrões (o meu e o do oponente) lado a lado durante toda a batalha —
+// assim dá pra lembrar quem está no time na hora de decidir uma substituição.
+function gwOnlineBothTeamsHtml(sala) {
+  const meuSlot = _gwOnline.meuSlot;
+  const opSlot = meuSlot === 'p1' ? 'p2' : 'p1';
+  const opJogador = sala.jogadores && sala.jogadores[opSlot];
+  const opTime = opJogador && opJogador.time;
+  let html = '<div class="gw-online-teams">';
+  html += `<div class="gw-online-team-col"><div class="gw-online-team-label">Seu time</div>${gwTeamCardsHtml(_gwOnline.team)}</div>`;
+  if (opTime) {
+    html += `<div class="gw-online-team-col"><div class="gw-online-team-label">${gwEscHtml(opJogador.apelido || 'Oponente')}</div>${gwTeamCardsHtml(opTime)}</div>`;
+  }
+  html += '</div>';
+  return html;
+}
+
 function gwOnlineMyPowerForRound(sala) {
   const idx = sala.rodadaAtual;
   const tipo = sala.tiposRodadas[idx];
@@ -1704,16 +1723,46 @@ async function gwOnlineRenderBattlePhase(sala) {
     return;
   }
 
+  // Roda a animação de batalha (barras se chocando) uma única vez por rodada, localmente
+  // em cada cliente. Enquanto ela roda, ignora re-renders vindos do listener pra não cortar.
+  if (_gwOnline._simShownForRound !== idx) {
+    _gwOnline._simShownForRound = idx;
+    _gwOnline._simInProgress = true;
+    gwOnlineRenderBattleSimAnimation(sala, rodada);
+    return;
+  }
+  if (_gwOnline._simInProgress) return;
+
   const bothReady = rodada.prontoP1 && rodada.prontoP2;
   if (bothReady) {
-    if (meuSlot === 'p1') {
-      _gwOnline.db.ref(`salas/${_gwOnline.codigo}/rodadaAtual`).set(idx + 1).catch(() => {});
-    }
+    _gwOnline.db.ref(`salas/${_gwOnline.codigo}/rodadaAtual`).set(idx + 1).catch(() => {});
     document.getElementById('gwBody').innerHTML = '<div class="gw-spinner"></div><div class="gw-online-status">Preparando próxima rodada…</div>';
     return;
   }
 
   gwOnlineRenderRoundResult(sala, rodada);
+}
+
+function gwOnlineRenderBattleSimAnimation(sala, rodada) {
+  const idx = sala.rodadaAtual;
+  document.getElementById('gwBody').innerHTML = `
+    <div class="gw-round-label">Rodada ${idx + 1} de ${sala.tiposRodadas.length}</div>
+    ${gwOnlineScoreRowHtml(sala)}
+    ${gwOnlineBothTeamsHtml(sala)}
+    <div class="gw-battle-sim">
+      <div class="gw-battle-sim-label">⚔️ Simulando a batalha…</div>
+      <div class="gw-battlefield">
+        <div class="gw-army player"></div>
+        <div class="gw-clash-line"></div>
+        <div class="gw-army enemy"></div>
+      </div>
+    </div>
+  `;
+  const duration = GW_BATTLE_SIM_MIN_MS + Math.random() * (GW_BATTLE_SIM_MAX_MS - GW_BATTLE_SIM_MIN_MS);
+  setTimeout(() => {
+    _gwOnline._simInProgress = false;
+    gwOnlineRenderRoundResult(sala, rodada);
+  }, duration);
 }
 
 function gwOnlineRenderBattleWaiting(sala) {
@@ -1723,6 +1772,7 @@ function gwOnlineRenderBattleWaiting(sala) {
     <div class="gw-round-label">Rodada ${idx + 1} de ${sala.tiposRodadas.length}</div>
     ${gwOnlineScoreRowHtml(sala)}
     <div class="gw-war-card"><div class="gw-war-name">Tipo de batalha: ${gwEscHtml(tipo)}</div></div>
+    ${gwOnlineBothTeamsHtml(sala)}
     <div class="gw-battle-sim-label">⚔️ Calculando o poder dos exércitos…</div>
     <div class="gw-spinner"></div>
   `;
@@ -1764,6 +1814,7 @@ function gwOnlineRenderRoundResult(sala, rodada) {
         </div>
       </div>
       ${gwOnlineScoreRowHtml(sala)}
+      ${gwOnlineBothTeamsHtml(sala)}
       ${(!euVenci && !handled) ? gwOnlineInjuryPromptHtml(idx) : ''}
       ${(euVenci || handled) ? `<button class="gw-btn" onclick="gwOnlineContinueAfterRound()">Continuar</button>` : ''}
     </div>
