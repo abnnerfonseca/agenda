@@ -1290,6 +1290,7 @@ function gwOnlineFreshState() {
     roomRef: null, listener: null,
     team: {}, usedGroupIds: new Set(), currentGroup: null, rerollUsed: false,
     injuryHandled: {}, _roundIdxShown: -1, _pendingInjuryGroup: null,
+    _simShownForRound: -1, _simInProgress: false,
   };
 }
 let _gwOnline = gwOnlineFreshState();
