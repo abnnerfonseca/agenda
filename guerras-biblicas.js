@@ -35,6 +35,11 @@ const GW_MEMORY_SLOTS = 3;
 const GW_MEMORY_WINS_TO_LEARN = 2;
 const GW_MEMORY_COLORS = ['#c9a24a', '#7fd28e', '#e08c8c', '#8ab4e0', '#c98ae0', '#e0c98a', '#8ae0d0', '#e08ac9'];
 
+const GW_EVOLVE_EVERY_WINS = 10;
+const GW_EVOLVE_MIN_BOOST = 1;
+const GW_EVOLVE_MAX_BOOST = 3;
+const GW_EVOLVE_OVERALL_CAP = 99;
+
 const GW_NARRATIVE = {
   vitoriaMeio: [
     'As tropas avançam e o inimigo recua.',
@@ -102,14 +107,6 @@ function gwNormDificuldade(v) {
 function gwNum(v, fallback) {
   const n = parseFloat(String(v).replace(',', '.'));
   return isNaN(n) ? fallback : n;
-}
-function gwShuffle(arr) {
-  const a = arr.slice();
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
 }
 function gwPick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 
@@ -198,7 +195,7 @@ const GW_CSS = `
 .gw-box{background:linear-gradient(180deg,#1c1a17,#100f0d);width:100%;max-width:800px;height:min(720px,88vh);display:flex;flex-direction:column;border-radius:14px;position:relative;box-shadow:0 24px 70px rgba(0,0,0,.55);border:1px solid rgba(169,134,58,.25)}
 .gw-close{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;border:none;background:rgba(255,255,255,.08);color:#f1ece1;font-size:16px;cursor:pointer;z-index:5}
 .gw-close:hover{background:rgba(255,255,255,.16)}
-.gw-body{padding:36px 30px 28px;color:#f1ece1;font-family:var(--sans,sans-serif);flex:1 1 auto;min-height:0;overflow-y:auto;display:flex;flex-direction:column;justify-content:center}
+.gw-body{padding:36px 30px 28px;color:#f1ece1;font-family:var(--sans,sans-serif);flex:1 1 auto;min-height:0;overflow-y:auto;display:flex;flex-direction:column;justify-content:flex-start}
 @media(max-width:600px){.gw-body{padding:44px 16px 20px}}
 .gw-eyebrow{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold,#c9a24a);font-weight:600;margin-bottom:10px;text-align:center}
 .gw-title{font-size:clamp(24px,4vw,36px);font-weight:700;margin-bottom:12px;text-align:center;color:#fff}
@@ -219,7 +216,6 @@ const GW_CSS = `
 .gw-mode-btn .gw-mode-desc{font-size:12px;color:#c9c4b8;font-weight:300;line-height:1.5}
 .gw-loading,.gw-empty{text-align:center;padding:60px 20px;color:#c9c4b8;font-size:14px}
 .gw-round-label{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold,#c9a24a);font-weight:600;text-align:center;margin-bottom:6px}
-.gw-round-sub{font-size:13px;color:#c9c4b8;text-align:center;margin-bottom:24px}
 .gw-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
 @media(max-width:640px){.gw-cards{grid-template-columns:1fr}}
 .gw-card{border-radius:12px;padding:14px 12px;cursor:pointer;text-align:center;transition:transform .15s,box-shadow .15s;border:1px solid rgba(255,255,255,.14);background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.01));position:relative;overflow:hidden;height:150px;display:flex;flex-direction:column;justify-content:flex-start;box-sizing:border-box}
@@ -236,8 +232,6 @@ const GW_CSS = `
 .gw-cards.compact .gw-card{padding:10px 10px;height:auto;min-height:112px}
 .gw-cards.compact .gw-card-name{font-size:13px;margin-bottom:3px}
 .gw-cards.compact .gw-card-overall{font-size:20px}
-.gw-card-attr{font-size:11px;color:#c9c4b8;margin-bottom:3px}
-.gw-card-attr b{color:#e8e3d8;font-weight:600}
 .gw-card.disabled{opacity:.32;cursor:not-allowed;filter:grayscale(70%)}
 .gw-card.disabled:hover{transform:none;box-shadow:none}
 .gw-card-filled-badge{position:absolute;top:10px;right:10px;font-size:8px;text-transform:uppercase;letter-spacing:.05em;background:rgba(0,0,0,.55);color:#e8e3d8;padding:3px 8px;border-radius:6px}
@@ -289,7 +283,6 @@ const GW_CSS = `
 .gw-info-btn:hover,.gw-info-btn.open{background:var(--gold,#c9a24a);border-color:var(--gold,#c9a24a);color:#1c1a17}
 .gw-info-tooltip{display:none;position:absolute;top:26px;left:50%;transform:translateX(-50%);width:min(220px,80vw);background:#1c1a17;border:1px solid rgba(201,162,74,.45);border-radius:8px;padding:10px 12px;font-size:11px;font-weight:400;line-height:1.55;color:#e8e3d8;text-align:left;box-shadow:0 12px 28px rgba(0,0,0,.45);z-index:30;white-space:normal}
 .gw-info-btn:hover .gw-info-tooltip,.gw-info-btn.open .gw-info-tooltip{display:block}
-.gw-streak-label{text-align:center;font-size:12px;color:var(--gold,#c9a24a);font-weight:600;margin-bottom:16px}
 .gw-battle-result{text-align:center;padding:6px 0 14px}
 .gw-battle-emoji{font-size:42px;margin-bottom:8px}
 .gw-battle-title-war{font-size:12px;color:#c9c4b8;letter-spacing:.03em;margin-bottom:4px}
@@ -312,8 +305,6 @@ const GW_CSS = `
 .gw-final-sub{font-size:12px;color:#c9c4b8;font-weight:300;margin-bottom:14px}
 .gw-final-newrecord{font-size:12px;font-weight:700;color:var(--gold,#c9a24a);margin-bottom:8px}
 .gw-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:6px}
-.gw-memory-block{text-align:center;margin-bottom:16px}
-.gw-memory-label{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:#c9c4b8;margin-bottom:6px}
 .gw-memory-dots{display:flex;justify-content:center;gap:7px}
 .gw-memory-dot{width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,.06);border:1px dashed rgba(255,255,255,.28);box-sizing:border-box}
 .gw-memory-dot.filled{border-style:solid;border-color:transparent}
@@ -329,8 +320,6 @@ const GW_CSS = `
 .gw-online-status{font-size:13px;color:#c9c4b8;text-align:center;margin:14px 0;font-weight:300}
 .gw-spinner{width:26px;height:26px;border-radius:50%;border:3px solid rgba(255,255,255,.15);border-top-color:var(--gold,#c9a24a);margin:0 auto 14px;animation:gwSpin .8s linear infinite}
 @keyframes gwSpin{to{transform:rotate(360deg)}}
-.gw-vs-row{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:18px}
-.gw-vs-name{font-size:15px;font-weight:700;color:#fff;text-align:center;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .gw-vs-badge{font-size:11px;color:var(--gold,#c9a24a);font-weight:700}
 .gw-score-row{display:flex;align-items:center;justify-content:center;gap:22px;margin-bottom:18px}
 .gw-score-side{text-align:center}
@@ -339,9 +328,6 @@ const GW_CSS = `
 .gw-injury-card{border:1px solid rgba(224,140,140,.35);background:rgba(224,140,140,.06);border-radius:12px;padding:16px 18px;text-align:center;margin-bottom:18px}
 .gw-injury-card b{color:#fff}
 .gw-online-disconnected{color:#e08c8c;font-weight:700;text-align:center;margin-bottom:14px}
-.gw-online-teams{display:flex;flex-direction:column;gap:6px;margin-bottom:6px}
-.gw-online-team-label{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold,#c9a24a);font-weight:700;text-align:center;margin-bottom:6px}
-.gw-online-team-col .gw-cards{margin-bottom:14px}
 `;
 
 let _gwCache = null;
@@ -373,6 +359,9 @@ function gwEnsureDom() {
   div.innerHTML = '<div class="gw-box"><button class="gw-close" onclick="gwClose()">✕</button><div class="gw-body" id="gwBody"></div></div>';
   document.body.appendChild(div);
   div.addEventListener('click', e => { if (e.target === div) gwClose(); });
+
+  const gwBody = div.querySelector('#gwBody');
+  new MutationObserver(() => { gwBody.scrollTop = 0; }).observe(gwBody, { childList: true });
 }
 
 function gwRenderIntro() {
@@ -1644,19 +1633,34 @@ function gwOnlineScoreRowHtml(sala) {
   </div>`;
 }
 
-// Mostra os dois esquadrões (o meu e o do oponente) lado a lado durante toda a batalha —
+// Chip pequeno e agrupado (mesmo formato usado durante o draft em "seu time até agora"),
+// bem mais compacto que os cards grandes — usado pra mostrar os dois esquadrões na batalha.
+function gwOnlineTeamChipsHtml(team, label) {
+  const chips = GW_POSITIONS.map(p => {
+    const c = team[p];
+    if (!c) return '';
+    return `<div class="gw-tp-chip">
+      <span class="emoji">${GW_POSITION_LABEL[p].emoji}</span>
+      <div class="pos">${GW_POSITION_LABEL[p].nome}</div>
+      <div class="name">${gwEscHtml(c.nome)}</div>
+      <div class="over">${c.overall}</div>
+    </div>`;
+  }).join('');
+  return `<div class="gw-team-progress">
+    <div class="gw-team-progress-label">${gwEscHtml(label)}</div>
+    <div class="gw-tp-row">${chips}</div>
+  </div>`;
+}
+
+// Mostra os dois esquadrões (o meu e o do oponente) durante toda a batalha —
 // assim dá pra lembrar quem está no time na hora de decidir uma substituição.
 function gwOnlineBothTeamsHtml(sala) {
   const meuSlot = _gwOnline.meuSlot;
   const opSlot = meuSlot === 'p1' ? 'p2' : 'p1';
   const opJogador = sala.jogadores && sala.jogadores[opSlot];
   const opTime = opJogador && opJogador.time;
-  let html = '<div class="gw-online-teams">';
-  html += `<div class="gw-online-team-col"><div class="gw-online-team-label">Seu time</div>${gwTeamCardsHtml(_gwOnline.team)}</div>`;
-  if (opTime) {
-    html += `<div class="gw-online-team-col"><div class="gw-online-team-label">${gwEscHtml(opJogador.apelido || 'Oponente')}</div>${gwTeamCardsHtml(opTime)}</div>`;
-  }
-  html += '</div>';
+  let html = gwOnlineTeamChipsHtml(_gwOnline.team, 'Seu time');
+  if (opTime) html += gwOnlineTeamChipsHtml(opTime, opJogador.apelido || 'Oponente');
   return html;
 }
 
