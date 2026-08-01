@@ -788,6 +788,22 @@ function gwCardContribution(card, war) {
   return card.overall * mult;
 }
 
+// A cada GW_EVOLVE_EVERY_WINS vitórias (só no Modo Sobrevivência), um dos 3 personagens
+// evolui: ganha +1 a +3 de overall (sorteado), sem passar do teto. Clona o card em vez de
+// mutar o objeto original, pra não estragar o cache compartilhado da planilha.
+function gwSurvivalEvolve() {
+  const st = _gwState;
+  const eligible = GW_POSITIONS.filter(p => st.team[p].overall < GW_EVOLVE_OVERALL_CAP);
+  const pos = eligible.length ? gwPick(eligible) : gwPick(GW_POSITIONS);
+  const card = st.team[pos];
+  const boost = GW_EVOLVE_MIN_BOOST + Math.floor(Math.random() * (GW_EVOLVE_MAX_BOOST - GW_EVOLVE_MIN_BOOST + 1));
+  const novoOverall = Math.min(GW_EVOLVE_OVERALL_CAP, card.overall + boost);
+  const ganho = novoOverall - card.overall;
+  const evolvedAntes = card._evolvedTotal || 0;
+  st.team[pos] = Object.assign({}, card, { overall: novoOverall, _evolvedTotal: evolvedAntes + ganho });
+  return { pos, ganho, novoOverall };
+}
+
 function gwFight() {
   const st = _gwState;
   const war = st.wars[st.warIndex];
@@ -822,6 +838,7 @@ function gwFight() {
   const diff = playerPower - enemyPower;
 
   let memoryGained = null;
+  let evolution = null;
   if (win) {
     st.warsWon++;
     if (isSurvival) {
@@ -841,10 +858,13 @@ function gwFight() {
           }
         }
       }
+      if (st.warsWon % GW_EVOLVE_EVERY_WINS === 0) {
+        evolution = gwSurvivalEvolve();
+      }
     }
   }
 
-  st.lastBattle = { war, playerPower, enemyPower, diff, win, contributions, memoryUsed, memoryGained };
+  st.lastBattle = { war, playerPower, enemyPower, diff, win, contributions, memoryUsed, memoryGained, evolution };
   st.history.push({ nome: war.nome, win, diff, dificuldade: war.dificuldade });
 
   gwRenderBattleSimulation();
