@@ -520,11 +520,13 @@ function gwMiniTeamHtml() {
     const c = st.team[p];
     if (!c) return '';
     const memHtml = (p === 'general' && isSurvival) ? gwMemoryDotsHtml(st.generalMemory.queue) : '';
-    return `<div class="gw-tp-chip">
+    const evolved = isSurvival && c._evolvedTotal;
+    const evolvedBadge = evolved ? `<span class="gw-evolved-badge">▲+${c._evolvedTotal}</span>` : '';
+    return `<div class="gw-tp-chip${evolved ? ' evolved' : ''}">
       <span class="emoji">${GW_POSITION_LABEL[p].emoji}</span>
       <div class="pos">${GW_POSITION_LABEL[p].nome}</div>
       <div class="name">${gwEscHtml(c.nome)}</div>
-      <div class="over">${c.overall}</div>
+      <div class="over">${c.overall}${evolvedBadge}</div>
       ${memHtml}
     </div>`;
   }).join('');
@@ -664,6 +666,7 @@ function gwRerollGroup() {
 function gwTeamCardsHtml(team, opts) {
   const showInfo = !!(opts && opts.showInfo);
   const memoryQueue = opts && opts.memoryQueue;
+  const showEvolved = !!(opts && opts.showEvolved);
   const cards = GW_POSITIONS.map(pos => {
     const c = team[pos];
     const infoHtml = (showInfo && c.comentario)
@@ -672,7 +675,10 @@ function gwTeamCardsHtml(team, opts) {
         </button>`
       : '';
     const memoryHtml = (pos === 'general' && memoryQueue) ? `<div class="gw-card-memory">${gwMemoryDotsHtml(memoryQueue)}</div>` : '';
-    return `<div class="gw-card gw-card-static ${gwRarityCls(c.overall)}">
+    const evolved = showEvolved && c._evolvedTotal;
+    const evolvedRibbon = evolved ? `<div class="gw-evolved-ribbon">▲ +${c._evolvedTotal}</div>` : '';
+    return `<div class="gw-card gw-card-static ${gwRarityCls(c.overall)}${evolved ? ' evolved' : ''}">
+      ${evolvedRibbon}
       ${infoHtml}
       ${gwFinalBadgeHtml(c)}
       <div class="gw-card-pos">${GW_POSITION_LABEL[pos].emoji} ${GW_POSITION_LABEL[pos].nome}</div>
