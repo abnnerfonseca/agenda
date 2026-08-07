@@ -105,7 +105,7 @@ const MB_CSS = `
 .mb-hud-item{text-align:center}
 .mb-hud-num{font-size:22px;font-weight:800;color:var(--accent,#7a2e2e);line-height:1}
 .mb-hud-label{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft,#5a5d54);margin-top:3px}
-.mb-board{display:grid;gap:10px;margin:0 auto 10px;justify-content:center}
+.mb-board{display:grid;gap:10px;width:100%;margin:0 auto 10px;justify-content:center}
 .mb-card{aspect-ratio:3/4;width:100%;perspective:800px;cursor:pointer}
 .mb-card-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .4s}
 .mb-card.flipped .mb-card-inner,.mb-card.matched .mb-card-inner{transform:rotateY(180deg)}
@@ -173,7 +173,7 @@ function mbRenderIntro() {
     const best = mbGetBest(key);
     return `<button class="mb-level-btn" onclick="mbStart('${key}')">
       <div class="mb-level-title">${lvl.label}</div>
-      <div class="mb-level-desc">${lvl.pares} personagens</div>
+      <div class="mb-level-desc">${lvl.pares * 2} cartas</div>
       ${best !== null ? `<div class="mb-level-record">🏅 Recorde: ${mbFmtTime(best)}</div>` : ''}
     </button>`;
   }).join('');
