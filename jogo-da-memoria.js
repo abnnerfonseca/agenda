@@ -38,6 +38,20 @@ const mbEscHtml = window.escHtml || function (s) {
   }[c]));
 };
 
+// Converte link de compartilhamento do Google Drive em URL de imagem direta.
+// Reaproveita window.driveImg (já usado pelo site pra fotos de igrejas/sermões) se existir;
+// senão usa a mesma lógica localmente. URLs que já são diretas passam intactas.
+const mbDriveImg = window.driveImg || function (url) {
+  if (!url || !url.trim()) return '';
+  url = url.trim();
+  if (url.includes('drive.google.com/uc')) return url;
+  const m1 = url.match(/\/file\/d\/([^\/\?&]+)/);
+  const m2 = url.match(/[?&]id=([^&]+)/);
+  const id = m1 ? m1[1] : (m2 ? m2[1] : '');
+  if (id) return `https://drive.google.com/uc?export=view&id=${id}`;
+  return url;
+};
+
 function mbShuffle(arr) {
   const a = arr.slice();
   for (let i = a.length - 1; i > 0; i--) {
@@ -159,7 +173,7 @@ function mbRenderIntro() {
     const best = mbGetBest(key);
     return `<button class="mb-level-btn" onclick="mbStart('${key}')">
       <div class="mb-level-title">${lvl.label}</div>
-      <div class="mb-level-desc">${lvl.pares} personagens (${lvl.pares * 2} cartas)</div>
+      <div class="mb-level-desc">${lvl.pares} personagens</div>
       ${best !== null ? `<div class="mb-level-record">🏅 Recorde: ${mbFmtTime(best)}</div>` : ''}
     </button>`;
   }).join('');
@@ -236,7 +250,7 @@ function mbCardHtml(c) {
     <div class="mb-card-inner">
       <div class="mb-card-face mb-card-back">📖</div>
       <div class="mb-card-face mb-card-front">
-        <div class="mb-card-imgwrap"><img src="${mbEscHtml(c.imagem)}" alt="" onerror="this.style.display='none';this.parentElement.classList.add('mb-img-error');this.parentElement.textContent='📷'"></div>
+        <div class="mb-card-imgwrap"><img src="${mbEscHtml(mbDriveImg(c.imagem))}" alt="" onerror="this.style.display='none';this.parentElement.classList.add('mb-img-error');this.parentElement.textContent='📷'"></div>
         <div class="mb-card-name">${mbEscHtml(c.nome)}</div>
       </div>
     </div>
