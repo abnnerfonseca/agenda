@@ -32,6 +32,12 @@ a{color:inherit;text-decoration:none}
 .nav-links{display:flex;gap:18px;list-style:none;flex-wrap:wrap}
 .nav-links a{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);font-weight:500;padding-bottom:3px;border-bottom:1px solid transparent;transition:all .2s;cursor:pointer;white-space:nowrap}
 .nav-links a:hover,.nav-links a.active{color:var(--accent);border-color:var(--accent)}
+.nav-dropdown{position:relative}
+.nav-dropdown-menu{list-style:none;position:absolute;top:100%;left:0;margin-top:10px;background:var(--paper);border:1px solid var(--line);box-shadow:0 12px 30px rgba(0,0,0,.1);min-width:170px;padding:6px 0;opacity:0;visibility:hidden;transform:translateY(4px);transition:opacity .15s ease,transform .15s ease,visibility .15s;z-index:120}
+.nav-dropdown:hover .nav-dropdown-menu,.nav-dropdown:focus-within .nav-dropdown-menu{opacity:1;visibility:visible;transform:translateY(0)}
+.nav-dropdown-menu li{list-style:none}
+.nav-dropdown-menu a{display:block;padding:10px 18px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);border-bottom:none}
+.nav-dropdown-menu a:hover,.nav-dropdown-menu a.active{color:var(--accent);background:var(--accent-soft)}
 .nav-social{display:flex;align-items:center;gap:8px;flex-shrink:0}
 .nav-social a{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;border:1px solid var(--line);transition:border-color .2s,transform .15s}
 .nav-social a:hover{border-color:var(--accent);transform:scale(1.1)}
@@ -58,6 +64,9 @@ a{color:inherit;text-decoration:none}
   .nav-links a{font-size:16px;letter-spacing:.06em;padding:6px 0}
   .nav-toggle{display:block;font-size:24px;z-index:160;position:relative}
   body.menu-open{overflow:hidden}
+  .nav-dropdown{display:flex;flex-direction:column;align-items:center;gap:14px}
+  .nav-dropdown-menu{position:static;opacity:1;visibility:visible;transform:none;box-shadow:none;border:none;padding:0;margin:0;background:transparent;min-width:0;display:flex;flex-direction:column;gap:14px;align-items:center}
+  .nav-dropdown-menu a{padding:0;font-size:14px}
 }
 @media(max-width:600px){.nav-social{display:none}}
 .page{display:none;animation:fadeIn .35s ease}
@@ -327,9 +336,7 @@ a{color:inherit;text-decoration:none}
 </style>
 </head>
 <body>
-
 <div class="toast" id="toast"></div>
-
 <div class="modal-overlay" id="churchModal" onclick="if(event.target===this)closeModal()">
   <div class="modal-box">
     <div class="modal-img-wrap">
@@ -349,7 +356,6 @@ a{color:inherit;text-decoration:none}
     </div>
   </div>
 </div>
-
 <div class="revista-reader" id="revistaReader">
   <div class="reader-header">
     <button class="reader-back" onclick="closeReader()">← Voltar</button>
@@ -360,7 +366,6 @@ a{color:inherit;text-decoration:none}
     <iframe id="readerFrame" style="opacity:0;transition:opacity .3s" onload="this.style.opacity=1;document.getElementById('readerMsg').style.display='none'"></iframe>
   </div>
 </div>
-
 <nav class="nav">
   <div class="nav-inner">
     <div class="brand" onclick="goTo('home')">
@@ -376,7 +381,13 @@ a{color:inherit;text-decoration:none}
       <li id="nav-sermoes" style="display:none"><a onclick="goTo('sermoes')" data-page="sermoes">Sermões</a></li>
       <li id="nav-revista" style="display:none"><a onclick="goTo('revista')" data-page="revista">Revista</a></li>
       <li id="nav-mais" style="display:none"><a onclick="goTo('mais')" data-page="mais">Mais</a></li>
-      <li id="nav-sobre" style="display:none"><a onclick="goTo('sobre')" data-page="sobre">Sobre Nós</a></li>
+      <li id="nav-sobre" class="nav-dropdown" style="display:none">
+        <a onclick="goTo('sobre')" data-page="sobre">Sobre Nós</a>
+        <ul class="nav-dropdown-menu">
+          <li><a onclick="goTo('sobre')" data-page="sobre">História</a></li>
+          <li id="nav-departamentos"><a onclick="goTo('departamentos')" data-page="departamentos">Departamentos</a></li>
+        </ul>
+      </li>
       <li id="nav-casa" style="display:none"><a onclick="goTo('casa')" data-page="casa" style="font-weight:700;color:var(--accent)">Nossa Casa</a></li>
       <li id="nav-contribua" style="display:none"><a onclick="goTo('contribua')" data-page="contribua" style="font-weight:700;color:var(--accent)">Contribua</a></li>
     </ul>
@@ -393,7 +404,6 @@ a{color:inherit;text-decoration:none}
     </div>
   </div>
 </nav>
-
 <div class="live-banner" id="liveBanner">
   <div class="live-inner">
     <div class="live-left"><div class="live-dot"></div><span class="live-label">Ao Vivo</span></div>
@@ -401,7 +411,6 @@ a{color:inherit;text-decoration:none}
     <button class="live-btn" onclick="openLive()">Assistir agora</button>
   </div>
 </div>
-
 <!-- HOME -->
 <div class="page active" id="page-home">
   <div class="hero">
@@ -434,7 +443,6 @@ a{color:inherit;text-decoration:none}
     </div>
   </div>
 </div>
-
 <!-- AGENDA -->
 <div class="page" id="page-agenda">
   <div class="wrap">
@@ -443,7 +451,6 @@ a{color:inherit;text-decoration:none}
     <div id="agendaList"><div class="empty-state">Carregando…</div></div>
   </div>
 </div>
-
 <!-- IGREJAS -->
 <div class="page" id="page-igrejas">
   <div class="wrap">
@@ -452,7 +459,6 @@ a{color:inherit;text-decoration:none}
     <div class="church-grid" id="churchGrid"><div class="empty-state">Carregando…</div></div>
   </div>
 </div>
-
 <!-- SERMÕES -->
 <div class="page" id="page-sermoes">
   <div class="wrap">
@@ -461,7 +467,6 @@ a{color:inherit;text-decoration:none}
     <div id="sermonList"><div class="empty-state">Carregando…</div></div>
   </div>
 </div>
-
 <!-- REVISTA -->
 <div class="page" id="page-revista">
   <div class="wrap">
@@ -469,7 +474,6 @@ a{color:inherit;text-decoration:none}
     <div class="revista-grid" id="revistaGrid"><div class="empty-state">Carregando edições…</div></div>
   </div>
 </div>
-
 <!-- MAIS -->
 <div class="page" id="page-mais">
   <div class="wrap">
@@ -477,16 +481,21 @@ a{color:inherit;text-decoration:none}
     <div class="games-grid" id="gamesGrid"><div class="empty-state">Carregando…</div></div>
   </div>
 </div>
-
-<!-- SOBRE NÓS -->
+<!-- SOBRE NÓS (História) -->
 <div class="page" id="page-sobre">
   <div class="wrap">
-    <div class="sec-head" style="margin-top:50px"><div class="sec-eyebrow">Nossa história</div><h2 class="sec-title">Sobre Nós</h2><div class="sec-divider"></div></div>
+    <div class="sec-head" style="margin-top:50px"><div class="sec-eyebrow">Sobre Nós</div><h2 class="sec-title">História</h2><div class="sec-divider"></div></div>
     <div class="about-text" id="sobreTexto"></div>
     <div style="margin:52px 0 0" id="timelineList"></div>
   </div>
 </div>
-
+<!-- DEPARTAMENTOS -->
+<div class="page" id="page-departamentos">
+  <div class="wrap">
+    <div class="sec-head" style="margin-top:50px"><div class="sec-eyebrow">Sobre Nós</div><h2 class="sec-title">Departamentos</h2><div class="sec-divider"></div></div>
+    <div class="church-grid" id="departamentosGrid"><div class="empty-state">Carregando…</div></div>
+  </div>
+</div>
 <!-- NOSSA CASA -->
 <div class="page" id="page-casa">
   <div class="wrap">
@@ -509,7 +518,6 @@ a{color:inherit;text-decoration:none}
     <div class="update-list" id="updateList"><div class="empty-state">Carregando…</div></div>
   </div>
 </div>
-
 <!-- CONTRIBUA -->
 <div class="page" id="page-contribua">
   <div class="contrib-hero">
@@ -549,7 +557,6 @@ a{color:inherit;text-decoration:none}
     </div></div>
   </div>
 </div>
-
 <div class="footer">
   <div class="wrap">
     <img class="footer-logo" id="footerLogoImg" alt="" onerror="this.style.display='none';document.getElementById('footerLogoPh').style.display='block'">
@@ -557,10 +564,8 @@ a{color:inherit;text-decoration:none}
     <p id="footerText"></p>
   </div>
 </div>
-
 <script>
 const SHEET_BASE = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRyhTenbfftqs8iUdYuhP_6XSjAWeRJIHouHTtpTtWgqLRDEDssg8zex00DDDHDu5s_GsmVnQFWQdNy/pub';
-
 const SHEET_URLS = {
   config:          SHEET_BASE+'?gid=560409488&single=true&output=tsv',
   eventos:         SHEET_BASE+'?gid=0&single=true&output=tsv',
@@ -571,8 +576,8 @@ const SHEET_URLS = {
   casa:            SHEET_BASE+'?gid=2095369827&single=true&output=tsv',
   casaAtualizacoes:SHEET_BASE+'?gid=812893903&single=true&output=tsv',
   revista:         SHEET_BASE+'?gid=1147868776&single=true&output=tsv',
+  departamentos:   SHEET_BASE+'?gid=764176962&single=true&output=tsv',
 };
-
 function driveImg(url){
   if(!url||!url.trim()) return '';
   url=url.trim();
@@ -601,7 +606,6 @@ function ytEmbed(url){
 function escHtml(s){return s==null?'':String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function esc(s){return(s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");}
 function isSim(v){return (v||'').trim().toLowerCase()==='sim';}
-
 function parseTSV(text){
   if(!text) return [];
   const lines=text.replace(/\r/g,'').split('\n').filter(l=>l.trim());
@@ -620,7 +624,6 @@ async function fetchSheet(url){
   try{const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw new Error();return parseTSV(await r.text());}
   catch(e){console.error(e);return [];}
 }
-
 let CFG={};
 async function loadConfig(){
   const rows=await fetchSheet(SHEET_URLS.config);
@@ -632,7 +635,6 @@ function cfgBool(key,fallback=true){
   if(!v) return fallback;
   return v==='sim'||v==='true'||v==='1'||v==='yes';
 }
-
 function applyConfig(){
   const root=document.documentElement.style;
   if(cfg('cor_accent'))    root.setProperty('--accent',  cfg('cor_accent'));
@@ -640,11 +642,9 @@ function applyConfig(){
   if(cfg('cor_bg'))        root.setProperty('--bg',      cfg('cor_bg'));
   if(cfg('cor_ink'))       root.setProperty('--ink',     cfg('cor_ink'));
   if(cfg('cor_accent_soft')) root.setProperty('--accent-soft', cfg('cor_accent_soft'));
-
   const nome=cfg('nome_igreja','Igreja');
   const nomeShort=cfg('nome_curto',nome);
   document.title=nome;
-
   document.getElementById('brandText').innerHTML=nomeShort.replace(' ','<br>').replace(/(.+)\s(.+)/,'$1 <span>$2</span>') || escHtml(nomeShort);
   const brandEl=document.getElementById('brandText');
   brandEl.textContent='';
@@ -654,7 +654,6 @@ function applyConfig(){
   } else {
     brandEl.textContent=nomeShort;
   }
-
   const logoUrl=driveImg(cfg('logo_url'));
   if(logoUrl){
     ['brandLogoImg','footerLogoImg'].forEach(id=>{const el=document.getElementById(id);if(el){el.src=logoUrl;el.style.display='block';}});
@@ -666,32 +665,24 @@ function applyConfig(){
     document.getElementById('brandLogoPh').textContent=ph;
     document.getElementById('footerLogoPh').innerHTML=escHtml(nomeShort)+' <span>'+cfg('cidade','')+'</span>';
   }
-
   const heroTit=cfg('hero_titulo','A casa está aberta.\nVenha como você está.');
   document.getElementById('heroTitle').innerHTML=heroTit.replace(/\\n|\n/g,'<br>');
   document.getElementById('heroSub').textContent=cfg('hero_subtitulo','Uma família reunida para adorar, aprender e servir juntos.');
-
   const sobreTexto=cfg('sobre_texto','');
   const sobreEl=document.getElementById('sobreTexto');
   sobreEl.innerHTML=sobreTexto?sobreTexto.split(/\\n\n?|\n/).filter(p=>p.trim()).map(p=>`<p>${escHtml(p)}</p>`).join(''):'<p>Em breve.</p>';
-
   document.getElementById('casaDesc').textContent=cfg('nossa_casa_descricao','Estamos construindo um novo espaço para receber mais famílias.');
   document.getElementById('casaProgressLabel').textContent=cfg('nossa_casa_progresso_label','Progresso da construção');
-
   document.getElementById('contribuaTitulo').textContent=cfg('contribua_titulo','Contribua');
   document.getElementById('contribuaSubtitulo').textContent=cfg('contribua_subtitulo','Quando você doa, você está investindo no Reino de Deus.');
-
   document.getElementById('pixKeyRegular').textContent=cfg('pix_regular_chave');
   document.getElementById('pixRegularNota').textContent=cfg('pix_regular_nota');
   document.getElementById('pixKeyObra').textContent=cfg('pix_obra_chave');
   document.getElementById('pixObraNota').textContent=cfg('pix_obra_nota');
-
   document.getElementById('footerText').textContent=nome+(cfg('cidade')?' · '+cfg('cidade'):'') +' · Todos os direitos reservados';
-
   const ytUrl=cfg('youtube_url');const igUrl=cfg('instagram_url');const fbUrl=cfg('facebook_url');const podUrl=cfg('podcast_url');
   const setNavLink=(id,url)=>{const el=document.getElementById(id);if(el){el.href=url||'#';el.style.display=url?'flex':'none';}};
   setNavLink('navYt',ytUrl);setNavLink('navIg',igUrl);setNavLink('navFb',fbUrl);
-
   const svgYt=`<svg class="ic" width="16" height="16" viewBox="0 0 24 24"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31.7 31.7 0 0 0 0 12a31.7 31.7 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31.7 31.7 0 0 0 24 12a31.7 31.7 0 0 0-.5-5.8z" fill="#FF0000"/><path d="M9.75 15.5V8.5l6.5 3.5-6.5 3.5z" fill="#fff"/></svg>`;
   const svgIg=`<svg class="ic" width="16" height="16" viewBox="0 0 24 24"><defs><radialGradient id="ig3" cx="30%" cy="107%" r="150%"><stop offset="0%" stop-color="#fdf497"/><stop offset="45%" stop-color="#fd5949"/><stop offset="60%" stop-color="#d6249f"/><stop offset="90%" stop-color="#285AEB"/></radialGradient></defs><rect width="24" height="24" rx="5.5" fill="url(#ig3)"/><circle cx="12" cy="12" r="4.5" fill="none" stroke="#fff" stroke-width="1.8"/><circle cx="17.5" cy="6.5" r="1.1" fill="#fff"/><rect x="3" y="3" width="18" height="18" rx="5.5" fill="none" stroke="#fff" stroke-width="1.5"/></svg>`;
   const svgFb=`<svg class="ic" width="16" height="16" viewBox="0 0 24 24"><path d="M24 12a12 12 0 1 0-13.875 11.855V15.47H7.078V12h3.047v-2.645c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.234 2.686.234v2.953H15.83c-1.491 0-1.956.925-1.956 1.874V12h3.328l-.532 3.47h-2.796v8.385A12 12 0 0 0 24 12z" fill="#1877F2"/><path d="M16.671 15.47L17.203 12h-3.328v-2.253c0-.949.465-1.874 1.956-1.874h1.514V4.92s-1.374-.234-2.686-.234c-2.741 0-4.533 1.662-4.533 4.669V12H7.078v3.47h3.047v8.385a12.066 12.066 0 0 0 3.75 0V15.47h2.796z" fill="#fff"/></svg>`;
@@ -701,7 +692,6 @@ function applyConfig(){
   if(fbUrl) bandLinks.push(`<a class="social-btn" href="${escHtml(fbUrl)}" target="_blank">${svgFb} Facebook</a>`);
   if(podUrl) bandLinks.push(`<a class="social-btn" href="${escHtml(podUrl)}" target="_blank">🎙️ Podcast</a>`);
   document.getElementById('socialLinks').innerHTML=bandLinks.join('');
-
   const gaId=cfg('analytics_id');
   if(gaId&&gaId.startsWith('G-')){
     const s=document.createElement('script');
@@ -709,8 +699,7 @@ function applyConfig(){
     s.async=true;document.head.appendChild(s);
     gtag('js',new Date());gtag('config',gaId,{send_page_view:false});
   }
-
-  const abas=['agenda','igrejas','sermoes','revista','mais','sobre','casa','contribua'];
+  const abas=['agenda','igrejas','sermoes','revista','mais','sobre','departamentos','casa','contribua'];
   abas.forEach(a=>{
     const show=cfgBool(`aba_${a}`,true);
     const navEl=document.getElementById(`nav-${a}`);
@@ -718,10 +707,8 @@ function applyConfig(){
     if(navEl) navEl.style.display=show?'':'none';
     if(pageEl) pageEl.dataset.active=show?'1':'0';
   });
-
   renderGames();
 }
-
 const MONTHS=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
 const MONTHS_FULL=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 const DAYS=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
@@ -730,7 +717,6 @@ function parseDate(d){if(!d)return null;const p=d.split('-').map(Number);if(p.le
 function fmtShort(d){const dt=parseDate(d);if(!dt)return{num:'–',mon:'',wd:''};return{num:dt.getDate(),mon:MONTHS[dt.getMonth()],wd:DAYS[dt.getDay()]};}
 function fmtTime(t){if(!t)return'';const[h,m]=t.split(':');return h+'h'+(m&&m!=='00'?m:'');}
 function isEspecial(e){return(e.tipo||'').trim().toLowerCase()==='especial';}
-
 function mdToHtml(raw){
   if(!raw)return'';
   return raw.replace(/\|\|/g,'\n\n').split(/\n{2,}/).map(block=>{
@@ -741,14 +727,10 @@ function mdToHtml(raw){
   }).join('');
 }
 function inlineMd(s){return escHtml(s).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/_(.+?)_/g,'<em>$1</em>');}
-
 function trackPage(n){if(typeof gtag==='undefined')return;gtag('event','page_view',{page_title:n,page_location:location.href+'#'+n});}
-
-let DATA={eventos:[],avisos:[],igrejas:[],sermoes:[],sobre:[],casa:[],casaAtualizacoes:[],revista:[]};
-
+let DATA={eventos:[],avisos:[],igrejas:[],sermoes:[],sobre:[],casa:[],casaAtualizacoes:[],revista:[],departamentos:[]};
 let toastTimer;
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2800);}
-
 function goTo(page){
   const pageEl=document.getElementById('page-'+page);
   if(!pageEl||pageEl.dataset.active==='0'){goTo('home');return;}
@@ -765,13 +747,11 @@ function goTo(page){
     history.pushState({page}, '', hash || location.pathname);
   }
 }
-
 function routeFromHash(){
   const page = location.hash.replace('#','') || 'home';
   goTo(page);
 }
 window.addEventListener('popstate', routeFromHash);
-
 function toggleMenu(){
   const nav=document.getElementById('navLinks');
   const btn=document.querySelector('.nav-toggle');
@@ -779,7 +759,6 @@ function toggleMenu(){
   document.body.classList.toggle('menu-open', isOpen);
   if(btn) btn.textContent = isOpen ? '✕' : '☰';
 }
-
 const WEEKDAY_ALIASES={domingo:0,segunda:1,'segunda-feira':1,terca:2,'terca-feira':2,quarta:3,'quarta-feira':3,quinta:4,'quinta-feira':4,sexta:5,'sexta-feira':5,sabado:6,'sabado-feira':6};
 function normDay(s){return(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();}
 function weekdayFromLabel(label){
@@ -813,7 +792,6 @@ function checkLive(){
   }
 }
 function openLive(){if(_liveUrl) window.open(_liveUrl,'_blank');}
-
 function copyPix(type,btn){
   const key=type==='obra'?cfg('pix_obra_chave'):cfg('pix_regular_chave');
   if(!key){showToast('Chave PIX não configurada.');return;}
@@ -822,7 +800,6 @@ function copyPix(type,btn){
     setTimeout(()=>{btn.textContent=orig;btn.classList.remove('copied');},2500);
   }).catch(()=>prompt('Copie a chave PIX:',key));
 }
-
 let carIdx=0,carSlides=[];
 function buildCarSlides(){
   const now=new Date();
@@ -853,21 +830,18 @@ function carGo(i){carIdx=i;updateCarousel();}
 function carMove(dir){if(!carSlides.length)return;carIdx=(carIdx+dir+carSlides.length)%carSlides.length;updateCarousel();}
 function updateCarousel(){document.getElementById('carTrack').style.transform=`translateX(-${carIdx*100}%)`;document.querySelectorAll('.car-dot').forEach((d,i)=>d.classList.toggle('active',i===carIdx));}
 setInterval(()=>carMove(1),6000);
-
 function renderFixedSchedule(){
   const el=document.getElementById('fixedSchedule');
   const rows=DATA.eventos.filter(e=>(e.tipo||'').trim().toLowerCase()==='programacao semanal');
   if(!rows.length){el.innerHTML='<div class="empty-state">Nenhuma programação regular cadastrada.</div>';return;}
   el.innerHTML=rows.map(e=>`<div class="fixed-row"><div class="fixed-day">${escHtml(e.nome)}</div><div class="fixed-name">${e.desc?escHtml(e.desc):''}</div><div class="fixed-meta">${fmtTime(e.hora)}${e.local?' · '+escHtml(e.local):''}</div></div>`).join('');
 }
-
 function renderSpecialsGrid(){
   const el=document.getElementById('specialsGrid');const now=new Date();
   const up=DATA.eventos.filter(e=>isEspecial(e)&&e.data).map(e=>({...e,_dt:new Date(e.data+'T'+(e.hora||'00:00'))})).filter(e=>e._dt>now).sort((a,b)=>a._dt-b._dt).slice(0,2);
   if(!up.length){el.innerHTML='<div class="empty-state" style="grid-column:1/-1">Nenhum evento especial próximo.</div>';return;}
   el.innerHTML=up.map(e=>{const fd=fmtShort(e.data);const mo=parseDate(e.data);return`<div class="special-card"><div class="special-card-tag">★ Evento Especial</div><div class="special-card-date">${fd.wd}, ${fd.num} de ${mo?MONTHS_FULL[mo.getMonth()]:''}</div><div class="special-card-name">${escHtml(e.nome)}</div><div class="special-card-meta">${fmtTime(e.hora)}${e.local?' · '+escHtml(e.local):''}</div></div>`;}).join('');
 }
-
 function renderNotices(){
   const el=document.getElementById('noticeList');
   if(!DATA.avisos.length){el.innerHTML='<div class="empty-state">Nenhum aviso no momento.</div>';return;}
@@ -879,7 +853,6 @@ function renderNotices(){
     return`<div class="${cls}"${oc}>${hasImg?`<div class="notice-img-wrap"><img src="${imgUrl}" alt="" onerror="this.parentElement.remove()"></div>`:''}<div class="notice-body-wrap"><div class="notice-eyebrow">Aviso</div><div class="notice-title">${escHtml(n.titulo)}</div><div class="notice-body">${escHtml(n.corpo)}</div><div class="notice-date">${escHtml(n.data)}</div>${hasLink?'<div class="notice-link-badge">Ver mais →</div>':''}</div></div>`;
   }).join('');
 }
-
 function shareEvent(nome,data,hora,local){
   const d=parseDate(data);
   const text=`Participe conosco: *${nome}*\n📅 ${d?DAYS_FULL[d.getDay()]+', '+d.getDate()+' de '+MONTHS_FULL[d.getMonth()]+' de '+d.getFullYear():data}\n⏰ ${fmtTime(hora)}\n📍 ${local||cfg('nome_igreja')}\n\n_${cfg('nome_igreja')}_`;
@@ -894,7 +867,6 @@ function addToCalendar(nome,data,hora,local,desc){
   const fmt=d=>d.toISOString().replace(/[-:]/g,'').slice(0,15)+'Z';
   window.open(`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(nome)}&dates=${fmt(start)}/${fmt(end)}&details=${encodeURIComponent(desc||'')}&location=${encodeURIComponent(local||cfg('nome_igreja'))}`,'_blank');
 }
-
 let _agendaFilter='proximos';
 function sortedSpecialEvents(){
   return DATA.eventos.filter(e=>isEspecial(e)&&e.data).map(e=>({...e,_dt:parseDate(e.data)})).filter(e=>e._dt).sort((a,b)=>a._dt-b._dt);
@@ -912,7 +884,6 @@ function renderAgendaFilters(){
   el.innerHTML=html;
 }
 function setAgendaFilter(v){_agendaFilter=v;renderAgendaFilters();renderAgenda();window.scrollTo({top:document.getElementById('agendaFilters').offsetTop-90,behavior:'smooth'});}
-
 function renderAgenda(){
   const el=document.getElementById('agendaList');
   const now=new Date();now.setHours(0,0,0,0);
@@ -955,7 +926,6 @@ function renderAgenda(){
   });
   el.innerHTML=html;
 }
-
 function mapsUrl(q){return'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q);}
 function renderChurches(filter){
   filter=(filter||'').toLowerCase().trim();
@@ -987,7 +957,6 @@ function openModal(idx){
   document.body.style.overflow='hidden';
 }
 function closeModal(){document.getElementById('churchModal').classList.remove('open');document.body.style.overflow='';}
-
 let _allSermons=[];
 function renderSermons(filter=''){
   const el=document.getElementById('sermonList');
@@ -1002,7 +971,6 @@ function renderSermons(filter=''){
 }
 function toggleSermon(id,hasVideo){const f=document.getElementById('full-'+id),e=document.getElementById('exp-'+id);const open=f.classList.toggle('open');e.textContent=open?'Fechar ↑':(hasVideo?'Assistir →':'Ler →');}
 function filterSermons(v){renderSermons(v);}
-
 function renderRevista(){
   const el=document.getElementById('revistaGrid');
   if(!DATA.revista.length){el.innerHTML='<div class="empty-state">Nenhuma edição disponível.</div>';return;}
@@ -1023,23 +991,29 @@ function openReader(idx){
   document.body.style.overflow='hidden';
 }
 function closeReader(){document.getElementById('revistaReader').classList.remove('open');document.getElementById('readerFrame').src='';document.body.style.overflow='';}
-
 function renderTimeline(){
   const el=document.getElementById('timelineList');if(!DATA.sobre.length){el.innerHTML='';return;}
   el.innerHTML=DATA.sobre.map(t=>`<div class="tl-item"><div class="tl-year">${escHtml(t.ano)}</div><div class="tl-content"><h4>${escHtml(t.titulo)}</h4><p>${escHtml(t.texto)}</p></div></div>`).join('');
 }
-
+function renderDepartamentos(){
+  const el=document.getElementById('departamentosGrid');
+  if(!DATA.departamentos.length){el.innerHTML='<div class="empty-state">Nenhum departamento cadastrado.</div>';return;}
+  el.innerHTML=DATA.departamentos.map(d=>{
+    const imgUrl=driveImg(d.foto_url||'');
+    return`<div class="church-card"><div class="church-img">${imgUrl?`<img src="${imgUrl}" alt="${escHtml(d.nome)}" onerror="this.parentElement.innerHTML='<div class=\\'church-img-ph\\'>🏷️ Sem imagem</div>'">`:`<div class="church-img-ph">🏷️ Sem imagem</div>`}</div><div class="church-body"><div class="church-name">${escHtml(d.nome)}</div>${d.descricao?`<div class="church-detail" style="display:block">${escHtml(d.descricao)}</div>`:''}</div></div>`;
+  }).join('');
+}
 function renderCasa(){
   const val=DATA.casa[0]?parseFloat(DATA.casa[0].progresso):NaN;
   if(!isNaN(val)){document.getElementById('progressFill').style.width=Math.min(100,Math.max(0,val))+'%';document.getElementById('progressPct').textContent=val+'%';}
   const el=document.getElementById('updateList');if(!DATA.casaAtualizacoes.length){el.innerHTML='<div class="empty-state">Nenhuma atualização ainda.</div>';return;}
   el.innerHTML=DATA.casaAtualizacoes.map(u=>{const imgUrl=driveImg(u.foto_url||'');return`<div class="update-item">${imgUrl?`<img class="update-item-img" src="${imgUrl}" alt="" onerror="this.remove()">`:''}<div class="update-date">${escHtml(u.data)}</div><div class="update-title">${escHtml(u.titulo)}</div><div class="update-body">${escHtml(u.texto)}</div></div>`;}).join('');
 }
-
 // ---------------------------------------------------------------
 // JOGOS ("Mais") — controlados pelas chaves da aba Config:
-//   game_quiz   -> "Sim"/"Não": ativa/desativa o Quiz Bíblico
-//   game_guerra -> "Sim"/"Não": ativa/desativa Guerras Bíblicas
+//   game_quiz    -> "Sim"/"Não": ativa/desativa o Quiz Bíblico
+//   game_guerra  -> "Sim"/"Não": ativa/desativa Guerras Bíblicas
+//   game_memoria -> "Sim"/"Não": ativa/desativa o Jogo da Memória
 // ---------------------------------------------------------------
 const GAMES = [
   {
@@ -1071,29 +1045,27 @@ function renderGames(){
   if(!enabled.length){el.innerHTML='<div class="empty-state">Nenhum jogo disponível no momento.</div>';return;}
   el.innerHTML=enabled.map(g=>`<div class="game-card"><div class="game-card-icon">${g.icon}</div><div class="game-card-title">${escHtml(g.title)}</div><div class="game-card-desc">${escHtml(g.desc)}</div><button class="game-card-btn" onclick="${g.action}">Jogar agora</button></div>`).join('');
 }
-
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){
     if(document.getElementById('revistaReader').classList.contains('open')) closeReader();
     else if(document.getElementById('churchModal').classList.contains('open')) closeModal();
   }
 });
-
 async function loadAll(){
   await loadConfig();
   applyConfig();
   const res=await Promise.all([
     fetchSheet(SHEET_URLS.eventos),fetchSheet(SHEET_URLS.avisos),fetchSheet(SHEET_URLS.igrejas),
     fetchSheet(SHEET_URLS.sermoes),fetchSheet(SHEET_URLS.sobre),fetchSheet(SHEET_URLS.casa),
-    fetchSheet(SHEET_URLS.casaAtualizacoes),fetchSheet(SHEET_URLS.revista),
+    fetchSheet(SHEET_URLS.casaAtualizacoes),fetchSheet(SHEET_URLS.revista),fetchSheet(SHEET_URLS.departamentos),
   ]);
-  DATA={eventos:res[0]||[],avisos:res[1]||[],igrejas:res[2]||[],sermoes:res[3]||[],sobre:res[4]||[],casa:res[5]||[],casaAtualizacoes:res[6]||[],revista:res[7]||[]};
+  DATA={eventos:res[0]||[],avisos:res[1]||[],igrejas:res[2]||[],sermoes:res[3]||[],sobre:res[4]||[],casa:res[5]||[],casaAtualizacoes:res[6]||[],revista:res[7]||[],departamentos:res[8]||[]};
   _allSermons=DATA.sermoes;
   checkLive();
   setInterval(checkLive,60000);
   renderCarousel();renderFixedSchedule();renderSpecialsGrid();
   renderNotices();renderAgendaFilters();renderAgenda();renderChurches();
-  renderSermons();renderRevista();renderTimeline();renderCasa();
+  renderSermons();renderRevista();renderTimeline();renderDepartamentos();renderCasa();
   routeFromHash();
 }
 loadAll();
