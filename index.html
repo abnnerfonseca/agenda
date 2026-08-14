@@ -380,14 +380,18 @@ a{color:inherit;text-decoration:none}
       <li id="nav-igrejas" style="display:none"><a onclick="goTo('igrejas')" data-page="igrejas">Igrejas</a></li>
       <li id="nav-sermoes" style="display:none"><a onclick="goTo('sermoes')" data-page="sermoes">Sermões</a></li>
       <li id="nav-revista" style="display:none"><a onclick="goTo('revista')" data-page="revista">Revista</a></li>
-      <li id="nav-mais" style="display:none"><a onclick="goTo('mais')" data-page="mais">Mais</a></li>
       <li id="nav-sobre" class="nav-dropdown" style="display:none">
-        <a onclick="goTo('sobre')" data-page="sobre">Sobre Nós</a>
-        <ul class="nav-dropdown-menu">
-          <li><a onclick="goTo('sobre')" data-page="sobre">História</a></li>
-          <li id="nav-departamentos"><a onclick="goTo('departamentos')" data-page="departamentos">Departamentos</a></li>
-        </ul>
-      </li>
+          <a onclick="goTo('sobre')" data-page="sobre">Sobre Nós</a>
+          <ul class="nav-dropdown-menu">
+            <li id="nav-sobre-historia">
+              <a onclick="goTo('sobre')" data-page="sobre">História</a>
+            </li>
+            <li id="nav-departamentos">
+              <a onclick="goTo('departamentos')" data-page="departamentos">Departamentos</a>
+            </li>
+          </ul>
+        </li>
+      <li id="nav-mais" style="display:none"><a onclick="goTo('mais')" data-page="mais">Mais</a></li>
       <li id="nav-casa" style="display:none"><a onclick="goTo('casa')" data-page="casa" style="font-weight:700;color:var(--accent)">Nossa Casa</a></li>
       <li id="nav-contribua" style="display:none"><a onclick="goTo('contribua')" data-page="contribua" style="font-weight:700;color:var(--accent)">Contribua</a></li>
     </ul>
@@ -699,14 +703,41 @@ function applyConfig(){
     s.async=true;document.head.appendChild(s);
     gtag('js',new Date());gtag('config',gaId,{send_page_view:false});
   }
-  const abas=['agenda','igrejas','sermoes','revista','mais','sobre','departamentos','casa','contribua'];
-  abas.forEach(a=>{
-    const show=cfgBool(`aba_${a}`,true);
-    const navEl=document.getElementById(`nav-${a}`);
-    const pageEl=document.getElementById(`page-${a}`);
-    if(navEl) navEl.style.display=show?'':'none';
-    if(pageEl) pageEl.dataset.active=show?'1':'0';
-  });
+      const abas=['agenda','igrejas','sermoes','revista','mais','casa','contribua'];
+    
+    abas.forEach(a=>{
+      const show=cfgBool(`aba_${a}`,true);
+      const navEl=document.getElementById(`nav-${a}`);
+      const pageEl=document.getElementById(`page-${a}`);
+    
+      if(navEl) navEl.style.display=show?'':'none';
+      if(pageEl) pageEl.dataset.active=show?'1':'0';
+    });
+    
+    // SOBRE NÓS
+    const mostrarHistoria = cfgBool('aba_sobre',true);
+    const mostrarDepartamentos = cfgBool('aba_departamentos',true);
+    const navHistoria = document.getElementById('nav-sobre-historia');
+    const navDepartamentos = document.getElementById('nav-departamentos');
+    if(navHistoria){
+      navHistoria.style.display = mostrarHistoria ? '' : 'none';
+    }
+    if(navDepartamentos){
+      navDepartamentos.style.display = mostrarDepartamentos ? '' : 'none';
+    }
+    const mostrarSobreMenu = mostrarHistoria || mostrarDepartamentos;
+    const navSobre = document.getElementById('nav-sobre');
+    if(navSobre){
+      navSobre.style.display = mostrarSobreMenu ? '' : 'none';
+    }
+    const pageSobre = document.getElementById('page-sobre');
+    const pageDepartamentos = document.getElementById('page-departamentos');
+    if(pageSobre){
+      pageSobre.dataset.active = mostrarHistoria ? '1' : '0';
+    }
+    if(pageDepartamentos){
+      pageDepartamentos.dataset.active = mostrarDepartamentos ? '1' : '0';
+    }
   renderGames();
 }
 const MONTHS=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
