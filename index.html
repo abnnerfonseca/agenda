@@ -380,14 +380,14 @@ a{color:inherit;text-decoration:none}
       <li id="nav-igrejas" style="display:none"><a onclick="goTo('igrejas')" data-page="igrejas">Igrejas</a></li>
       <li id="nav-sermoes" style="display:none"><a onclick="goTo('sermoes')" data-page="sermoes">Sermões</a></li>
       <li id="nav-revista" style="display:none"><a onclick="goTo('revista')" data-page="revista">Revista</a></li>
-      <li id="nav-mais" style="display:none"><a onclick="goTo('mais')" data-page="mais">Mais</a></li>
       <li id="nav-sobre" class="nav-dropdown" style="display:none">
-        <a onclick="goTo('sobre')" data-page="sobre">Sobre Nós</a>
+        <a onclick="goToSobrePadrao()" data-page="sobre">Sobre Nós</a>
         <ul class="nav-dropdown-menu">
-          <li><a onclick="goTo('sobre')" data-page="sobre">História</a></li>
+          <li id="nav-historia"><a onclick="goTo('sobre')" data-page="sobre">História</a></li>
           <li id="nav-departamentos"><a onclick="goTo('departamentos')" data-page="departamentos">Departamentos</a></li>
         </ul>
       </li>
+      <li id="nav-mais" style="display:none"><a onclick="goTo('mais')" data-page="mais">Mais</a></li>
       <li id="nav-casa" style="display:none"><a onclick="goTo('casa')" data-page="casa" style="font-weight:700;color:var(--accent)">Nossa Casa</a></li>
       <li id="nav-contribua" style="display:none"><a onclick="goTo('contribua')" data-page="contribua" style="font-weight:700;color:var(--accent)">Contribua</a></li>
     </ul>
@@ -699,7 +699,9 @@ function applyConfig(){
     s.async=true;document.head.appendChild(s);
     gtag('js',new Date());gtag('config',gaId,{send_page_view:false});
   }
-  const abas=['agenda','igrejas','sermoes','revista','mais','sobre','departamentos','casa','contribua'];
+
+  // Abas "normais": mostram/escondem nav + página juntas
+  const abas=['agenda','igrejas','sermoes','revista','mais','casa','contribua'];
   abas.forEach(a=>{
     const show=cfgBool(`aba_${a}`,true);
     const navEl=document.getElementById(`nav-${a}`);
@@ -707,6 +709,27 @@ function applyConfig(){
     if(navEl) navEl.style.display=show?'':'none';
     if(pageEl) pageEl.dataset.active=show?'1':'0';
   });
+
+  // "Sobre Nós" (História) e "Departamentos" são controladas separadamente,
+  // mas compartilham o mesmo item de menu (dropdown "Sobre Nós").
+  const showSobre=cfgBool('aba_sobre',true);
+  const showDepartamentos=cfgBool('aba_departamentos',true);
+
+  const pageSobreEl=document.getElementById('page-sobre');
+  const pageDeptEl=document.getElementById('page-departamentos');
+  if(pageSobreEl) pageSobreEl.dataset.active=showSobre?'1':'0';
+  if(pageDeptEl) pageDeptEl.dataset.active=showDepartamentos?'1':'0';
+
+  const navSobreEl=document.getElementById('nav-sobre');       // dropdown pai "Sobre Nós"
+  const navHistoriaEl=document.getElementById('nav-historia'); // item "História" dentro do dropdown
+  const navDeptEl=document.getElementById('nav-departamentos');// item "Departamentos" dentro do dropdown
+
+  // O dropdown "Sobre Nós" aparece se PELO MENOS UMA das duas estiver habilitada
+  if(navSobreEl) navSobreEl.style.display=(showSobre||showDepartamentos)?'':'none';
+  // Cada item dentro do dropdown só aparece se a respectiva config estiver "Sim"
+  if(navHistoriaEl) navHistoriaEl.style.display=showSobre?'':'none';
+  if(navDeptEl) navDeptEl.style.display=showDepartamentos?'':'none';
+
   renderGames();
 }
 const MONTHS=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
@@ -746,6 +769,12 @@ function goTo(page){
   if(location.hash.replace('#','') !== page){
     history.pushState({page}, '', hash || location.pathname);
   }
+}
+// Clique no rótulo "Sobre Nós" (tanto no desktop quanto no mobile): manda para
+// História se ela estiver ativa; senão, se só Departamentos estiver ativa, manda para lá.
+function goToSobrePadrao(){
+  if(cfgBool('aba_sobre',true)) goTo('sobre');
+  else if(cfgBool('aba_departamentos',true)) goTo('departamentos');
 }
 function routeFromHash(){
   const page = location.hash.replace('#','') || 'home';
