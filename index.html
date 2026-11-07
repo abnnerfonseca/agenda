@@ -598,6 +598,14 @@ function drivePreview(url){
   if(id) return `https://drive.google.com/file/d/${id}/preview`;
   return url;
 }
+function driveThumb(url, sz = 600){
+  if(!url||!url.trim()) return '';
+  url = url.trim();
+  const m1 = url.match(/\/file\/d\/([^\/\?&]+)/);
+  const m2 = url.match(/[?&]id=([^&]+)/);
+  const id = m1 ? m1[1] : m2 ? m2[1] : '';
+  return id ? `https://drive.google.com/thumbnail?id=${id}&sz=w${sz}` : '';
+}
 function ytEmbed(url){
   if(!url||!url.trim()) return '';
   const m=url.trim().match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/|live\/))([A-Za-z0-9_-]{11})/);
@@ -1004,8 +1012,8 @@ function renderRevista(){
   const el=document.getElementById('revistaGrid');
   if(!DATA.revista.length){el.innerHTML='<div class="empty-state">Nenhuma edição disponível.</div>';return;}
   el.innerHTML=DATA.revista.map((r,i)=>{
-    const imgUrl=driveImg(r.capa_url||'');
-    return`<div class="revista-card" onclick="openReader(${i})"><div class="revista-card-capa">${imgUrl?`<img src="${imgUrl}" alt="${escHtml(r.titulo||'')}" onerror="this.parentElement.innerHTML='<div class=\\'revista-card-capa-ph\\'>📖</div>'">`:`<div class="revista-card-capa-ph">📖</div>`}</div><div class="revista-card-body"><div class="revista-card-edicao">${escHtml(r.edicao||'')}</div><div class="revista-card-titulo">${escHtml(r.titulo||'')}</div><div class="revista-card-data">${escHtml(r.data||'')}</div>${r.descricao?`<div class="revista-card-desc">${escHtml(r.descricao)}</div>`:''}</div></div>`;
+    const imgUrl=driveImg(r.capa_url||'') || driveThumb(r.pdf_url||'');
+    return`<div class="revista-card" onclick="openReader(${i})"><div class="revista-card-capa">${imgUrl?`<img src="${imgUrl}" loading="lazy" referrerpolicy="no-referrer" alt="${escHtml(r.titulo||'')}" onerror="this.parentElement.innerHTML='<div class=\\'revista-card-capa-ph\\'>📖</div>'">`:`<div class="revista-card-capa-ph">📖</div>`}</div><div class="revista-card-body"><div class="revista-card-edicao">${escHtml(r.edicao||'')}</div><div class="revista-card-titulo">${escHtml(r.titulo||'')}</div><div class="revista-card-data">${escHtml(r.data||'')}</div>${r.descricao?`<div class="revista-card-desc">${escHtml(r.descricao)}</div>`:''}</div></div>`;
   }).join('');
 }
 function openReader(idx){
