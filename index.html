@@ -376,6 +376,35 @@ button{font-family:var(--sans)}
 .footer p{font-size:12px;color:var(--ink-soft);margin-top:8px;letter-spacing:.04em}
 .empty-state{text-align:center;padding:40px 20px;color:var(--ink-soft);font-size:14px}
 @media(max-width:600px){.casa-pix-block{flex-direction:column}.hero{padding:64px 0 52px}}
+.ico{display:inline-block;vertical-align:-.18em;flex-shrink:0}
+.car-tag,.verse-btn,.reader-back,.sermon-expand{display:inline-flex;align-items:center;gap:7px}
+.ev-tag,.special-card-tag{display:flex;align-items:center;gap:6px}
+.ev-meta span{display:inline-flex;align-items:center;gap:6px}
+.car-link-hint{display:flex;align-items:center;gap:6px}
+.church-img-ph{gap:8px}
+.casa-pix-btn .ico{margin-left:4px}
+.casa-pix-icon{color:var(--accent);display:flex}
+.game-card-icon{width:68px;height:68px;margin:0 auto 14px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:0}
+.contrib-cause-icon{width:46px;height:46px;border-radius:14px;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;margin-bottom:12px;font-size:0}
+.yt-play .ico{display:block}
+.sermon-share{margin-top:18px}
+.modal-btn-share{background:var(--accent-soft);color:var(--accent)}
+.church-img-wrap{position:relative}
+.near-box{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:26px 28px;margin:0 auto 36px;max-width:760px;box-shadow:var(--shadow)}
+.near-head{display:flex;gap:14px;align-items:flex-start;margin-bottom:16px;color:var(--accent)}
+.near-title{font-size:18px;font-weight:700;color:var(--ink);line-height:1.25}
+.near-sub{font-size:13px;color:var(--ink-soft);margin-top:2px}
+.near-form{display:flex;gap:10px;flex-wrap:wrap}
+.near-form input{flex:1;min-width:200px;padding:13px 20px;border:1px solid var(--line);border-radius:999px;font-family:var(--sans);font-size:14px;outline:none;background:var(--bg);transition:border-color .2s}
+.near-form input:focus{border-color:var(--accent)}
+.near-note{font-size:11px;color:var(--ink-soft);margin-top:10px}
+.near-results{margin-top:22px}
+.near-results-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.near-results-title{font-size:13px;font-weight:700;letter-spacing:.04em}
+.near-clear{background:none;border:none;color:var(--accent);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;padding:6px 10px}
+.near-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.near-msg{font-size:13px;color:var(--ink-soft);padding:14px 16px;background:var(--accent-soft);border-radius:var(--r-sm);margin-top:6px}
+.near-badge{position:absolute;top:12px;left:12px;z-index:2;display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:999px;background:var(--accent);color:#fff;font-size:11px;font-weight:700;letter-spacing:.04em;box-shadow:0 4px 12px rgba(0,0,0,.2)}
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
   html{scroll-behavior:auto}
@@ -387,7 +416,7 @@ button{font-family:var(--sans)}
 <div class="modal-overlay" id="churchModal" onclick="if(event.target===this)closeModal()">
   <div class="modal-box" id="churchModalBox" role="dialog" aria-modal="true" aria-labelledby="mName">
     <div class="modal-img-wrap">
-      <button class="modal-close" id="modalCloseBtn" onclick="closeModal()" aria-label="Fechar">✕</button>
+      <button class="modal-close" id="modalCloseBtn" onclick="closeModal()" aria-label="Fechar"><i data-ic="x" data-s="16"></i></button>
       <div id="mImg"></div>
     </div>
     <div class="modal-body">
@@ -405,7 +434,7 @@ button{font-family:var(--sans)}
 </div>
 <div class="revista-reader" id="revistaReader" role="dialog" aria-modal="true" aria-label="Leitor da revista">
   <div class="reader-header">
-    <button class="reader-back" id="readerBackBtn" onclick="closeReader()">← Voltar</button>
+    <button class="reader-back" id="readerBackBtn" onclick="closeReader()"><i data-ic="arrow-left" data-s="14"></i> Voltar</button>
     <div class="reader-title" id="readerTitle"></div>
   </div>
   <div class="reader-body">
@@ -420,7 +449,7 @@ button{font-family:var(--sans)}
       <img class="brand-logo" id="brandLogoImg" alt="" onload="logoOk(this)" onerror="logoNext(this)">
       <div class="brand-text" id="brandText">Carregando</div>
     </a>
-    <button class="nav-toggle" id="navToggle" onclick="toggleMenu()" aria-label="Abrir menu" aria-expanded="false" aria-controls="navLinks">☰</button>
+    <button class="nav-toggle" id="navToggle" onclick="toggleMenu()" aria-label="Abrir menu" aria-expanded="false" aria-controls="navLinks"><i data-ic="menu" data-s="24"></i></button>
     <ul class="nav-links" id="navLinks">
       <li><a href="#home" onclick="navTo(event,'home')" data-page="home">Início</a></li>
       <li id="nav-agenda" style="display:none"><a href="#agenda" onclick="navTo(event,'agenda')" data-page="agenda">Agenda</a></li>
@@ -476,8 +505,8 @@ button{font-family:var(--sans)}
   <div class="wrap">
     <div class="carousel-fw" id="carouselFw" role="region" aria-roledescription="carrossel" aria-label="Destaques">
       <div class="carousel-track" id="carTrack"><div class="car-skel"></div></div>
-      <button class="car-nav car-prev" onclick="carMove(-1)" aria-label="Slide anterior">‹</button>
-      <button class="car-nav car-next" onclick="carMove(1)" aria-label="Próximo slide">›</button>
+      <button class="car-nav car-prev" onclick="carMove(-1)" aria-label="Slide anterior"><i data-ic="chevron-left" data-s="20"></i></button>
+      <button class="car-nav car-next" onclick="carMove(1)" aria-label="Próximo slide"><i data-ic="chevron-right" data-s="20"></i></button>
       <div class="car-dots" id="carDots"></div>
     </div>
     <section id="palavraSec" aria-label="Palavra do dia">
@@ -488,8 +517,8 @@ button{font-family:var(--sans)}
         <div class="verse-ref" id="verseRef"></div>
         <div class="verse-tr" id="verseTr"></div>
         <div class="verse-actions">
-          <button class="verse-btn" onclick="copyVerse(this)">Copiar</button>
-          <button class="verse-btn alt" onclick="shareVerse()">Compartilhar</button>
+          <button class="verse-btn" onclick="copyVerse(this)"><i data-ic="copy" data-s="14"></i> Copiar</button>
+          <button class="verse-btn alt" onclick="shareVerse()"><i data-ic="share" data-s="14"></i> Compartilhar</button>
         </div>
       </div>
     </section>
@@ -519,6 +548,16 @@ button{font-family:var(--sans)}
 <div class="page" id="page-igrejas">
   <div class="wrap">
     <div class="sec-head" style="margin-top:56px"><div class="sec-eyebrow">Onde estamos</div><h2 class="sec-title">Nossas Igrejas</h2><div class="sec-divider"></div></div>
+    <div class="near-box" id="nearBox">
+      <div class="near-head"><i data-ic="locate" data-s="24"></i><div><div class="near-title">Encontre a igreja mais perto de você</div><div class="near-sub">Digite seu bairro, rua ou CEP, ou use sua localização.</div></div></div>
+      <form class="near-form" onsubmit="searchNear(event)">
+        <input type="text" id="nearInput" placeholder="Seu bairro, rua ou CEP" aria-label="Seu bairro, rua ou CEP" autocomplete="off">
+        <button type="submit" class="btn btn-primary"><i data-ic="search" data-s="14"></i> Buscar</button>
+        <button type="button" class="btn btn-ghost" onclick="useMyLocation()"><i data-ic="locate" data-s="14"></i> Usar minha localização</button>
+      </form>
+      <div class="near-note">Sua localização é usada apenas nesta busca e não fica guardada.</div>
+      <div class="near-results" id="nearResults" aria-live="polite"></div>
+    </div>
     <div class="church-search-wrap"><input type="search" placeholder="Buscar pelo nome da igreja…" aria-label="Buscar igreja" oninput="filterChurches(this.value)"></div>
     <div class="church-grid" id="churchGrid"><div class="skel skel-card"></div></div>
   </div>
@@ -568,9 +607,9 @@ button{font-family:var(--sans)}
       <div class="casa-bar"><div class="casa-fill" id="progressFill"></div></div>
     </div>
     <div class="casa-pix-block">
-      <div class="casa-pix-icon">🏛</div>
+      <div class="casa-pix-icon"><i data-ic="church" data-s="38"></i></div>
       <div class="casa-pix-info"><div class="casa-pix-label">Contribua com o projeto</div><div class="casa-pix-title">Doe para Nossa Casa</div><div class="casa-pix-sub">Sua oferta ajuda a construir o espaço que a nossa congregação merece.</div></div>
-      <a class="casa-pix-btn" href="#contribua" onclick="navTo(event,'contribua')">Como Contribuir →</a>
+      <a class="casa-pix-btn" href="#contribua" onclick="navTo(event,'contribua')">Como Contribuir <i data-ic="arrow-right" data-s="14"></i></a>
     </div>
     <div class="sec-head"><div class="sec-eyebrow">Linha do tempo</div><h2 style="font-family:var(--sans);font-size:clamp(22px,3.5vw,32px);font-weight:700;text-align:center">Atualizações da Obra</h2><div class="sec-divider"></div></div>
     <div class="update-list" id="updateList"><div class="skel skel-card"></div></div>
@@ -596,9 +635,9 @@ button{font-family:var(--sans)}
       <div class="contrib-sub">Além do dízimo</div><h3 class="contrib-head">Ofertas e Causas</h3>
       <p class="contrib-text">É importante imitar Jesus em tudo, inclusive em generosidade. Além do dízimo, suas ofertas podem ir a causas específicas que ampliam o alcance da nossa missão.</p>
       <div class="contrib-causes">
-        <div class="contrib-cause"><div class="contrib-cause-icon">🏛</div><div class="contrib-cause-title">Nossa Casa</div><div class="contrib-cause-desc">Ajude a construir o novo templo.</div></div>
-        <div class="contrib-cause"><div class="contrib-cause-icon">🌍</div><div class="contrib-cause-title">Missões</div><div class="contrib-cause-desc">Leve a verdadeira Esperança ao redor do mundo.</div></div>
-        <div class="contrib-cause"><div class="contrib-cause-icon">🌐</div><div class="contrib-cause-title">Alcance Digital</div><div class="contrib-cause-desc">Transmissões e conteúdo que alcança quem não pode estar presente.</div></div>
+        <div class="contrib-cause"><div class="contrib-cause-icon"><i data-ic="church" data-s="24"></i></div><div class="contrib-cause-title">Nossa Casa</div><div class="contrib-cause-desc">Ajude a construir o novo templo.</div></div>
+        <div class="contrib-cause"><div class="contrib-cause-icon"><i data-ic="globe" data-s="24"></i></div><div class="contrib-cause-title">Missões</div><div class="contrib-cause-desc">Leve a verdadeira Esperança ao redor do mundo.</div></div>
+        <div class="contrib-cause"><div class="contrib-cause-icon"><i data-ic="radio" data-s="24"></i></div><div class="contrib-cause-title">Alcance Digital</div><div class="contrib-cause-desc">Transmissões e conteúdo que alcança quem não pode estar presente.</div></div>
       </div>
     </div></div>
   </div>
@@ -671,6 +710,46 @@ const VERSE_FALLBACK=[
   {ref:'Isaías 41:10',text:'Não temas, porque eu sou contigo; não te assombres, porque eu sou o teu Deus; eu te fortaleço, e te ajudo, e te sustento com a destra da minha justiça.'},
   {ref:'Josué 1:9',text:'Não to mandei eu? Esforça-te, e tem bom ânimo; não pasmes, nem te espantes, porque o Senhor teu Deus é contigo, por onde quer que andares.'}
 ];
+const ICONS={
+  pin:'<path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>',
+  clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  calendar:'<rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/>',
+  download:'<path d="M12 3v12m0 0-4-4m4 4 4-4M4 21h16"/>',
+  share:'<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/>',
+  copy:'<rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/>',
+  check:'<path d="m5 12 5 5 9-10"/>',
+  play:'<path d="M8 5v14l11-7z"/>',
+  bell:'<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>',
+  star:'<path d="m12 2.5 2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4 6.1 20.5l1.2-6.5L2.5 9.4l6.6-.9z"/>',
+  mic:'<rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>',
+  mail:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',
+  chat:'<path d="M21 12a8 8 0 0 1-11.6 7.1L3 21l1.9-6.2A8 8 0 1 1 21 12Z"/>',
+  church:'<path d="M12 2v5M10 4.5h4"/><path d="m6 22V12l6-5 6 5v10"/><path d="M2 22h20M10 22v-5a2 2 0 0 1 4 0v5"/>',
+  globe:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>',
+  radio:'<circle cx="12" cy="12" r="2"/><path d="M16.2 7.8a6 6 0 0 1 0 8.4M7.8 16.2a6 6 0 0 1 0-8.4M19.1 4.9a10 10 0 0 1 0 14.2M4.9 19.1a10 10 0 0 1 0-14.2"/>',
+  book:'<path d="M2 5a1 1 0 0 1 1-1h6a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H3a1 1 0 0 1-1-1Z"/><path d="M22 5a1 1 0 0 0-1-1h-6a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h7a1 1 0 0 0 1-1Z"/>',
+  shield:'<path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6Z"/>',
+  grid:'<rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/>',
+  camera:'<path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1Z"/><circle cx="12" cy="13" r="3.5"/>',
+  tag:'<path d="M3 12V4a1 1 0 0 1 1-1h8l9 9-9 9Z"/><circle cx="8" cy="8" r="1.3"/>',
+  locate:'<circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="8"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3"/>',
+  search:'<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
+  'chevron-left':'<path d="m15 5-7 7 7 7"/>',
+  'chevron-right':'<path d="m9 5 7 7-7 7"/>',
+  'arrow-right':'<path d="M5 12h14m-6-6 6 6-6 6"/>',
+  'arrow-left':'<path d="M19 12H5m6-6-6 6 6 6"/>',
+  x:'<path d="M6 6l12 12M18 6 6 18"/>',
+  menu:'<path d="M4 7h16M4 12h16M4 17h16"/>'
+};
+function ic(name,size,fill){
+  const p=ICONS[name];
+  if(!p) return '';
+  const s=size||16;
+  return `<svg class="ico" width="${s}" height="${s}" viewBox="0 0 24 24" fill="${fill?'currentColor':'none'}" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
+}
+function hydrateIcons(){
+  document.querySelectorAll('i[data-ic]').forEach(el=>{el.outerHTML=ic(el.dataset.ic,parseInt(el.dataset.s||'16',10),el.dataset.fill==='1');});
+}
 function driveUrls(url,w){
   if(!url||!url.trim()) return [];
   url=url.trim();
@@ -820,7 +899,7 @@ function applyConfig(){
   if(cfgBool('aba_agenda',true)) cta.push('<a class="btn btn-primary" href="#agenda" onclick="navTo(event,\'agenda\')">Ver agenda</a>');
   if(cfgBool('aba_igrejas',true)) cta.push('<a class="btn btn-ghost" href="#igrejas" onclick="navTo(event,\'igrejas\')">Nossas igrejas</a>');
   const liveLink=safeUrl(cfg('youtube_live_url')||cfg('youtube_url'));
-  if(liveLink) cta.push('<a class="btn btn-ghost" href="'+escHtml(liveLink)+'" target="_blank" rel="noopener noreferrer">▶ Assistir</a>');
+  if(liveLink) cta.push('<a class="btn btn-ghost" href="'+escHtml(liveLink)+'" target="_blank" rel="noopener noreferrer">'+ic('play',13,true)+' Assistir</a>');
   document.getElementById('heroCta').innerHTML=cta.join('');
   const sobreTexto=cfg('sobre_texto','');
   const sobreEl=document.getElementById('sobreTexto');
@@ -835,11 +914,11 @@ function applyConfig(){
   document.getElementById('pixObraNota').textContent=cfg('pix_obra_nota');
   document.getElementById('footerText').textContent=nome+(cfg('cidade')?' · '+cfg('cidade'):'')+' · Todos os direitos reservados';
   const contact=[];
-  if(cfg('rodape_endereco')) contact.push('<span>📍 '+escHtml(cfg('rodape_endereco'))+'</span>');
+  if(cfg('rodape_endereco')) contact.push('<span>'+ic('pin',14)+' '+escHtml(cfg('rodape_endereco'))+'</span>');
   const wa=(cfg('whatsapp')||'').replace(/\D/g,'');
-  if(wa) contact.push('<a href="https://wa.me/'+wa+'" target="_blank" rel="noopener noreferrer">💬 WhatsApp</a>');
+  if(wa) contact.push('<a href="https://wa.me/'+wa+'" target="_blank" rel="noopener noreferrer">'+ic('chat',14)+' WhatsApp</a>');
   const mail=cfg('email');
-  if(mail&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) contact.push('<a href="mailto:'+escHtml(mail)+'">✉️ '+escHtml(mail)+'</a>');
+  if(mail&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) contact.push('<a href="mailto:'+escHtml(mail)+'">'+ic('mail',14)+' '+escHtml(mail)+'</a>');
   document.getElementById('footerContact').innerHTML=contact.join('');
   const ytUrl=safeUrl(cfg('youtube_url'));const igUrl=safeUrl(cfg('instagram_url'));const fbUrl=safeUrl(cfg('facebook_url'));const podUrl=safeUrl(cfg('podcast_url'));
   const setNavLink=(id,url)=>{const el=document.getElementById(id);if(el){el.href=url||'#';el.style.display=url?'flex':'none';}};
@@ -851,7 +930,7 @@ function applyConfig(){
   if(ytUrl) bandLinks.push(`<a class="social-btn" href="${escHtml(ytUrl)}" target="_blank" rel="noopener noreferrer">${svgYt} YouTube</a>`);
   if(igUrl) bandLinks.push(`<a class="social-btn" href="${escHtml(igUrl)}" target="_blank" rel="noopener noreferrer">${svgIg} Instagram</a>`);
   if(fbUrl) bandLinks.push(`<a class="social-btn" href="${escHtml(fbUrl)}" target="_blank" rel="noopener noreferrer">${svgFb} Facebook</a>`);
-  if(podUrl) bandLinks.push(`<a class="social-btn" href="${escHtml(podUrl)}" target="_blank" rel="noopener noreferrer">🎙️ Podcast</a>`);
+  if(podUrl) bandLinks.push(`<a class="social-btn" href="${escHtml(podUrl)}" target="_blank" rel="noopener noreferrer">${ic('mic',16)} Podcast</a>`);
   document.getElementById('socialLinks').innerHTML=bandLinks.join('');
   const gaId=cfg('analytics_id');
   if(gaId&&gaId.startsWith('G-')&&!_gaLoaded){
@@ -881,6 +960,8 @@ function applyConfig(){
   if(navSobreEl) navSobreEl.style.display=(showSobre||showDepartamentos)?'':'none';
   if(navHistoriaEl) navHistoriaEl.style.display=showSobre?'':'none';
   if(navDeptEl) navDeptEl.style.display=showDepartamentos?'':'none';
+  const nearEl=document.getElementById('nearBox');
+  if(nearEl) nearEl.style.display=cfgBool('perto_de_mim',true)?'':'none';
   renderGames();
 }
 const MONTHS=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
@@ -947,14 +1028,14 @@ function closeMenu(){
   document.getElementById('navLinks').classList.remove('open');
   document.body.classList.remove('menu-open');
   const btn=document.getElementById('navToggle');
-  btn.textContent='☰';btn.setAttribute('aria-expanded','false');btn.setAttribute('aria-label','Abrir menu');
+  btn.innerHTML=ic('menu',24);btn.setAttribute('aria-expanded','false');btn.setAttribute('aria-label','Abrir menu');
 }
 function toggleMenu(){
   const nav=document.getElementById('navLinks');
   const btn=document.getElementById('navToggle');
   const isOpen=nav.classList.toggle('open');
   document.body.classList.toggle('menu-open',isOpen);
-  btn.textContent=isOpen?'✕':'☰';
+  btn.innerHTML=ic(isOpen?'x':'menu',24);
   btn.setAttribute('aria-expanded',isOpen?'true':'false');
   btn.setAttribute('aria-label',isOpen?'Fechar menu':'Abrir menu');
 }
@@ -1001,12 +1082,25 @@ function checkLive(){
   }
 }
 function openLive(){if(_liveUrl) window.open(_liveUrl,'_blank','noopener,noreferrer');}
+const INVITES={evento:'Programação completa e mais eventos em',verso:'Uma Palavra por dia em',igreja:'Encontre a congregação mais perto de você em',sermao:'Mais mensagens em'};
+function inviteLine(ctx){return cfg('convite_texto')||INVITES[ctx]||INVITES.evento;}
+function siteUrl(hash){
+  let base=cfg('site_url');
+  if(!base) base=(location.origin&&location.origin!=='null'?location.origin:'')+location.pathname.replace(/index\.html$/,'');
+  return base+(hash?'#'+hash:'');
+}
+function doShare(title,body,ctx,hash){
+  const nome=cfg('nome_igreja');
+  const text=body+'\n\n'+inviteLine(ctx)+' '+siteUrl(hash)+(nome?'\n_'+nome+'_':'');
+  if(navigator.share){navigator.share({title,text}).catch(()=>{});}
+  else{window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank','noopener,noreferrer');}
+}
 function copyPix(type,btn){
   const key=type==='obra'?cfg('pix_obra_chave'):cfg('pix_regular_chave');
   if(!key){showToast('Chave PIX não configurada.');return;}
   navigator.clipboard.writeText(key).then(()=>{
-    const orig=btn.textContent;btn.textContent='Copiado ✓';btn.classList.add('copied');
-    setTimeout(()=>{btn.textContent=orig;btn.classList.remove('copied');},2500);
+    const orig=btn.innerHTML;btn.innerHTML=ic('check',14)+' Copiado';btn.classList.add('copied');
+    setTimeout(()=>{btn.innerHTML=orig;btn.classList.remove('copied');},2500);
   }).catch(()=>prompt('Copie a chave PIX:',key));
 }
 function dayKey(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
@@ -1067,25 +1161,20 @@ async function renderPalavra(){
     paintVerse({ref:fb.ref,text:fb.text,tr:'João Ferreira de Almeida'});
   }
 }
-function verseShareText(){
-  const t=document.getElementById('verseText').textContent;
-  const r=document.getElementById('verseRef').textContent;
-  return t+'\n— '+r+'\n\n_'+cfg('nome_igreja','')+'_';
-}
 function copyVerse(btn){
   const t=document.getElementById('verseText').textContent;
   const r=document.getElementById('verseRef').textContent;
   if(!r){return;}
   navigator.clipboard.writeText(t+' — '+r).then(()=>{
-    const orig=btn.textContent;btn.textContent='Copiado ✓';
-    setTimeout(()=>{btn.textContent=orig;},2200);
+    const orig=btn.innerHTML;btn.innerHTML=ic('check',14)+' Copiado';
+    setTimeout(()=>{btn.innerHTML=orig;},2200);
   }).catch(()=>showToast('Não foi possível copiar.'));
 }
 function shareVerse(){
-  if(!document.getElementById('verseRef').textContent) return;
-  const text=verseShareText();
-  if(navigator.share){navigator.share({title:'Palavra do Dia',text}).catch(()=>{});}
-  else{window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank','noopener,noreferrer');}
+  const t=document.getElementById('verseText').textContent;
+  const r=document.getElementById('verseRef').textContent;
+  if(!r) return;
+  doShare('Palavra do Dia',t+'\n— '+r,'verso','');
 }
 let carIdx=0,carSlides=[],carPaused=false;
 const reduceMotion=window.matchMedia?window.matchMedia('(prefers-reduced-motion: reduce)'):{matches:false};
@@ -1111,10 +1200,10 @@ function renderCarousel(){
     if(s.kind==='aviso'){
       const n=s.data;const hasLink=!!safeUrl(n.link_aviso);
       const oc=hasLink?` onclick="openNotice(${s.idx})" style="cursor:pointer"`:'';
-      return`<div class="car-slide"${oc}>${bg||'<div class="car-bg"></div>'}<div class="car-overlay"></div><div class="car-content"><div class="car-tag">📢 Aviso</div><div class="car-title">${escHtml(n.titulo)}</div><div class="car-desc">${escHtml(n.corpo)}</div>${hasLink?'<div class="car-link-hint">Saiba mais →</div>':''}</div></div>`;
+      return`<div class="car-slide"${oc}>${bg||'<div class="car-bg"></div>'}<div class="car-overlay"></div><div class="car-content"><div class="car-tag">${ic('bell',13)} Aviso</div><div class="car-title">${escHtml(n.titulo)}</div><div class="car-desc">${escHtml(n.corpo)}</div>${hasLink?'<div class="car-link-hint">Saiba mais '+ic('arrow-right',13)+'</div>':''}</div></div>`;
     }
     const e=s.data;const fd=fmtShort(e.data);const mo=parseDate(e.data);
-    return`<div class="car-slide">${bg||'<div class="car-bg"></div>'}<div class="car-overlay"></div><div class="car-content"><div class="car-tag">★ Evento Especial</div><div class="car-title">${escHtml(e.nome)}</div><div class="car-desc">${fd.wd?fd.wd+', ':''}${fd.num} de ${mo?MONTHS_FULL[mo.getMonth()]:''}${e.hora?' · '+fmtTime(e.hora):''}${e.local?' · '+escHtml(e.local):''}</div></div></div>`;
+    return`<div class="car-slide">${bg||'<div class="car-bg"></div>'}<div class="car-overlay"></div><div class="car-content"><div class="car-tag">${ic('star',13)} Evento Especial</div><div class="car-title">${escHtml(e.nome)}</div><div class="car-desc">${fd.wd?fd.wd+', ':''}${fd.num} de ${mo?MONTHS_FULL[mo.getMonth()]:''}${e.hora?' · '+fmtTime(e.hora):''}${e.local?' · '+escHtml(e.local):''}</div></div></div>`;
   }).join('');
   dots.innerHTML=carSlides.map((_,i)=>`<button class="car-dot${i===0?' active':''}" onclick="carGo(${i})" aria-label="Ir para o slide ${i+1}"></button>`).join('');
   carIdx=0;updateCarousel();
@@ -1146,7 +1235,7 @@ function renderSpecialsGrid(){
   const el=document.getElementById('specialsGrid');
   const up=upcomingSpecials(2);
   if(!up.length){el.innerHTML='<div class="empty-state" style="grid-column:1/-1">Nenhum evento especial próximo.</div>';return;}
-  el.innerHTML=up.map(e=>{const fd=fmtShort(e.data);const mo=parseDate(e.data);return`<div class="special-card"><div class="special-card-tag">★ Evento Especial</div><div class="special-card-date">${fd.wd}, ${fd.num} de ${mo?MONTHS_FULL[mo.getMonth()]:''}</div><div class="special-card-name">${escHtml(e.nome)}</div><div class="special-card-meta">${fmtTime(e.hora)}${e.local?' · '+escHtml(e.local):''}</div></div>`;}).join('');
+  el.innerHTML=up.map(e=>{const fd=fmtShort(e.data);const mo=parseDate(e.data);return`<div class="special-card"><div class="special-card-tag">${ic('star',12)} Evento Especial</div><div class="special-card-date">${fd.wd}, ${fd.num} de ${mo?MONTHS_FULL[mo.getMonth()]:''}</div><div class="special-card-name">${escHtml(e.nome)}</div><div class="special-card-meta">${fmtTime(e.hora)}${e.local?' · '+escHtml(e.local):''}</div></div>`;}).join('');
 }
 function openNotice(i){
   const n=DATA.avisos[i];if(!n) return;
@@ -1162,36 +1251,74 @@ function renderNotices(){
     const hasImg=!!img;
     const cls=`notice${hasLink?' clickable':''}${hasImg?' has-img':''}`;
     const oc=hasLink?` onclick="openNotice(${i})" onkeydown="if(event.key==='Enter')openNotice(${i})" role="link" tabindex="0"`:'';
-    return`<div class="${cls}"${oc}>${hasImg?`<div class="notice-img-wrap">${img}</div>`:''}<div class="notice-body-wrap"><div class="notice-eyebrow">Aviso</div><div class="notice-title">${escHtml(n.titulo)}</div><div class="notice-body">${escHtml(n.corpo)}</div><div class="notice-date">${escHtml(n.data)}</div>${hasLink?'<div class="notice-link-badge">Ver mais →</div>':''}</div></div>`;
+    return`<div class="${cls}"${oc}>${hasImg?`<div class="notice-img-wrap">${img}</div>`:''}<div class="notice-body-wrap"><div class="notice-eyebrow">Aviso</div><div class="notice-title">${escHtml(n.titulo)}</div><div class="notice-body">${escHtml(n.corpo)}</div><div class="notice-date">${escHtml(n.data)}</div>${hasLink?'<div class="notice-link-badge">Ver mais '+ic('arrow-right',13)+'</div>':''}</div></div>`;
   }).join('');
 }
 let _agendaView=[];
+function eventTimes(e){
+  const dt=parseDate(e.data);
+  if(!dt) return null;
+  const pad=n=>String(n).padStart(2,'0');
+  const fd=(y,m,d)=>y+pad(m+1)+pad(d);
+  if(e.hora&&/^\d{1,2}:\d{2}/.test(e.hora)){
+    const[h,m]=e.hora.split(':').map(Number);
+    const s=Date.UTC(dt.getFullYear(),dt.getMonth(),dt.getDate(),h,m);
+    const f=ms=>{const x=new Date(ms);return fd(x.getUTCFullYear(),x.getUTCMonth(),x.getUTCDate())+'T'+pad(x.getUTCHours())+pad(x.getUTCMinutes())+'00';};
+    return{allDay:false,start:f(s),end:f(s+2*3600000)};
+  }
+  const nx=new Date(Date.UTC(dt.getFullYear(),dt.getMonth(),dt.getDate()+1));
+  return{allDay:true,start:fd(dt.getFullYear(),dt.getMonth(),dt.getDate()),end:fd(nx.getUTCFullYear(),nx.getUTCMonth(),nx.getUTCDate())};
+}
 function shareEventIdx(i){
   const e=_agendaView[i];if(!e) return;
   const d=parseDate(e.data);
-  const nomeIgreja=cfg('nome_igreja');
-  const text=`Participe conosco: *${e.nome}*\n📅 ${d?DAYS_FULL[d.getDay()]+', '+d.getDate()+' de '+MONTHS_FULL[d.getMonth()]+' de '+d.getFullYear():e.data}\n⏰ ${fmtTime(e.hora)}\n📍 ${e.local||nomeIgreja}\n\n_${nomeIgreja}_`;
-  if(navigator.share){navigator.share({title:e.nome,text}).catch(()=>{});}
-  else{window.open(`https://wa.me/?text=${encodeURIComponent(text)}`,'_blank','noopener,noreferrer');}
+  const when=d?DAYS_FULL[d.getDay()]+', '+d.getDate()+' de '+MONTHS_FULL[d.getMonth()]+' de '+d.getFullYear():e.data;
+  const body='Participe conosco: *'+e.nome+'*\n'+when+(e.hora?' · '+fmtTime(e.hora):'')+((e.local||cfg('nome_igreja'))?'\n'+(e.local||cfg('nome_igreja')):'');
+  doShare(e.nome,body,'evento','agenda');
 }
 function addToCalendarIdx(i){
   const e=_agendaView[i];if(!e) return;
-  const dt=parseDate(e.data);if(!dt){showToast('Data inválida.');return;}
-  const pad=n=>String(n).padStart(2,'0');
-  let dates;
-  if(e.hora&&/^\d{1,2}:\d{2}/.test(e.hora)){
-    const[h,m]=e.hora.split(':').map(Number);
-    const s=new Date(dt.getFullYear(),dt.getMonth(),dt.getDate(),h,m);
-    const en=new Date(s.getTime()+2*3600000);
-    const f=d=>d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+'T'+pad(d.getHours())+pad(d.getMinutes())+'00';
-    dates=f(s)+'/'+f(en);
-  }else{
-    const nx=new Date(dt.getFullYear(),dt.getMonth(),dt.getDate()+1);
-    const f=d=>d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate());
-    dates=f(dt)+'/'+f(nx);
-  }
-  const url=`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(e.nome)}&dates=${dates}&ctz=${encodeURIComponent(cfg('fuso','America/Sao_Paulo'))}&details=${encodeURIComponent(e.desc||'')}&location=${encodeURIComponent(e.local||cfg('nome_igreja'))}`;
+  const t=eventTimes(e);
+  if(!t){showToast('Data inválida.');return;}
+  const details=(e.desc?e.desc+'\n\n':'')+inviteLine('evento')+' '+siteUrl('agenda');
+  const url='https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(e.nome)+'&dates='+t.start+'/'+t.end+'&ctz='+encodeURIComponent(cfg('fuso','America/Sao_Paulo'))+'&details='+encodeURIComponent(details)+'&location='+encodeURIComponent(e.local||cfg('nome_igreja'));
   window.open(url,'_blank','noopener,noreferrer');
+}
+function icsEscape(s){return String(s||'').replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\r?\n/g,'\\n');}
+function icsFold(l){
+  const out=[l.slice(0,70)];
+  let rest=l.slice(70);
+  while(rest.length>69){out.push(' '+rest.slice(0,69));rest=rest.slice(69);}
+  if(rest) out.push(' '+rest);
+  return out.join('\r\n');
+}
+function downloadIcsIdx(i){
+  const e=_agendaView[i];if(!e) return;
+  const t=eventTimes(e);
+  if(!t){showToast('Data inválida.');return;}
+  const tz=cfg('fuso','America/Sao_Paulo');
+  const useTz=!t.allDay&&tz==='America/Sao_Paulo';
+  const stamp=new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'');
+  const slug=norm(e.nome).replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'evento';
+  const desc=(e.desc?e.desc+'\n\n':'')+inviteLine('evento')+' '+siteUrl('agenda');
+  const L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Site da Igreja//PT-BR','CALSCALE:GREGORIAN','METHOD:PUBLISH'];
+  if(useTz) L.push('BEGIN:VTIMEZONE','TZID:America/Sao_Paulo','BEGIN:STANDARD','DTSTART:19700101T000000','TZOFFSETFROM:-0300','TZOFFSETTO:-0300','TZNAME:-03','END:STANDARD','END:VTIMEZONE');
+  L.push('BEGIN:VEVENT','UID:'+e.data+'-'+slug+'@'+(location.hostname||'site'),'DTSTAMP:'+stamp);
+  if(t.allDay) L.push('DTSTART;VALUE=DATE:'+t.start,'DTEND;VALUE=DATE:'+t.end);
+  else if(useTz) L.push('DTSTART;TZID=America/Sao_Paulo:'+t.start,'DTEND;TZID=America/Sao_Paulo:'+t.end);
+  else L.push('DTSTART:'+t.start,'DTEND:'+t.end);
+  L.push('SUMMARY:'+icsEscape(e.nome),'DESCRIPTION:'+icsEscape(desc));
+  if(e.local) L.push('LOCATION:'+icsEscape(e.local));
+  L.push('URL:'+siteUrl('agenda'),'BEGIN:VALARM','TRIGGER:-PT1H','ACTION:DISPLAY','DESCRIPTION:Lembrete','END:VALARM','END:VEVENT','END:VCALENDAR');
+  const body=L.map(icsFold).join('\r\n')+'\r\n';
+  const blob=new Blob([body],{type:'text/calendar;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=slug+'.ics';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),2000);
 }
 let _agendaFilter='proximos';
 function sortedSpecialEvents(){
@@ -1238,13 +1365,14 @@ function renderAgenda(){
         ${!hasImg?`<div class="ev-date-badge"><b>${fd.num}</b><small>${fd.mon}</small></div>`:''}
         <div class="ev-body">
           ${hasImg?`<div class="ev-tag" style="margin-bottom:6px">${fd.wd}, ${fd.num} de ${MONTHS_FULL[d.getMonth()]}</div>`:''}
-          <div class="ev-tag">★ Especial</div>
+          <div class="ev-tag">${ic('star',12)} Especial</div>
           <div class="ev-name">${escHtml(ev.nome)}</div>
           ${ev.desc?`<div class="ev-desc">${escHtml(ev.desc)}</div>`:''}
-          <div class="ev-meta">${ev.hora?`<span>🕐 ${fmtTime(ev.hora)}</span>`:''}${ev.local?`<span>📍 ${escHtml(ev.local)}</span>`:''}</div>
+          <div class="ev-meta">${ev.hora?`<span>${ic('clock',14)} ${fmtTime(ev.hora)}</span>`:''}${ev.local?`<span>${ic('pin',14)} ${escHtml(ev.local)}</span>`:''}</div>
           ${!isPast?`<div class="ev-actions">
-            <button class="ev-btn ev-btn-share" onclick="shareEventIdx(${i})">📤 Compartilhar</button>
-            <button class="ev-btn ev-btn-cal" onclick="addToCalendarIdx(${i})">📅 Google Agenda</button>
+            <button class="ev-btn ev-btn-share" onclick="shareEventIdx(${i})">${ic('share',14)} Compartilhar</button>
+            <button class="ev-btn ev-btn-cal" onclick="addToCalendarIdx(${i})">${ic('calendar',14)} Google Agenda</button>
+            <button class="ev-btn ev-btn-cal" onclick="downloadIcsIdx(${i})">${ic('download',14)} Apple / Outlook (.ics)</button>
           </div>`:''}
         </div>
       </div>
@@ -1253,23 +1381,164 @@ function renderAgenda(){
   el.innerHTML=html;
 }
 function mapsUrl(q){return'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q);}
-const PH_IGREJA='<div class="church-img-ph">📷 Sem foto</div>';
-const PH_DEPTO='<div class="church-img-ph">🏷️ Sem imagem</div>';
+const PH_IGREJA='<div class="church-img-ph">'+ic('camera',22)+' Sem foto</div>';
+const PH_DEPTO='<div class="church-img-ph">'+ic('tag',22)+' Sem imagem</div>';
 let _churchFilter='';
+function churchCardHtml(c,i,badge){
+  const img=imgEl(c.foto_url||'',c.nome,PH_IGREJA)||PH_IGREJA;
+  return`<div class="church-card"><div class="church-img-wrap">${badge?`<span class="near-badge">${ic('locate',13)} ${escHtml(badge)}</span>`:''}<div class="church-img">${img}</div></div><div class="church-body"><div class="church-name">${escHtml(c.nome)}</div>${c.endereco?`<div class="church-detail"><b>Endereço</b><span>${escHtml(c.endereco)}</span></div>`:''}${c.pastor?`<div class="church-detail"><b>Pastor</b><span>${escHtml(c.pastor)}</span></div>`:''}<div class="church-footer"><a class="church-maps-link" href="${escHtml(mapsUrl((c.nome||'')+' '+(c.endereco||'')))}" target="_blank" rel="noopener noreferrer">${ic('pin',14)} Google Maps</a><button class="church-more-btn" onclick="openModal(${i})">Ver mais</button></div></div></div>`;
+}
 function renderChurches(){
   const filter=norm(_churchFilter);
   const el=document.getElementById('churchGrid');
   const list=DATA.igrejas.map((c,i)=>({c,i})).filter(({c})=>!filter||norm(c.nome).includes(filter));
   if(!list.length){el.innerHTML=`<div class="empty-state">${filter?'Nenhuma igreja encontrada.':'Nenhuma igreja cadastrada.'}</div>`;return;}
-  el.innerHTML=list.map(({c,i})=>{
-    return`<div class="church-card"><div class="church-img">${imgEl(c.foto_url||'',c.nome,PH_IGREJA)||PH_IGREJA}</div><div class="church-body"><div class="church-name">${escHtml(c.nome)}</div>${c.endereco?`<div class="church-detail"><b>Endereço</b><span>${escHtml(c.endereco)}</span></div>`:''}${c.pastor?`<div class="church-detail"><b>Pastor</b><span>${escHtml(c.pastor)}</span></div>`:''}<div class="church-footer"><a class="church-maps-link" href="${escHtml(mapsUrl((c.nome||'')+' '+(c.endereco||'')))}" target="_blank" rel="noopener noreferrer">📍 Google Maps</a><button class="church-more-btn" onclick="openModal(${i})">Ver mais</button></div></div></div>`;
-  }).join('');
+  el.innerHTML=list.map(({c,i})=>churchCardHtml(c,i,'')).join('');
 }
 function filterChurches(v){_churchFilter=v;renderChurches();}
+function shareChurch(i){
+  const c=DATA.igrejas[i];if(!c) return;
+  const body='*'+(c.nome||'')+'*'+(c.endereco?'\n'+c.endereco:'')+'\n'+mapsUrl((c.nome||'')+' '+(c.endereco||''));
+  doShare(c.nome||'Igreja',body,'igreja','igrejas');
+}
+const STREET_RE=/^(rua|r|avenida|av|alameda|al|travessa|tv|estrada|estr|rodovia|rod|praca|pca)\s+/;
+const GENERIC=new Set(['rua','avenida','av','alameda','travessa','estrada','rodovia','praca','jardim','jd','vila','vl','parque','pq','bairro','centro','de','da','do','das','dos','sp','brasil','sao','paulo']);
+function cleanTxt(s){return norm(s).replace(/[^a-z0-9\s]/g,' ').replace(/\s+/g,' ').trim();}
+function stripStreet(s){return cleanTxt(s).replace(STREET_RE,'').trim();}
+function numCoord(v){const n=parseFloat(String(v==null?'':v).replace(',','.'));return isNaN(n)?null:n;}
+function churchCoords(c){
+  const la=numCoord(c.latitude!==undefined?c.latitude:c.lat);
+  const lo=numCoord(c.longitude!==undefined?c.longitude:(c.lng!==undefined?c.lng:c.lon));
+  if(la===null||lo===null||Math.abs(la)>90||Math.abs(lo)>180) return null;
+  return{la,lo};
+}
+function hasChurchCoords(){return DATA.igrejas.some(c=>churchCoords(c));}
+function haversine(a,b){
+  const rad=x=>x*Math.PI/180;
+  const dLa=rad(b.la-a.la),dLo=rad(b.lo-a.lo);
+  const h=Math.sin(dLa/2)**2+Math.cos(rad(a.la))*Math.cos(rad(b.la))*Math.sin(dLo/2)**2;
+  return 2*6371*Math.asin(Math.sqrt(h));
+}
+function fmtDist(d){return d<1?Math.round(d*100)*10+' m':d.toFixed(1).replace('.',',')+' km';}
+async function geoFetch(url){
+  const ctrl=typeof AbortController!=='undefined'?new AbortController():null;
+  const t=ctrl?setTimeout(()=>ctrl.abort(),9000):null;
+  try{
+    const r=await fetch(url,ctrl?{signal:ctrl.signal}:{});
+    if(!r.ok) throw new Error('http');
+    return await r.json();
+  }finally{if(t) clearTimeout(t);}
+}
+async function reverseGeo(lat,lon){
+  const j=await geoFetch('https://nominatim.openstreetmap.org/reverse?format=jsonv2&addressdetails=1&zoom=18&accept-language=pt-BR&lat='+lat+'&lon='+lon);
+  const a=j.address||{};
+  const city=a.city||a.town||a.village||a.municipality||'';
+  const area=a.suburb||a.neighbourhood||a.quarter||a.city_district||'';
+  return{road:a.road||'',suburb:a.suburb||'',neighbourhood:a.neighbourhood||'',quarter:a.quarter||'',district:a.city_district||'',city,postcode:(a.postcode||'').replace(/\D/g,''),label:[area,city].filter(Boolean).join(', ')};
+}
+async function forwardGeo(q){
+  const j=await geoFetch('https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&countrycodes=br&accept-language=pt-BR&q='+encodeURIComponent(q));
+  if(!j||!j.length) return null;
+  const la=parseFloat(j[0].lat),lo=parseFloat(j[0].lon);
+  return isNaN(la)||isNaN(lo)?null:{la,lo};
+}
+function queryFromPlace(p){
+  const ph=[];
+  const add=(v,w)=>{const s=stripStreet(v);if(s.length>=3) ph.push([s,w]);};
+  add(p.road,8);add(p.neighbourhood,6);add(p.suburb,6);add(p.quarter,5);add(p.district,3);add(p.city,0.8);
+  return{phrases:ph,tokens:[],cep:p.postcode&&p.postcode.length===8?p.postcode:''};
+}
+function queryFromText(text){
+  const cepM=text.match(/\d{5}-?\d{3}/);
+  const cep=cepM?cepM[0].replace(/\D/g,''):'';
+  const clean=cleanTxt(text.replace(/\d{5}-?\d{3}/,' '));
+  const phrase=clean.replace(STREET_RE,'').replace(/\s*\d+\s*$/,'').trim();
+  const tokens=clean.split(' ').filter(t=>t.length>=3&&!/^\d+$/.test(t));
+  const ph=[];
+  if(phrase.length>=3) ph.push([phrase,6]);
+  return{phrases:ph,tokens:[...new Set(tokens)],cep};
+}
+function scoreChurch(c,q){
+  const hay=cleanTxt((c.endereco||'')+' '+(c.nome||''));
+  const words=new Set(hay.split(' '));
+  let s=0;
+  q.phrases.forEach(([p,w])=>{if(hay.includes(p)) s+=w;});
+  q.tokens.forEach(t=>{if(words.has(t)) s+=GENERIC.has(t)?0.4:2;});
+  if(q.cep){
+    const m=(c.endereco||'').match(/\d{5}-?\d{3}/);
+    if(m){
+      const cc=m[0].replace(/\D/g,'');
+      if(cc===q.cep) s+=8;
+      else if(cc.slice(0,5)===q.cep.slice(0,5)) s+=4;
+      else if(cc.slice(0,3)===q.cep.slice(0,3)) s+=1;
+    }
+  }
+  return s;
+}
+function rankChurches(q,userPos){
+  const all=DATA.igrejas.map((c,i)=>{
+    const cc=churchCoords(c);
+    return{i,score:scoreChurch(c,q),dist:(userPos&&cc)?haversine(userPos,cc):null};
+  });
+  return{
+    withDist:all.filter(x=>x.dist!==null).sort((a,b)=>a.dist-b.dist),
+    rest:all.filter(x=>x.dist===null).sort((a,b)=>b.score-a.score)
+  };
+}
+function pickNear(res){
+  const n=parseInt(cfg('perto_qtd','3'),10)||3;
+  const items=res.withDist.slice(0,n);
+  if(items.length<n) res.rest.filter(x=>x.score>0).slice(0,n-items.length).forEach(x=>items.push(x));
+  return items;
+}
+function nearMsg(msg){document.getElementById('nearResults').innerHTML='<div class="near-msg">'+escHtml(msg)+'</div>';}
+function clearNear(){document.getElementById('nearResults').innerHTML='';}
+function showNear(items,label){
+  if(!items.length){nearMsg('Ainda não encontramos uma congregação nesse bairro. Tente outro bairro, o CEP ou use a busca por nome logo abaixo.');return;}
+  const cards=items.map((x,k)=>{
+    let badge;
+    if(x.dist!==null) badge=(k===0?'Mais próxima · ':'')+fmtDist(x.dist);
+    else badge=x.score>=5?'No seu bairro':'Na sua região';
+    return churchCardHtml(DATA.igrejas[x.i],x.i,badge);
+  }).join('');
+  document.getElementById('nearResults').innerHTML='<div class="near-results-head"><div class="near-results-title">Perto de '+escHtml(label)+'</div><button class="near-clear" onclick="clearNear()">Limpar</button></div><div class="near-grid">'+cards+'</div>';
+}
+async function useMyLocation(){
+  if(!navigator.geolocation){showToast('Seu navegador não permite localização.');return;}
+  nearMsg('Obtendo sua localização…');
+  navigator.geolocation.getCurrentPosition(async pos=>{
+    const userPos={la:pos.coords.latitude,lo:pos.coords.longitude};
+    try{
+      if(hasChurchCoords()){
+        showNear(pickNear(rankChurches({phrases:[],tokens:[],cep:''},userPos)),'sua localização');
+        return;
+      }
+      nearMsg('Procurando congregações no seu bairro…');
+      const place=await reverseGeo(userPos.la,userPos.lo);
+      showNear(pickNear(rankChurches(queryFromPlace(place),null)),place.label||'você');
+    }catch(err){nearMsg('Não foi possível localizar agora. Digite seu bairro ou CEP e tente de novo.');}
+  },()=>{nearMsg('Não conseguimos acessar sua localização. Libere a permissão ou digite seu bairro ou CEP.');},{enableHighAccuracy:false,timeout:10000,maximumAge:300000});
+}
+async function searchNear(e){
+  e.preventDefault();
+  const text=document.getElementById('nearInput').value.trim();
+  if(text.length<3){showToast('Digite seu bairro, rua ou CEP.');return;}
+  nearMsg('Procurando…');
+  try{
+    const q=queryFromText(text);
+    let userPos=null;
+    if(hasChurchCoords()){
+      const city=cfg('cidade');
+      const qs=city&&!norm(text).includes(norm(city))?text+', '+city:text;
+      userPos=await forwardGeo(qs);
+    }
+    showNear(pickNear(rankChurches(q,userPos)),text);
+  }catch(err){nearMsg('Não foi possível localizar agora. Tente de novo em instantes.');}
+}
 let _lastFocus=null;
 function openModal(idx){
   const c=DATA.igrejas[idx];if(!c) return;
-  const PH='<div class="modal-church-img-ph">📷</div>';
+  const PH='<div class="modal-church-img-ph">'+ic('camera',22)+'</div>';
   document.getElementById('mImg').innerHTML=imgEl(c.foto_url||'',c.nome,PH,{cls:'modal-church-img',eager:true})||PH;
   document.getElementById('mName').textContent=c.nome||'';
   let det='';
@@ -1279,9 +1548,10 @@ function openModal(idx){
   const hasProg=!!(c.programacao&&c.programacao.trim());
   document.getElementById('mProgWrap').style.display=hasProg?'block':'none';
   if(hasProg) document.getElementById('mProg').textContent=c.programacao;
-  let acts=`<a class="modal-btn modal-btn-maps" href="${escHtml(mapsUrl((c.nome||'')+' '+(c.endereco||'')))}" target="_blank" rel="noopener noreferrer">📍 Ver no Maps</a>`;
+  let acts=`<a class="modal-btn modal-btn-maps" href="${escHtml(mapsUrl((c.nome||'')+' '+(c.endereco||'')))}" target="_blank" rel="noopener noreferrer">${ic('pin',14)} Ver no Maps</a>`;
   const ig=safeUrl(c.rede_social);
   if(ig) acts+=`<a class="modal-btn modal-btn-ig" href="${escHtml(ig)}" target="_blank" rel="noopener noreferrer">Instagram</a>`;
+  acts+=`<button class="modal-btn modal-btn-share" onclick="shareChurch(${idx})">${ic('share',14)} Compartilhar</button>`;
   document.getElementById('mActions').innerHTML=acts;
   _lastFocus=document.activeElement;
   document.getElementById('churchModal').classList.add('open');
@@ -1293,26 +1563,33 @@ function closeModal(){
   document.body.style.overflow='';
   if(_lastFocus&&_lastFocus.focus) _lastFocus.focus();
 }
-let _allSermons=[],_sermonFilter='',_sermonLimit=8;
+let _allSermons=[],_sermonView=[],_sermonFilter='',_sermonLimit=8;
 function renderSermons(){
   const el=document.getElementById('sermonList');
   const f=norm(_sermonFilter);
   const all=_allSermons.filter(s=>!f||norm(s.titulo).includes(f)||norm(s.pregador).includes(f)||norm(s.tema).includes(f));
   const list=f?all:all.slice(0,_sermonLimit);
+  _sermonView=list;
   if(!list.length){el.innerHTML='<div class="empty-state">Nenhum sermão encontrado.</div>';return;}
   let html=list.map((s,i)=>{
     const sid='s'+i;const img=imgEl(s.foto_url||'','','parent');
     const vid=ytId(s.video_url||'');const hasVideo=!!vid;const bodyHtml=mdToHtml(s.texto||'');
     const toggle=`toggleSermon('${sid}',${hasVideo?1:0})`;
-    return`<div class="sermon-item">${img?`<div class="sermon-img-wrap">${img}</div>`:''}<div class="sermon-inner"><div class="sermon-top" role="button" tabindex="0" aria-expanded="false" id="top-${sid}" onclick="${toggle}" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();${toggle}}"><div><div class="sermon-title">${escHtml(s.titulo)}</div><div class="sermon-meta">${s.pregador?`<span>${escHtml(s.pregador)}</span>`:''}${s.data?`<span>${escHtml(s.data)}</span>`:''}${s.tema?`<span>${escHtml(s.tema)}</span>`:''}</div>${s.resumo?`<div class="sermon-excerpt">${escHtml(s.resumo)}</div>`:''}</div><div class="sermon-expand" id="exp-${sid}">${hasVideo?'Assistir':'Ler'} →</div></div><div class="sermon-full" id="full-${sid}">${hasVideo?`<div class="sermon-video" role="button" tabindex="0" aria-label="Reproduzir vídeo" data-yt="${vid}" onclick="playYt(this)" onkeydown="if(event.key==='Enter')playYt(this)"><img src="https://i.ytimg.com/vi/${vid}/hqdefault.jpg" alt="" loading="lazy"><span class="yt-play">▶</span></div>`:''}${bodyHtml}</div></div></div>`;
+    return`<div class="sermon-item">${img?`<div class="sermon-img-wrap">${img}</div>`:''}<div class="sermon-inner"><div class="sermon-top" role="button" tabindex="0" aria-expanded="false" id="top-${sid}" onclick="${toggle}" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();${toggle}}"><div><div class="sermon-title">${escHtml(s.titulo)}</div><div class="sermon-meta">${s.pregador?`<span>${escHtml(s.pregador)}</span>`:''}${s.data?`<span>${escHtml(s.data)}</span>`:''}${s.tema?`<span>${escHtml(s.tema)}</span>`:''}</div>${s.resumo?`<div class="sermon-excerpt">${escHtml(s.resumo)}</div>`:''}</div><div class="sermon-expand" id="exp-${sid}">${hasVideo?'Assistir':'Ler'}</div></div><div class="sermon-full" id="full-${sid}">${hasVideo?`<div class="sermon-video" role="button" tabindex="0" aria-label="Reproduzir vídeo" data-yt="${vid}" onclick="playYt(this)" onkeydown="if(event.key==='Enter')playYt(this)"><img src="https://i.ytimg.com/vi/${vid}/hqdefault.jpg" alt="" loading="lazy"><span class="yt-play">${ic('play',26,true)}</span></div>`:''}${bodyHtml}<div class="sermon-share"><button class="ev-btn ev-btn-share" onclick="shareSermon(${i})">${ic('share',14)} Compartilhar</button></div></div></div></div>`;
   }).join('');
   if(!f&&all.length>_sermonLimit) html+='<div class="more-wrap"><button class="btn btn-primary" onclick="moreSermons()">Ver mais sermões</button></div>';
   el.innerHTML=html;
 }
+function shareSermon(i){
+  const s=_sermonView[i];if(!s) return;
+  const vid=ytId(s.video_url||'');
+  const body='*'+(s.titulo||'')+'*'+(s.pregador?' — '+s.pregador:'')+(vid?'\nhttps://youtu.be/'+vid:'');
+  doShare(s.titulo||'Sermão',body,'sermao','sermoes');
+}
 function toggleSermon(id,hasVideo){
   const f=document.getElementById('full-'+id),e=document.getElementById('exp-'+id),t=document.getElementById('top-'+id);
   const open=f.classList.toggle('open');
-  e.textContent=open?'Fechar ↑':(hasVideo?'Assistir →':'Ler →');
+  e.textContent=open?'Fechar':(hasVideo?'Assistir':'Ler');
   if(t) t.setAttribute('aria-expanded',open?'true':'false');
 }
 function playYt(el){
@@ -1325,7 +1602,7 @@ function moreSermons(){_sermonLimit+=8;renderSermons();}
 function renderRevista(){
   const el=document.getElementById('revistaGrid');
   if(!DATA.revista.length){el.innerHTML='<div class="empty-state">Nenhuma edição disponível.</div>';return;}
-  const PH='<div class="revista-card-capa-ph">📖</div>';
+  const PH='<div class="revista-card-capa-ph">'+ic('book',28)+'</div>';
   el.innerHTML=DATA.revista.map((r,i)=>{
     return`<div class="revista-card" onclick="openReader(${i})" onkeydown="if(event.key==='Enter')openReader(${i})" role="button" tabindex="0"><div class="revista-card-capa">${imgEl(r.capa_url||'',r.titulo,PH,{w:800})||PH}</div><div class="revista-card-body"><div class="revista-card-edicao">${escHtml(r.edicao||'')}</div><div class="revista-card-titulo">${escHtml(r.titulo||'')}</div><div class="revista-card-data">${escHtml(r.data||'')}</div>${r.descricao?`<div class="revista-card-desc">${escHtml(r.descricao)}</div>`:''}</div></div>`;
   }).join('');
@@ -1378,9 +1655,9 @@ function renderCasa(){
   el.innerHTML=DATA.casaAtualizacoes.map(u=>`<div class="update-item">${imgEl(u.foto_url||'','','hide',{cls:'update-item-img'})}<div class="update-date">${escHtml(u.data)}</div><div class="update-title">${escHtml(u.titulo)}</div><div class="update-body">${escHtml(u.texto)}</div></div>`).join('');
 }
 const GAMES=[
-  {icon:'📖',title:'Quiz Bíblico',desc:'Teste seus conhecimentos bíblicos e avance na trilha.',key:'game_quiz',src:'quiz.js',fn:'abrirQuizDoMilhao'},
-  {icon:'⚔️',title:'Guerras Bíblicas',desc:'Reviva as grandes batalhas da Bíblia em um jogo de estratégia.',key:'game_guerra',src:'guerras-biblicas.js',fn:'abrirGuerrasBiblicas'},
-  {icon:'🧠',title:'Jogo da Memória',desc:'Encontre os pares e relembre os grandes personagens da Bíblia.',key:'game_memoria',src:'jogo-da-memoria.js',fn:'abrirJogoDaMemoria'}
+  {icon:'book',title:'Quiz Bíblico',desc:'Teste seus conhecimentos bíblicos e avance na trilha.',key:'game_quiz',src:'quiz.js',fn:'abrirQuizDoMilhao'},
+  {icon:'shield',title:'Guerras Bíblicas',desc:'Reviva as grandes batalhas da Bíblia em um jogo de estratégia.',key:'game_guerra',src:'guerras-biblicas.js',fn:'abrirGuerrasBiblicas'},
+  {icon:'grid',title:'Jogo da Memória',desc:'Encontre os pares e relembre os grandes personagens da Bíblia.',key:'game_memoria',src:'jogo-da-memoria.js',fn:'abrirJogoDaMemoria'}
 ];
 const _loadedScripts={};
 function loadScript(src){
@@ -1408,7 +1685,7 @@ function renderGames(){
   if(!el) return;
   const enabled=GAMES.map((g,i)=>({g,i})).filter(({g})=>cfgBool(g.key,true));
   if(!enabled.length){el.innerHTML='<div class="empty-state">Nenhum jogo disponível no momento.</div>';return;}
-  el.innerHTML=enabled.map(({g,i})=>`<div class="game-card"><div class="game-card-icon">${g.icon}</div><div class="game-card-title">${escHtml(g.title)}</div><div class="game-card-desc">${escHtml(g.desc)}</div><button class="game-card-btn" onclick="openGame(${i})">Jogar agora</button></div>`).join('');
+  el.innerHTML=enabled.map(({g,i})=>`<div class="game-card"><div class="game-card-icon">${ic(g.icon,32)}</div><div class="game-card-title">${escHtml(g.title)}</div><div class="game-card-desc">${escHtml(g.desc)}</div><button class="game-card-btn" onclick="openGame(${i})">Jogar agora</button></div>`).join('');
 }
 function trapTab(e,box){
   if(e.key!=='Tab') return;
@@ -1481,6 +1758,7 @@ async function loadAll(manual){
   }
   if(!_liveTimer) _liveTimer=setInterval(checkLive,60000);
 }
+hydrateIcons();
 loadAll();
 </script>
 </body>
