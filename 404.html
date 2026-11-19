@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Redirecionando…</title>
+<meta name="robots" content="noindex">
+<script>
+(function(){
+  var routes=['agenda','igrejas','sermoes','revista','mais','sobre','departamentos','casa','contribua'];
+  var m=location.pathname.match(/^(.*\/)([^\/]+)\/?$/);
+  var base=m?m[1]:'/';
+  var route='';
+  if(m&&routes.indexOf(m[2])>-1) route=m[2];
+  if(location.pathname===base){document.addEventListener('DOMContentLoaded',function(){document.getElementById('msg').style.display='block';});return;}
+  var q=location.search.replace(/^\?/,'');
+  var parts=[];
+  if(route) parts.push('r='+route);
+  if(q) parts.push(q);
+  location.replace(base+(parts.length?'?'+parts.join('&'):'')+location.hash);
+})();
+</script>
+<style>body{font-family:system-ui,sans-serif;background:#faf8f4;color:#1e1e1e;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;text-align:center}#msg{display:none;padding:24px}a{color:#7a2e2e;font-weight:600}</style>
+</head>
+<body>
+<div id="msg"><p>Página não encontrada.</p><p><a href="./">Voltar ao início</a></p></div>
+</body>
+</html>
