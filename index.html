@@ -12,7 +12,18 @@
 <meta property="og:title" content="Assembleia de Deus Belém Barueri">
 <meta property="og:description" content="Programação, agenda de eventos, igrejas, sermões e a Palavra do Dia.">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" id="faviconEl" type="image/png">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta property="og:image" content="https://SEU-USUARIO.github.io/SEU-REPOSITORIO/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:image" content="https://SEU-USUARIO.github.io/SEU-REPOSITORIO/og-image.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="AD Belém">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" id="faviconEl" type="image/png" href="icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://bible-api.com" crossorigin>
@@ -428,6 +439,22 @@ button.next-count:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(0,
   body.has-bar .toast{bottom:calc(86px + env(safe-area-inset-bottom))}
 }
 body.menu-open .mbar{display:none!important}
+.hero-media{position:absolute;inset:0;z-index:0;display:none}
+.hero.has-bg .hero-media{display:block}
+.hero-media img,.hero-media video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero-media::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(15,10,8,calc(var(--hero-shade,.55) - .1)),rgba(15,10,8,calc(var(--hero-shade,.55) + .15)))}
+.hero-video{opacity:0;transition:opacity 1.2s ease}
+.hero-video.on{opacity:1}
+.hero .wrap{position:relative;z-index:2}
+.hero.has-bg{padding:118px 0 92px}
+.hero.has-bg .hero-title{color:#fff}
+.hero.has-bg .hero-sub{color:rgba(255,255,255,.88)}
+.hero.has-bg .hero-eyebrow{background:rgba(255,255,255,.18);color:#fff}
+@media(max-width:600px){.hero.has-bg{padding:84px 0 64px}}
+.rv{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease}
+.rv.in{opacity:1;transform:none}
+.footer-actions{margin-top:18px}
+.toast{white-space:normal;text-align:center;line-height:1.4;border-radius:18px;width:max-content;max-width:min(92vw,420px)}
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
   html{scroll-behavior:auto}
@@ -518,6 +545,7 @@ body.menu-open .mbar{display:none!important}
 </div>
 <div class="page active" id="page-home">
   <div class="hero">
+    <div class="hero-media" id="heroMedia" aria-hidden="true"></div>
     <div class="wrap">
       <div class="hero-eyebrow" id="heroEyebrow">Bem-vindo</div>
       <h1 class="hero-title" id="heroTitle"></h1>
@@ -683,6 +711,7 @@ body.menu-open .mbar{display:none!important}
     <div class="footer-logo-ph" id="footerLogoPh"></div>
     <div class="footer-contact" id="footerContact"></div>
     <p id="footerText"></p>
+    <div class="footer-actions"><button class="btn btn-ghost" id="installBtn" onclick="installApp()" style="display:none"><i data-ic="download" data-s="14"></i> Instalar aplicativo</button></div>
   </div>
 </div>
 <script>
@@ -2016,12 +2045,143 @@ function renderMobileBar(){
   bar.classList.toggle('on',on);
   document.body.classList.toggle('has-bar',on);
 }
+let _heroKey='';
+function heroVideoSrc(v){
+  v=(v||'').trim();
+  if(!v) return '';
+  if(/^https?:\/\//i.test(v)) return v;
+  if(/^[\w\-\/.]+\.(mp4|webm)$/i.test(v)) return BASE+v.replace(/^\/+/,'');
+  return '';
+}
+function renderHeroMedia(){
+  const hero=document.querySelector('.hero');
+  const box=document.getElementById('heroMedia');
+  if(!hero||!box) return;
+  let shade=parseFloat(cfg('hero_sobreposicao','55'));
+  if(isNaN(shade)) shade=55;
+  shade=Math.min(90,Math.max(0,shade));
+  hero.style.setProperty('--hero-shade',(shade/100).toFixed(2));
+  const img=(cfg('hero_imagem_url')||'').trim();
+  const vid=heroVideoSrc(cfg('hero_video_url'));
+  const conn=navigator.connection||{};
+  const canVideo=!!vid&&!reduceMotion.matches&&!conn.saveData&&!/^(slow-2g|2g|3g)$/.test(conn.effectiveType||'');
+  const key=img+'|'+(canVideo?vid:'');
+  if(key===_heroKey) return;
+  _heroKey=key;
+  hero.classList.remove('has-bg');
+  box.innerHTML='';
+  if(!img&&!canVideo) return;
+  const ok=()=>hero.classList.add('has-bg');
+  if(img){
+    box.innerHTML=imgEl(img,'','hide',{cls:'hero-img',eager:true,w:1600});
+    const im=box.querySelector('img');
+    if(im){
+      if(im.complete&&im.naturalWidth) ok();
+      else im.addEventListener('load',ok);
+    }
+  }
+  if(canVideo){
+    const v=document.createElement('video');
+    v.className='hero-video';
+    v.muted=true;v.loop=true;v.autoplay=true;v.playsInline=true;
+    v.setAttribute('muted','');v.setAttribute('playsinline','');
+    v.preload='metadata';
+    v.addEventListener('loadeddata',ok);
+    v.addEventListener('playing',()=>v.classList.add('on'));
+    v.addEventListener('error',()=>v.remove());
+    v.src=vid;
+    box.appendChild(v);
+    const pr=v.play();
+    if(pr&&pr.catch) pr.catch(()=>{});
+  }
+}
+const DOW=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+function hhmm(min){min=Math.min(Math.max(min,0),1439);return String(Math.floor(min/60)).padStart(2,'0')+':'+String(min%60).padStart(2,'0');}
+function renderSeo(){
+  const nome=cfg('nome_igreja');
+  if(!nome) return;
+  const o={'@context':'https://schema.org','@type':'Church','name':nome,'url':siteUrl('')};
+  const desc=cfg('descricao',cfg('hero_subtitulo',''));
+  if(desc) o.description=desc;
+  const logo=driveUrls(cfg('logo_url'),400)[0];
+  if(logo){o.logo=logo;o.image=logo;}
+  const addr=cfg('rodape_endereco'),city=cfg('cidade');
+  if(addr||city){
+    o.address={'@type':'PostalAddress','addressCountry':'BR'};
+    if(addr) o.address.streetAddress=addr;
+    if(city) o.address.addressLocality=city;
+  }
+  const wa=(cfg('whatsapp')||'').replace(/\D/g,'');
+  if(wa) o.telephone='+'+(wa.length<=11?'55'+wa:wa);
+  const mail=cfg('email');
+  if(mail&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) o.email=mail;
+  const same=['youtube_url','instagram_url','facebook_url','podcast_url'].map(k=>safeUrl(cfg(k))).filter(Boolean);
+  if(same.length) o.sameAs=same;
+  const dur=parseInt(cfg('ao_vivo_duracao_min','60'),10)||60;
+  const hours=[];
+  DATA.eventos.filter(isSemanal).forEach(r=>{
+    const wd=weekdayFromLabel(r.nome);
+    const m=(r.hora||'').match(/^(\d{1,2}):(\d{2})/);
+    if(wd===null||!m) return;
+    const start=parseInt(m[1],10)*60+parseInt(m[2],10);
+    hours.push({'@type':'OpeningHoursSpecification',dayOfWeek:'https://schema.org/'+DOW[wd],opens:hhmm(start),closes:hhmm(start+dur)});
+  });
+  if(hours.length) o.openingHoursSpecification=hours;
+  const off=cfg('fuso','America/Sao_Paulo')==='America/Sao_Paulo'?'-03:00':'';
+  const evs=upcomingSpecials(5).map(e=>{
+    const m=(e.hora||'').match(/^(\d{1,2}):(\d{2})/);
+    const ev={'@type':'Event',name:e.nome,startDate:e.data+(m?'T'+hhmm(parseInt(m[1],10)*60+parseInt(m[2],10))+':00'+off:''),eventAttendanceMode:'https://schema.org/OfflineEventAttendanceMode',eventStatus:'https://schema.org/EventScheduled',location:{'@type':'Place',name:e.local||nome},organizer:{'@type':'Church',name:nome,url:o.url}};
+    if(addr) ev.location.address=addr;
+    if(e.desc) ev.description=e.desc;
+    const im=driveUrls(e.foto_url,800)[0];
+    if(im) ev.image=im;
+    return ev;
+  });
+  if(evs.length) o.event=evs;
+  let el=document.getElementById('ldjson');
+  if(!el){el=document.createElement('script');el.type='application/ld+json';el.id='ldjson';document.head.appendChild(el);}
+  el.textContent=JSON.stringify(o).replace(/</g,'\\u003c');
+}
+let _installEvt=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();_installEvt=e;updateInstallBtn();});
+window.addEventListener('appinstalled',()=>{_installEvt=null;updateInstallBtn();showToast('Aplicativo instalado.');});
+function isStandalone(){return(window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true;}
+function isIos(){return /iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);}
+function updateInstallBtn(){
+  const b=document.getElementById('installBtn');
+  if(!b) return;
+  const show=cfgBool('instalar_app',true)&&!USE_HASH&&!isStandalone()&&(!!_installEvt||isIos());
+  b.style.display=show?'':'none';
+}
+async function installApp(){
+  if(_installEvt){
+    const e=_installEvt;_installEvt=null;
+    try{e.prompt();await e.userChoice;}catch(err){}
+    updateInstallBtn();
+    return;
+  }
+  if(isIos()) showToast('Toque em Compartilhar e depois em "Adicionar à Tela de Início".');
+}
+function registerSW(){
+  if(!('serviceWorker' in navigator)||USE_HASH) return;
+  if(location.protocol!=='https:'&&location.hostname!=='localhost'&&location.hostname!=='127.0.0.1') return;
+  window.addEventListener('load',()=>{navigator.serviceWorker.register(BASE+'sw.js',{scope:BASE}).catch(()=>{});});
+}
+function initReveal(){
+  if(reduceMotion.matches||typeof IntersectionObserver==='undefined') return;
+  const els=document.querySelectorAll('.sec-head,.fixed-schedule,.verse-card,.carousel-fw,.social-band .wrap,.contrib-inner,.about-text,.casa-progress-wrap,.casa-pix-block');
+  const io=new IntersectionObserver(list=>{
+    list.forEach(en=>{if(en.isIntersecting||en.boundingClientRect.top<0){en.target.classList.add('in');io.unobserve(en.target);}});
+  },{threshold:.1,rootMargin:'0px 0px -5% 0px'});
+  els.forEach(el=>{el.classList.add('rv');io.observe(el);});
+}
 function renderAll(first){
   applyConfig();
   _allSermons=DATA.sermoes;
   checkLive();
   renderCarousel();renderFixedSchedule();renderSpecialsGrid();
   renderNotices();renderPalavra();renderNext();renderMobileBar();
+  renderHeroMedia();renderSeo();updateInstallBtn();
   _done={};
   if(first) routeFromHash(); else ensureRendered(currentPage());
 }
@@ -2061,6 +2221,8 @@ async function loadAll(manual){
 }
 hydrateIcons();
 normalizeUrl();
+initReveal();
+registerSW();
 loadAll();
 </script>
 </body>
