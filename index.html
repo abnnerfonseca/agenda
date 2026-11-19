@@ -467,28 +467,28 @@ body.menu-open .mbar{display:none!important}
 </div>
 <nav class="nav" aria-label="Navegação principal">
   <div class="nav-inner">
-    <a class="brand" href="#home" onclick="navTo(event,'home')" aria-label="Início">
+    <a class="brand" href="./" onclick="navTo(event,'home')" aria-label="Início">
       <div class="brand-logo-ph" id="brandLogoPh">AD</div>
       <img class="brand-logo" id="brandLogoImg" alt="" onload="logoOk(this)" onerror="logoNext(this)">
       <div class="brand-text" id="brandText">Carregando</div>
     </a>
     <button class="nav-toggle" id="navToggle" onclick="toggleMenu()" aria-label="Abrir menu" aria-expanded="false" aria-controls="navLinks"><i data-ic="menu" data-s="24"></i></button>
     <ul class="nav-links" id="navLinks">
-      <li><a href="#home" onclick="navTo(event,'home')" data-page="home">Início</a></li>
-      <li id="nav-agenda" style="display:none"><a href="#agenda" onclick="navTo(event,'agenda')" data-page="agenda">Agenda</a></li>
-      <li id="nav-igrejas" style="display:none"><a href="#igrejas" onclick="navTo(event,'igrejas')" data-page="igrejas">Igrejas</a></li>
-      <li id="nav-sermoes" style="display:none"><a href="#sermoes" onclick="navTo(event,'sermoes')" data-page="sermoes">Sermões</a></li>
-      <li id="nav-revista" style="display:none"><a href="#revista" onclick="navTo(event,'revista')" data-page="revista">Revista</a></li>
+      <li><a href="./" onclick="navTo(event,'home')" data-page="home">Início</a></li>
+      <li id="nav-agenda" style="display:none"><a href="agenda" onclick="navTo(event,'agenda')" data-page="agenda">Agenda</a></li>
+      <li id="nav-igrejas" style="display:none"><a href="igrejas" onclick="navTo(event,'igrejas')" data-page="igrejas">Igrejas</a></li>
+      <li id="nav-sermoes" style="display:none"><a href="sermoes" onclick="navTo(event,'sermoes')" data-page="sermoes">Sermões</a></li>
+      <li id="nav-revista" style="display:none"><a href="revista" onclick="navTo(event,'revista')" data-page="revista">Revista</a></li>
       <li id="nav-sobre" class="nav-dropdown" style="display:none">
-        <a href="#sobre" onclick="event.preventDefault();goToSobrePadrao()" data-page="sobre">Sobre Nós</a>
+        <a href="sobre" onclick="event.preventDefault();goToSobrePadrao()" data-page="sobre">Sobre Nós</a>
         <ul class="nav-dropdown-menu">
-          <li id="nav-historia"><a href="#sobre" onclick="navTo(event,'sobre')" data-page="sobre">História</a></li>
-          <li id="nav-departamentos"><a href="#departamentos" onclick="navTo(event,'departamentos')" data-page="departamentos">Departamentos</a></li>
+          <li id="nav-historia"><a href="sobre" onclick="navTo(event,'sobre')" data-page="sobre">História</a></li>
+          <li id="nav-departamentos"><a href="departamentos" onclick="navTo(event,'departamentos')" data-page="departamentos">Departamentos</a></li>
         </ul>
       </li>
-      <li id="nav-mais" style="display:none"><a href="#mais" onclick="navTo(event,'mais')" data-page="mais">Mais</a></li>
-      <li id="nav-casa" style="display:none"><a class="nav-hl" href="#casa" onclick="navTo(event,'casa')" data-page="casa">Nossa Casa</a></li>
-      <li id="nav-contribua" style="display:none"><a class="nav-hl" href="#contribua" onclick="navTo(event,'contribua')" data-page="contribua">Contribua</a></li>
+      <li id="nav-mais" style="display:none"><a href="mais" onclick="navTo(event,'mais')" data-page="mais">Mais</a></li>
+      <li id="nav-casa" style="display:none"><a class="nav-hl" href="casa" onclick="navTo(event,'casa')" data-page="casa">Nossa Casa</a></li>
+      <li id="nav-contribua" style="display:none"><a class="nav-hl" href="contribua" onclick="navTo(event,'contribua')" data-page="contribua">Contribua</a></li>
     </ul>
     <div class="nav-social" id="navSocial">
       <a id="navYt" href="#" target="_blank" rel="noopener noreferrer" title="YouTube" aria-label="YouTube" style="display:none">
@@ -632,7 +632,7 @@ body.menu-open .mbar{display:none!important}
     <div class="casa-pix-block">
       <div class="casa-pix-icon"><i data-ic="church" data-s="38"></i></div>
       <div class="casa-pix-info"><div class="casa-pix-label">Contribua com o projeto</div><div class="casa-pix-title">Doe para Nossa Casa</div><div class="casa-pix-sub">Sua oferta ajuda a construir o espaço que a nossa congregação merece.</div></div>
-      <a class="casa-pix-btn" href="#contribua" onclick="navTo(event,'contribua')">Como Contribuir <i data-ic="arrow-right" data-s="14"></i></a>
+      <a class="casa-pix-btn" href="contribua" onclick="navTo(event,'contribua')">Como Contribuir <i data-ic="arrow-right" data-s="14"></i></a>
     </div>
     <div class="sec-head"><div class="sec-eyebrow">Linha do tempo</div><h2 style="font-family:var(--sans);font-size:clamp(22px,3.5vw,32px);font-weight:700;text-align:center">Atualizações da Obra</h2><div class="sec-divider"></div></div>
     <div class="update-list" id="updateList"><div class="skel skel-card"></div></div>
@@ -921,8 +921,8 @@ function applyConfig(){
   document.getElementById('heroTitle').innerHTML=escHtml(heroTit).replace(/\\n|\n/g,'<br>');
   document.getElementById('heroSub').textContent=cfg('hero_subtitulo','Uma família reunida para adorar, aprender e servir juntos.');
   const cta=[];
-  if(cfgBool('aba_agenda',true)) cta.push('<a class="btn btn-primary" href="#agenda" onclick="navTo(event,\'agenda\')">Ver agenda</a>');
-  if(cfgBool('aba_igrejas',true)) cta.push('<a class="btn btn-ghost" href="#igrejas" onclick="navTo(event,\'igrejas\')">Nossas igrejas</a>');
+  if(cfgBool('aba_agenda',true)) cta.push('<a class="btn btn-primary" href="agenda" onclick="navTo(event,\'agenda\')">Ver agenda</a>');
+  if(cfgBool('aba_igrejas',true)) cta.push('<a class="btn btn-ghost" href="igrejas" onclick="navTo(event,\'igrejas\')">Nossas igrejas</a>');
   const liveLink=safeUrl(cfg('youtube_live_url')||cfg('youtube_url'));
   if(liveLink) cta.push('<a class="btn btn-ghost" href="'+escHtml(liveLink)+'" target="_blank" rel="noopener noreferrer">'+ic('play',13,true)+' Assistir</a>');
   document.getElementById('heroCta').innerHTML=cta.join('');
@@ -1019,12 +1019,43 @@ function mdToHtml(raw){
   }).join('');
 }
 function inlineMd(s){return escHtml(s).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/_(.+?)_/g,'<em>$1</em>');}
-function trackPage(n){if(typeof gtag==='undefined')return;gtag('event','page_view',{page_title:n,page_location:location.href+'#'+n});}
+function trackPage(n){if(typeof gtag==='undefined')return;gtag('event','page_view',{page_title:n,page_location:location.href});}
 function emptyData(){const o={};DATA_KEYS.forEach(k=>o[k]=[]);return o;}
 let DATA=emptyData();
 let toastTimer;
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2800);}
-function currentPage(){return location.hash.replace('#','')||'home';}
+const ROUTES=['agenda','igrejas','sermoes','revista','mais','sobre','departamentos','casa','contribua'];
+const USE_HASH=location.protocol==='file:';
+const BASE=(function(){
+  const p=location.pathname.replace(/index\.html$/,'');
+  const m=p.match(/^(.*\/)([^\/]+)\/?$/);
+  if(m&&ROUTES.indexOf(m[2])>-1) return m[1];
+  return p.endsWith('/')?p:p.replace(/[^\/]*$/,'');
+})();
+function currentPage(){
+  if(USE_HASH) return location.hash.replace('#','')||'home';
+  const rest=location.pathname.slice(BASE.length).replace(/\/$/,'');
+  return ROUTES.indexOf(rest)>-1?rest:'home';
+}
+function pageUrl(page){
+  if(USE_HASH) return page==='home'?location.pathname+location.search:'#'+page;
+  return BASE+(page==='home'?'':page)+location.search;
+}
+function normalizeUrl(){
+  if(USE_HASH) return;
+  const params=new URLSearchParams(location.search);
+  let route=params.get('r');
+  if(route&&ROUTES.indexOf(route)>-1){params.delete('r');}
+  else{
+    route='';
+    const hh=location.hash.replace('#','');
+    if(ROUTES.indexOf(hh)>-1&&currentPage()==='home') route=hh;
+  }
+  if(route){
+    const qs=params.toString();
+    history.replaceState({page:route},'',BASE+route+(qs?'?'+qs:''));
+  }
+}
 function goTo(page){
   const pageEl=document.getElementById('page-'+page);
   if(!pageEl||pageEl.dataset.active==='0'){if(page!=='home') goTo('home');return;}
@@ -1038,10 +1069,8 @@ function goTo(page){
   });
   closeMenu();
   window.scrollTo({top:0,behavior:'smooth'});
+  if(currentPage()!==page) history.pushState({page},'',pageUrl(page));
   trackPage(page);
-  if(currentPage()!==page){
-    history.pushState({page},'',page==='home'?location.pathname+location.search:'#'+page);
-  }
 }
 function navTo(e,page){if(e) e.preventDefault();goTo(page);}
 function goToSobrePadrao(){
@@ -1110,10 +1139,12 @@ function checkLive(){
 function openLive(){if(_liveUrl) window.open(_liveUrl,'_blank','noopener,noreferrer');}
 const INVITES={evento:'Programação completa e mais eventos em',verso:'Uma Palavra por dia em',igreja:'Encontre a congregação mais perto de você em',sermao:'Mais mensagens em'};
 function inviteLine(ctx){return cfg('convite_texto')||INVITES[ctx]||INVITES.evento;}
-function siteUrl(hash){
+function siteUrl(route){
   let base=cfg('site_url');
-  if(!base) base=(location.origin&&location.origin!=='null'?location.origin:'')+location.pathname.replace(/index\.html$/,'');
-  return base+(hash?'#'+hash:'');
+  if(!base) base=(location.origin&&location.origin!=='null'?location.origin:'')+BASE;
+  if(!base.endsWith('/')) base+='/';
+  if(USE_HASH) return base+(route?'#'+route:'');
+  return base+(route||'');
 }
 function doShare(title,body,ctx,hash){
   const nome=cfg('nome_igreja');
@@ -1311,8 +1342,6 @@ async function verseBlob(){
   ctx.font='700 30px '+SANS;
   ctx.fillStyle=rgbStr(goldLight);
   drawSpaced(ctx,v.ref.toUpperCase(),W/2,y,4);
-  ctx.fillStyle='rgba(255,255,255,.2)';
-  ctx.fillRect(W/2-70,1062,140,2);
   const nome=cfg('nome_igreja','');
   let cy=1190;
   if(logo){
@@ -1856,7 +1885,7 @@ function loadScript(src){
   return new Promise((resolve,reject)=>{
     if(_loadedScripts[src]) return resolve();
     const s=document.createElement('script');
-    s.src=src;
+    s.src=BASE+src;
     s.onload=()=>{_loadedScripts[src]=true;resolve();};
     s.onerror=()=>{s.remove();reject(new Error('load'));};
     document.head.appendChild(s);
@@ -1976,12 +2005,12 @@ function renderMobileBar(){
   const bar=document.getElementById('mbar');
   if(!bar) return;
   const items=[];
-  if(cfgBool('aba_agenda',true)) items.push('<a href="#agenda" onclick="navTo(event,\'agenda\')">'+ic('calendar',20)+'<span>Agenda</span></a>');
+  if(cfgBool('aba_agenda',true)) items.push('<a href="agenda" onclick="navTo(event,\'agenda\')">'+ic('calendar',20)+'<span>Agenda</span></a>');
   const live=safeUrl(cfg('youtube_live_url')||cfg('youtube_url'));
   if(live) items.push('<a class="live" href="'+escHtml(live)+'" target="_blank" rel="noopener noreferrer">'+ic('play',20,true)+'<span>Ao vivo</span></a>');
   const wa=(cfg('whatsapp')||'').replace(/\D/g,'');
   if(wa) items.push('<a href="https://wa.me/'+wa+'" target="_blank" rel="noopener noreferrer">'+ic('chat',20)+'<span>WhatsApp</span></a>');
-  if(cfgBool('aba_contribua',true)) items.push('<a href="#contribua" onclick="navTo(event,\'contribua\')">'+ic('heart',20)+'<span>Contribua</span></a>');
+  if(cfgBool('aba_contribua',true)) items.push('<a href="contribua" onclick="navTo(event,\'contribua\')">'+ic('heart',20)+'<span>Contribua</span></a>');
   const on=cfgBool('barra_mobile',true)&&items.length>1;
   bar.innerHTML=on?items.join(''):'';
   bar.classList.toggle('on',on);
@@ -2031,6 +2060,7 @@ async function loadAll(manual){
   if(!_liveTimer) _liveTimer=setInterval(()=>{checkLive();renderNext();},30000);
 }
 hydrateIcons();
+normalizeUrl();
 loadAll();
 </script>
 </body>
