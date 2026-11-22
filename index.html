@@ -782,6 +782,7 @@ const ICONS={
   radio:'<circle cx="12" cy="12" r="2"/><path d="M16.2 7.8a6 6 0 0 1 0 8.4M7.8 16.2a6 6 0 0 1 0-8.4M19.1 4.9a10 10 0 0 1 0 14.2M4.9 19.1a10 10 0 0 1 0-14.2"/>',
   book:'<path d="M2 5a1 1 0 0 1 1-1h6a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H3a1 1 0 0 1-1-1Z"/><path d="M22 5a1 1 0 0 0-1-1h-6a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h7a1 1 0 0 0 1-1Z"/>',
   shield:'<path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6Z"/>',
+  termo:'<rect x="3" y="3" width="5" height="5" rx="1.2" fill="currentColor" fill-opacity=".28"/><rect x="9.5" y="3" width="5" height="5" rx="1.2" fill="currentColor" fill-opacity=".28"/><rect x="16" y="3" width="5" height="5" rx="1.2"/><rect x="3" y="9.5" width="5" height="5" rx="1.2"/><rect x="9.5" y="9.5" width="5" height="5" rx="1.2" fill="currentColor" fill-opacity=".28"/><rect x="16" y="9.5" width="5" height="5" rx="1.2" fill="currentColor" fill-opacity=".28"/><path d="M4.5 18.5h15"/><path d="M4.5 21h9"/>',
   grid:'<rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/>',
   camera:'<path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1Z"/><circle cx="12" cy="13" r="3.5"/>',
   tag:'<path d="M3 12V4a1 1 0 0 1 1-1h8l9 9-9 9Z"/><circle cx="8" cy="8" r="1.3"/>',
@@ -1908,7 +1909,7 @@ const GAMES=[
   {icon:'book',title:'Quiz Bíblico',desc:'Teste seus conhecimentos bíblicos e avance na trilha.',key:'game_quiz',src:'quiz.js',fn:'abrirQuizDoMilhao'},
   {icon:'shield',title:'Guerras Bíblicas',desc:'Reviva as grandes batalhas da Bíblia em um jogo de estratégia.',key:'game_guerra',src:'guerras-biblicas.js',fn:'abrirGuerrasBiblicas'},
   {icon:'grid',title:'Jogo da Memória',desc:'Encontre os pares e relembre os grandes personagens da Bíblia.',key:'game_memoria',src:'jogo-da-memoria.js',fn:'abrirJogoDaMemoria'},
-  {icon:'grid',title:'Termo Bílico',desc:'Acerte a palavra do dia.',key:'game_termo',src:'termo-biblico.js',fn:'abrirTermo'}
+  {icon:'termo',title:'Termo Bíblico',desc:'Acerte a palavra bíblica do dia em 6 tentativas.',key:'game_termo',src:'termo-biblico.js',fn:'abrirTermoBiblico'}
 ];
 const _loadedScripts={};
 function loadScript(src){
