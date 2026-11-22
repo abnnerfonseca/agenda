@@ -1,16 +1,16 @@
 /* Termo Bíblico: uma palavra bíblica por dia (estilo Wordle), dados via Google Sheets (TSV).
    Inclua este arquivo no site e chame window.abrirTermoBiblico() para abrir.
    Planilha (aba "termo"): palavra | categoria | dica | referencia | comentario | data (opcional).
-   Publique a aba na web (TSV) e troque COLE_O_GID_AQUI pelo gid dela em TB_SHEET_URL. */
+   A aba precisa estar publicada na web em formato TSV (pub?gid=...&single=true&output=tsv). */
 
 const TB_SHEET_URL =
-  'https://docs.google.com/spreadsheets/d/e/2PACX-1vRJIvqpjlqm5GCLgrbQCtc-BA5w5krliwzcaStKPIPsf-3s9101Rx2NlUHvT9Tis1m93raki4XrHD9R/pub?gid=COLE_O_GID_AQUI&single=true&output=tsv';
+  'https://docs.google.com/spreadsheets/d/e/2PACX-1vRyhTenbfftqs8iUdYuhP_6XSjAWeRJIHouHTtpTtWgqLRDEDssg8zex00DDDHDu5s_GsmVnQFWQdNy/pub?gid=1917499254&single=true&output=tsv';
 
 const TB_TENTATIVAS = 6;
 const TB_MIN_LETRAS = 4;
 const TB_MAX_LETRAS = 8;
-const TB_DICA_APOS = 3;                 // a dica aparece depois desta tentativa errada
-const TB_DATA_INICIO = '2026-11-22';    // dia 0 do rodízio: a 1ª palavra (sem data) da planilha cai neste dia
+const TB_DICA_APOS = 3;
+const TB_DATA_INICIO = '2026-11-22';
 const TB_FUSO = 'America/Sao_Paulo';
 
 const TB_STATS_KEY = 'tbStats';
@@ -23,8 +23,6 @@ const TB_SHARE_SITE_LABEL = 'adbelembarueri.com.br/mais';
 
 const TB_ELOGIOS = ['Genial!', 'Magnífico!', 'Impressionante!', 'Muito bem!', 'Boa!', 'Ufa!'];
 
-/* ============================== ÍCONES (SVG) ==============================
-   Mesmo padrão do Guerras Bíblicas: grade 24x24, 'a' = traço + preenchimento suave, 'f' = preenchido. */
 const TB_ICONS = {
   x: ['M6 6 L18 18 M18 6 L6 18'],
   check: ['M5 12.5 L10 17.5 L19 7'],
@@ -118,8 +116,6 @@ function tbIconeCategoria(cat) {
   return 'ideia';
 }
 
-/* ============================== UTILITÁRIOS ============================== */
-
 const tbEsc = window.escHtml || function (s) {
   return s == null ? '' : String(s).replace(/[&<>"']/g, c => ({
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
@@ -134,26 +130,45 @@ function tbNormKey(k) {
 }
 function tbPick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 
-const tbFetchSheet = window.fetchSheet || (async function (url) {
+function tbParseTsv(text) {
+  if (!text) return [];
+  text = text.replace(/\r\n?/g, '\n');
+  const rows = [];
+  let row = [], cell = '', q = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (q) {
+      if (c === '"') { if (text[i + 1] === '"') { cell += '"'; i++; } else q = false; }
+      else cell += c;
+    } else if (c === '"' && cell === '') q = true;
+    else if (c === '\t') { row.push(cell); cell = ''; }
+    else if (c === '\n') { row.push(cell); rows.push(row); row = []; cell = ''; }
+    else cell += c;
+  }
+  if (cell !== '' || row.length) { row.push(cell); rows.push(row); }
+  const live = rows.filter(r => r.some(v => v.trim() !== ''));
+  if (live.length < 2) return [];
+  const headers = live[0].map(h => h.trim().toLowerCase());
+  return live.slice(1).map(r => {
+    const o = {};
+    headers.forEach((h, j) => { o[h] = (r[j] !== undefined ? r[j] : '').trim(); });
+    return o;
+  }).filter(o => Object.values(o).some(v => v !== ''));
+}
+
+async function tbFetchSheet(url) {
   try {
     const r = await fetch(url, { cache: 'no-store' });
-    if (!r.ok) throw new Error();
+    if (!r.ok) throw new Error('http');
     const text = await r.text();
-    const lines = text.replace(/\r/g, '').split('\n').filter(l => l.trim());
-    if (lines.length < 2) return [];
-    const headers = lines[0].split('\t').map(h => h.trim().toLowerCase());
-    const rows = [];
-    for (let i = 1; i < lines.length; i++) {
-      const cells = lines[i].split('\t');
-      const obj = {};
-      headers.forEach((h, j) => { obj[h] = (cells[j] !== undefined ? cells[j] : '').trim(); });
-      if (Object.values(obj).some(v => v !== '')) rows.push(obj);
-    }
-    return rows;
-  } catch (e) { console.error(e); return []; }
-});
+    if (/^\s*<(!doctype|html)/i.test(text)) throw new Error('html');
+    return tbParseTsv(text);
+  } catch (e) {
+    console.warn('[Termo Bíblico] não foi possível ler a planilha:', e && e.message);
+    return [];
+  }
+}
 
-/* Datas: sempre "AAAA-MM-DD" no fuso de Brasília, para todo mundo ver a mesma palavra do dia. */
 function tbHoje() {
   return new Intl.DateTimeFormat('en-CA', { timeZone: TB_FUSO }).format(new Date());
 }
@@ -169,7 +184,7 @@ function tbDiaDeslocado(dia, delta) {
 function tbNormData(v) {
   const s = (v || '').toString().trim();
   if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
-  const m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/); // o Sheets em pt-BR exporta dd/mm/aaaa
+  const m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
   if (m) return `${m[3]}-${m[2].padStart(2, '0')}-${m[1].padStart(2, '0')}`;
   return '';
 }
@@ -186,9 +201,6 @@ function tbFormatarContagem(seg) {
   return `${p(Math.floor(seg / 3600))}:${p(Math.floor(seg % 3600 / 60))}:${p(seg % 60)}`;
 }
 
-/* ============================== REGRAS DO JOGO ============================== */
-
-// Duas passadas: primeiro as letras certas, depois as que existem em outro lugar (respeitando repetições).
 function tbAvaliar(chute, alvo) {
   const n = alvo.length;
   const res = new Array(n).fill('ausente');
@@ -207,7 +219,6 @@ function tbAvaliar(chute, alvo) {
 }
 const TB_ROTULO = { certa: 'letra certa no lugar certo', presente: 'letra existe em outro lugar', ausente: 'letra não está na palavra' };
 
-// Palavra marcada com a data de hoje vence; as demais giram na ordem da planilha, uma por dia.
 function tbPalavraDoDia(lista, hoje) {
   const marcada = lista.find(p => p.data === hoje);
   if (marcada) return marcada;
@@ -217,16 +228,10 @@ function tbPalavraDoDia(lista, hoje) {
   return rodizio[((n % rodizio.length) + rodizio.length) % rodizio.length];
 }
 
-/* ============================== DADOS ============================== */
-
 let _tbLista = null;
 
 async function tbCarregarLista() {
   if (_tbLista) return _tbLista;
-  if (TB_SHEET_URL.includes('COLE_O_GID')) {
-    console.warn('[Termo Bíblico] Falta configurar a planilha: publique a aba "termo" (TSV) e troque COLE_O_GID_AQUI pelo gid dela em TB_SHEET_URL.');
-    return [];
-  }
   let raw = await tbFetchSheet(TB_SHEET_URL);
   if (raw.length) {
     try { localStorage.setItem(TB_DATA_CACHE_KEY, JSON.stringify(raw)); } catch (e) {}
@@ -263,11 +268,9 @@ async function tbCarregarLista() {
     });
   });
   console.log('[Termo Bíblico] palavras válidas:', lista.length);
-  if (lista.length) _tbLista = lista; // falha de rede não pode ficar em cache
+  if (lista.length) _tbLista = lista;
   return lista;
 }
-
-/* ============================== ESTATÍSTICAS E PROGRESSO ============================== */
 
 function tbStatsVazias() {
   return { jogos: 0, vitorias: 0, sequencia: 0, melhorSequencia: 0, ultimaVitoria: '', dist: new Array(TB_TENTATIVAS).fill(0) };
@@ -296,7 +299,6 @@ function tbRegistrarResultado(venceu, nTentativas, dia) {
   }
   tbSalvarStats(s);
 }
-// A sequência só vale se a última vitória foi hoje ou ontem.
 function tbSequenciaAtual(s, hoje) {
   return (s.ultimaVitoria === hoje || s.ultimaVitoria === tbDiaDeslocado(hoje, -1)) ? s.sequencia : 0;
 }
@@ -309,8 +311,6 @@ function tbSalvarDia() {
     localStorage.setItem(TB_DIA_KEY, JSON.stringify({ dia: _tb.dia, norm: _tb.alvo.norm, tentativas: _tb.tentativas, status: _tb.status }));
   } catch (e) {}
 }
-
-/* ============================== CSS ============================== */
 
 const TB_CSS = `
 .tb-overlay{position:fixed;inset:0;background:rgba(10,9,7,.85);backdrop-filter:blur(6px);z-index:500;display:none;align-items:center;justify-content:center;padding:14px}
@@ -384,8 +384,6 @@ const TB_CSS = `
 .tb-voltar{margin-top:18px}
 `;
 
-/* ============================== ESTADO / DOM ============================== */
-
 let _tb = {
   aberto: false, tela: 'jogo', modo: 'dia', dia: '', alvo: null,
   tentativas: [], atual: '', status: 'jogando',
@@ -417,8 +415,6 @@ function tbEnsureDom() {
   document.body.appendChild(div);
   div.addEventListener('click', e => { if (e.target === div) tbFechar(); });
 }
-
-/* ============================== TELAS ============================== */
 
 function tbRender() {
   const body = document.getElementById('tbBody');
@@ -469,7 +465,6 @@ function tbRenderGrid() {
   else tbRender();
 }
 
-// Cor de cada tecla = melhor pista já descoberta (a linha que ainda está virando não conta, para não dar spoiler).
 function tbEstadoTeclas() {
   const est = {};
   const prio = { ausente: 1, presente: 2, certa: 3 };
@@ -597,8 +592,6 @@ function tbStatsHtml() {
   `;
 }
 
-/* ============================== ENTRADA E FLUXO ============================== */
-
 function tbAviso(msg, ms) {
   _tb.avisoTxt = msg;
   const el = document.getElementById('tbMsg');
@@ -647,7 +640,6 @@ function tbEnter() {
   _tb.tentativas.push(_tb.atual);
   _tb.atual = '';
   _tb.status = tbStatusDe(_tb.tentativas, _tb.alvo.norm);
-  // Resultado e progresso são gravados já: atualizar a página no meio da animação não perde nada.
   if (_tb.status !== 'jogando' && _tb.modo === 'dia') tbRegistrarResultado(_tb.status === 'venceu', _tb.tentativas.length, _tb.dia);
   tbSalvarDia();
 
@@ -679,14 +671,15 @@ function tbIniciarContagem() {
     if (seg <= 1 && _tb.aberto && _tb.modo === 'dia') {
       clearInterval(_tb.timers.contagem);
       _tb.timers.contagem = null;
-      setTimeout(() => { if (_tb.aberto) tbIniciar('dia'); }, 1500); // virou o dia: carrega a palavra nova
+      setTimeout(() => { if (_tb.aberto) tbIniciar('dia'); }, 1500);
     }
   }, 1000);
 }
 
 async function tbIniciar(modo) {
   tbLimparTimers();
-  const lista = await tbCarregarLista();
+  let lista = [];
+  try { lista = await tbCarregarLista(); } catch (e) { console.error('[Termo Bíblico]', e); }
   _tb.tela = 'jogo';
   _tb.modo = modo;
   _tb.tentativas = [];
@@ -715,8 +708,6 @@ async function tbIniciar(modo) {
 function tbTreino() { tbIniciar('treino'); }
 function tbDiaAtual() { tbIniciar('dia'); }
 
-/* ============================== COMPARTILHAR ============================== */
-
 const TB_CORES = { certa: '#4f9a62', presente: '#b08a2e', ausente: '#47433c' };
 
 function tbRoundRect(ctx, x, y, w, h, r) {
@@ -729,7 +720,6 @@ function tbRoundRect(ctx, x, y, w, h, r) {
   ctx.closePath();
 }
 
-// A imagem mostra só as cores (sem as letras), para não entregar a palavra a quem ainda vai jogar.
 function tbBuildShareCanvas() {
   const W = 1080, H = 1920;
   const alvo = _tb.alvo.norm;
@@ -832,8 +822,6 @@ async function tbCompartilhar(btnEl) {
   }
 }
 
-/* ============================== ABRIR / FECHAR ============================== */
-
 async function tbAbrir() {
   tbEnsureDom();
   _tb.aberto = true;
@@ -843,7 +831,7 @@ async function tbAbrir() {
   await tbIniciar('dia');
   let vista = false;
   try { vista = !!localStorage.getItem(TB_AJUDA_KEY); } catch (e) {}
-  if (!vista && _tb.alvo) { _tb.tela = 'ajuda'; tbRender(); } // primeira vez: mostra como jogar
+  if (!vista && _tb.alvo) { _tb.tela = 'ajuda'; tbRender(); }
 }
 
 function tbFechar() {
